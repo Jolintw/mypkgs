@@ -9,14 +9,10 @@ from mypkgs.processor.timetools import timestamp_to_datetime, str_to_datetime_UT
 
     
 class Plotter:
-    #figsize_x = 8
-    #figsize_y = 6
-    figsize_x = 12
-    figsize_y = 9
-    def __init__(self, row = 1, column = 1, figsize = None, fontsize = None, subplot_kw={}):
+    def __init__(self, row = 1, column = 1, figsize = None, subfigsize_x = 8, subfigsize_y = 6, fontsize = None, subplot_kw={}):
         self.row        = row
         self.column     = column
-        self.figsize    = self._autofigsize(figsize)
+        self.figsize    = self._autofigsize(figsize, subfigsize_x, subfigsize_y)
         self.fontsize   = self._autofontsize(fontsize)
         self.subplot_kw = subplot_kw
         
@@ -158,21 +154,30 @@ class Plotter:
         for ax in self.axs:
             ax.tick_params(labelsize=self.fontsize)
     
-    def _autofigsize(self, figsize):
+    def _autofigsize(self, figsize, subfigsize_x, subfigsize_y):
+        title_space = 0.25
+        if subfigsize_x is None:
+            subfigsize_x = 8
+        if subfigsize_y is None:
+            subfigsize_y = 6
         if figsize is None:
-            return [self.figsize_x*self.column, self.figsize_y*self.row]
+            self.subfigsize_x = subfigsize_x
+            self.subfigsize_y = subfigsize_y
+            return [subfigsize_x * self.column, subfigsize_y * (self.row + title_space)]
         else:
+            self.subfigsize_x = figsize[0] / self.column
+            self.subfigsize_y = figsize[1] / (self.row + title_space)
             return figsize
     
     def _autofontsize(self, fontsize):
         if fontsize is None:
-            return self.figsize[1] * 0.9 + self.figsize_y * 1.8
+            return self.figsize[1] * 0.9 + self.subfigsize_y * 1.8
         else:
             return fontsize
     
     def _autolinewidths(self, linewidths = None):
         if linewidths is None:
-            return np.sqrt(self.figsize_x * self.figsize_y) / 2.5
+            return np.sqrt(self.subfigsize_x * self.subfigsize_y) / 2.5
         else:
             return linewidths
 
