@@ -9,7 +9,7 @@ from mypkgs.processor.timetools import timestamp_to_datetime, str_to_datetime_UT
 
     
 class Plotter:
-    def __init__(self, row = 1, column = 1, figsize = None, subfigsize_x = 8, subfigsize_y = 6, fontsize = None, subplot_kw={}):
+    def __init__(self, row = 1, column = 1, figsize = None, subfigsize_x = None, subfigsize_y = None, fontsize = None, subplot_kw={}):
         self.row        = row
         self.column     = column
         self.figsize    = self._autofigsize(figsize, subfigsize_x, subfigsize_y)
