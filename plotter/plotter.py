@@ -185,8 +185,8 @@ class Plotter:
         plt.close(self.fig)
     
 class MapPlotter(Plotter):
-    def __init__(self, row = 1, column = 1, figsize = None, fontsize = None, subplot_kw={"projection":ccrs.PlateCarree()}):
-        super().__init__(row, column, figsize, fontsize, subplot_kw)
+    def __init__(self, row = 1, column = 1, figsize = None, subfigsize_x = None, subfigsize_y = None, fontsize = None, subplot_kw={"projection":ccrs.PlateCarree()}):
+        super().__init__(row=row, column=column, figsize=figsize, subfigsize_x=subfigsize_x, subfigsize_y=subfigsize_y, fontsize=fontsize, subplot_kw=subplot_kw)
         
     def coastlines(self, axn = None):
         axs = self._axntoaxs(axn)
