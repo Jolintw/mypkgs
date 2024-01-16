@@ -138,6 +138,12 @@ bounds = np.array([10,12,14,16,18,20,20,20,20,22,24,26,28,30,34,38,42]) - 4
 kw["cbticks"] = np.array([10,12,14,16,18,20,22,24,26,28,30,34,38,42]) - 4
 kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 
+name = "T"
+kw = _kw(colorkw, name)
+kw["cmap"] = NCL_prcp_1
+bounds = np.arange(15) + 280
+kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
+
 name = "ws_small"
 kw = _kw(colorkw, name)
 kw["cmap"] = NCL_prcp_1[1:]
