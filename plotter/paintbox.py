@@ -1,6 +1,7 @@
+import numpy as np
+
 from mypkgs.plotter.plot_function import pcolormeshcb_sub, contourfcb_sub, quiver_weight
 from mypkgs.variable.mycolormap import colorkw
-import numpy as np
 
 class Paintbox_2D:
     def __init__(self, field, X, Y, fig = None, ax = None, level = None):
