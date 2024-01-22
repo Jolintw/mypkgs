@@ -4,7 +4,7 @@ import numpy as np
 class NCWriter:
     newNCD = None
 
-    def writeVariable(self, varName: str, var, newNCD=None, dim=None, atts=None):
+    def writeVariable(self, varName: str, var, newNCD=None, dim=None, atts=None, fill_value = None):
         if newNCD is None:  # if new nc dataset not set, then use instance new nc dataset
             newNCD = self.newNCD
 
@@ -27,10 +27,13 @@ class NCWriter:
                         break
             dim = tuple(dim)
 
-        newVar = newNCD.createVariable(varName, var.dtype, dim)
-        newVar[...] = var
+        newVar = newNCD.createVariable(varName, var.dtype, dim, fill_value=fill_value)
+        #newNCD.set_fill_on()
         if atts:
             newVar.setncatts(atts)
+        
+        newVar[...] = var
+        
         return newVar
 
     # dimensionDict = {
