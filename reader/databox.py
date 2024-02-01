@@ -10,7 +10,7 @@ class Variable:
         """
         self.name = name
         self.data = data
-        self.dim = dim
+        self.dim = tuple(dim)
         self.attr = {}
         self.__originkeys = list(self.__dict__.keys())
         self.setattrs(attr)
@@ -53,12 +53,11 @@ class Databox:
         self.grid = {}
         self.dimlist = []
         self.auto_generate_dim_name_format = "auto_generate_dimension{:d}"
-
+        self.__originkeys = list(self.__dict__.keys())
+        
     def __getitem__(self, key):
         if isinstance(key, int):
-            for dim_object in self.dim.values():
-                if dim_object.axis_order == key:
-                    return dim_object
+            self.dim[self.dimlist[key]]
                 
         domains = [self.dim, self.field, self.grid]
         for domain in domains:
@@ -79,6 +78,11 @@ class Databox:
             dim = self._auto_find_dim(data)
         self.field[name] = Variable(name, data, dim=dim, attr=attr)
     
+    def add_grid(self, name, data, dim = None, attr = {}):
+        if dim is None:
+            dim = self._auto_find_dim(data)
+        self.grid[name] = Variable(name, data, dim=dim, attr=attr)
+
     def change_dim_order(self, neworder):
         """neworder is a list(array) filled with int from 0~n, n+1 is number of dims
         """
@@ -88,6 +92,15 @@ class Databox:
         for i in neworder:
             newdimlist.append(self.dimlist[i])
         self.dimlist = newdimlist
+
+    def setattrs(self, attr):
+        for key, value in attr.items():
+            self.attr[key] = value
+            if isinstance(key, str):
+                if key in self.__originkeys:
+                    warnings.warn("\"{:s}\" is protected, so it will be skip".format(key))
+                    continue
+            setattr(self, key, value)
 
     def _auto_find_dim(self, data):
         dim = []
