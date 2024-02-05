@@ -1,7 +1,7 @@
 import netCDF4 as nc
 
-# from mypkgs.reader.databox import Databox
-from databox import Databox
+from mypkgs.reader.databox import Databox
+# from databox import Databox
 
 class NCReader:
     def __init__(self, filename = None, dataset = None, databox = None):
