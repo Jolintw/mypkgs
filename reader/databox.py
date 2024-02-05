@@ -54,7 +54,7 @@ class Databox:
         self.dimlist = []
         self.auto_generate_dim_name_format = "auto_generate_dimension{:d}"
         self.__originkeys = list(self.__dict__.keys())
-        
+
     def __getitem__(self, key):
         if isinstance(key, int):
             self.dim[self.dimlist[key]]
@@ -62,11 +62,11 @@ class Databox:
         domains = [self.dim, self.field, self.grid]
         for domain in domains:
             if key in domain:
-                return self.dim[key]
+                return domain[key]
         raise KeyError("no \"{:s}\" in this Databox")
     
-    def add_dimension(self, name, value):
-        self.dim[name] = Dimension(name, value)
+    def add_dimension(self, name, value, attr = {}):
+        self.dim[name] = Dimension(name, value, attr)
         self.dimlist.append(name)
 
     def add_dimensions(self, dim_dict = None):
