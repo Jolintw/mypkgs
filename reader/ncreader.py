@@ -9,6 +9,13 @@ class NCReader:
         self.data = databox
         if databox is None:
             self.data = Databox()
+    
+    def auto_read(self, varlist = [], read_all = False):
+        self.copy_attributes()
+        self.copy_dimensions()
+        if read_all:
+            varlist = [var for var in list(self.dataset.variables.keys()) if not var in self.data.dimlist]
+        self.read_variables(varlist)
 
     def copy_attributes(self):
         self.data.setattrs(self.dataset.__dict__)
@@ -51,12 +58,14 @@ class NCReader:
 if __name__ == "__main__":
     filename = "D:/TAHOPE/IOP3/SAMURAI_output/samurai_XYZ_analysis_20220606062400.nc"
     NCR = NCReader(filename = filename)
-    NCR.copy_attributes()
-    NCR.copy_dimensions()
-    NCR.read_variables_with_newname("U", "u")
+    NCR.auto_read(read_all=True)
+    # NCR.copy_attributes()
+    # NCR.copy_dimensions()
+    # NCR.read_variables_with_newname("U", "u")
+    print(NCR.data)
     print(NCR.data.dim)
     print(NCR.data.field)
-    print(NCR.data["u"])
-    print(NCR.dataset["U"])
-    print(NCR.dataset["U"].ncattrs())
+    print(NCR.data["U"])
+    #print(NCR.dataset["U"])
+    #print(NCR.dataset["U"].ncattrs())
     NCR.close()

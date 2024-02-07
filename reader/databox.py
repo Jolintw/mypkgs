@@ -20,7 +20,18 @@ class Variable:
     
     def __setitem__(self, key, value):
         self.data[key] = value
+
+    def __str__(self):
+        result = "<class databox.Variable>\n"
+        result += "{:s}{:s}\n".format(self.name, str(self.dim))
+        for key, value in self.attr.items():
+            result += "    {:s}: {:s}\n".format(key, str(value))
+        return result
     
+    def __repr__(self):
+        result = "{:s}{:s}".format(self.name, str(self.dim))
+        return result
+
     def setattrs(self, attr):
         for key, value in attr.items():
             self.attr[key] = value
@@ -35,6 +46,17 @@ class Dimension(Variable):
     def __init__(self, name, data_or_length, attr = {}):
         self._auto_setdata(data_or_length)
         super().__init__(name, self.data, (name, ), attr)
+
+    def __str__(self):
+        result = "<class databox.Dimension>\n"
+        result += "{:s}{:s}\n".format(self.name, str(self.data.shape))
+        for key, value in self.attr.items():
+            result += "    {:s}: {:s}\n".format(key, str(value))
+        return result
+    
+    def __repr__(self):
+        result = "{:s}{:s}".format(self.name, str(self.data.shape))
+        return result
 
     def _auto_setdata(self, data_or_length):
         if isinstance(data_or_length, int):
@@ -51,6 +73,7 @@ class Databox:
         self.dim = {}
         self.field = {}
         self.grid = {}
+        self.attr = {}
         self.dimlist = []
         self.auto_generate_dim_name_format = "auto_generate_dimension{:d}"
         self.__originkeys = list(self.__dict__.keys())
@@ -64,6 +87,16 @@ class Databox:
             if key in domain:
                 return domain[key]
         raise KeyError("no \"{:s}\" in this Databox")
+    
+    def __str__(self):
+        result = "Databox:\n"
+        result += "    dim: " + str(self.dim) + "\n"
+        result += "    field: " + str(self.field) + "\n"
+        result += "    grid: " + str(self.grid) + "\n"
+        for key, value in self.attr.items():
+            result += "    {:s}: {:s}\n".format(key, str(value))
+        return result
+    __repr__ = __str__
     
     def add_dimension(self, name, value, attr = {}):
         self.dim[name] = Dimension(name, value, attr)
@@ -83,7 +116,13 @@ class Databox:
             dim = self._auto_find_dim(data)
         self.grid[name] = Variable(name, data, dim=dim, attr=attr)
 
-    def change_dim_order(self, neworder):
+    def resort_dim_order_like(self, fieldname):
+        refdim = self.field[fieldname].dim
+        newdimlist = list(refdim)
+        newdimlist += [other_dim for other_dim in self.dimlist if not other_dim in refdim]
+        self.dimlist = newdimlist
+
+    def resort_dim_order(self, neworder):
         """neworder is a list(array) filled with int from 0~n, n+1 is number of dims
         """
         if not len(self.dimlist) == len(neworder):
