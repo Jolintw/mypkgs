@@ -3,7 +3,7 @@ import netCDF4 as nc
 from mypkgs.reader.databox import Databox
 # from databox import Databox
 
-class NCReader:
+class NCreader:
     def __init__(self, filename = None, dataset = None, databox = None):
         self.dataset = self._get_dataset(filename, dataset)
         self.data = databox
@@ -57,7 +57,7 @@ class NCReader:
 
 if __name__ == "__main__":
     filename = "D:/TAHOPE/IOP3/SAMURAI_output/samurai_XYZ_analysis_20220606062400.nc"
-    NCR = NCReader(filename = filename)
+    NCR = NCreader(filename = filename)
     NCR.auto_read(read_all=True)
     # NCR.copy_attributes()
     # NCR.copy_dimensions()

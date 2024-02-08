@@ -124,8 +124,12 @@ class NCWriter:
     def createVariableLike(self, refVariable, newNCD=None):
         if newNCD is None:  # if new nc dataset not set, then use instance new nc dataset
             newNCD = self.newNCD
-        newVar = newNCD.createVariable(refVariable.name, refVariable.datatype, refVariable.dimensions)
+        otherargs = {}
+        if "_FillValue" in refVariable.__dict__:
+            otherargs["fill_value"] = refVariable.__dict__["_FillValue"]
+        newVar = newNCD.createVariable(refVariable.name, refVariable.datatype, refVariable.dimensions, **otherargs)
         newVar.setncatts(refVariable.__dict__)
+
         return newVar
     
     def done(self):
