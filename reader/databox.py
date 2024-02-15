@@ -31,6 +31,12 @@ class Variable:
     def __repr__(self):
         result = "{:s}{:s}".format(self.name, str(self.dim))
         return result
+    
+    def append(self, newdata, axis = None):
+        if axis == "new":
+            self.data = self.data.append(self.data[np.newaxis, ...], newdata, axis=0)
+        else:
+            self.data = self.data.append(self.data, newdata, axis=axis)
 
     def setattrs(self, attr):
         for key, value in attr.items():
@@ -40,7 +46,6 @@ class Variable:
                     warnings.warn("\"{:s}\" is protected, so it will be skip".format(key))
                     continue
             setattr(self, key, value)
-    
 
 class Dimension(Variable):
     def __init__(self, name, data_or_length, attr = {}):
