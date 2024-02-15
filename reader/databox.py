@@ -35,6 +35,7 @@ class Variable:
     def append(self, newdata, axis = None, newdimname = "NOT_DEFINED"):
         if axis == "new":
             self.data = self.data.append(self.data[np.newaxis, ...], newdata[np.newaxis, ...], axis=0)
+            self.dim = tuple([newdimname] + list(self.dim))
         else:
             self.data = self.data.append(self.data, newdata, axis=axis)
 
