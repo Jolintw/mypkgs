@@ -32,9 +32,9 @@ class Variable:
         result = "{:s}{:s}".format(self.name, str(self.dim))
         return result
     
-    def append(self, newdata, axis = None):
+    def append(self, newdata, axis = None, newdimname = "NOT_DEFINED"):
         if axis == "new":
-            self.data = self.data.append(self.data[np.newaxis, ...], newdata, axis=0)
+            self.data = self.data.append(self.data[np.newaxis, ...], newdata[np.newaxis, ...], axis=0)
         else:
             self.data = self.data.append(self.data, newdata, axis=axis)
 
