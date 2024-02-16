@@ -33,10 +33,30 @@ class Variable:
         return result
     
     def append(self, newdata, axis = None, newdimname = "NOT_DEFINED"):
+        nowshape = self.data.shape
+        newshape = newdata.shape
+        if axis is None:
+            if newshape == nowshape:
+                if not len(newshape) == len(nowshape):
+                    raise Exception("need specified axis if numbers of dimensions are not the same")
+                for axis in range(len(nowshape)):
+                    if nowshape[axis] == 1:
+                        self.data = self.data.append(self.data, newdata, axis=axis)
+                axis = "new"
+            else:
+                for axis in range(len(nowshape)):
+                    if not nowshape[axis] == newshape[axis]:
+                        self.data = self.data.append(self.data, newdata, axis=axis)
+                        return None
+        
         if axis == "new":
             self.data = self.data.append(self.data[np.newaxis, ...], newdata[np.newaxis, ...], axis=0)
             self.dim = tuple([newdimname] + list(self.dim))
-        else:
+        elif isinstance(axis, int):
+            if not len(newshape) == len(nowshape): # add newaxis to 
+                list(newshape).insert(axis, 1)
+                newshape = tuple(newshape)
+                newdata  = newdata.reshape(newshape)
             self.data = self.data.append(self.data, newdata, axis=axis)
 
     def setattrs(self, attr):
