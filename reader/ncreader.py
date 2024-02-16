@@ -46,9 +46,9 @@ class NCreader:
         data = self.databox
         data.add_field(newname, var[:], var.dimensions, attr=var.__dict__)
 
-    def append_to_existed_variable(self, varname, axis = None):
+    def append_to_existed_variable(self, varname, axis = None, newdimname = "NOT_DEFINED"):
         var = self.dataset[varname]
-        self.databox[varname].append(var, axis = axis)
+        self.databox[varname].append(var, axis=axis, newdimname=newdimname)
 
     def _get_dataset(self, filename, dataset):
         if filename is None:
