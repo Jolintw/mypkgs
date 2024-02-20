@@ -18,3 +18,20 @@ def midtime(timelist, returntype = "timestamp"):
         return timestamp
     if returntype == "datetime":
         return timestamp_to_datetime([timestamp])[0]
+    
+def index_of_nearesttime(datetimelist, time):
+    temptd = np.inf
+    result = None
+    for i_t, t in enumerate(datetimelist):
+        if abs(t.timestamp() - time.timestamp()) < temptd:
+            result = i_t
+            temptd = abs(t.timestamp() - time.timestamp())
+    return result
+
+def indexlist_in_timerange(datetimelist, starttime, endtime):
+    result = []
+    for i_t, t in enumerate(datetimelist):
+        if t > starttime and t < endtime:
+            result.append(i_t)
+
+    return result
