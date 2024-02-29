@@ -31,13 +31,13 @@ class NCreader:
             else:
                 self.databox.add_dimension(name, value=dimension.size)
     
-    def read_variables(self, varlist):
+    def read_variables(self, varlist, **args):
         for varname in varlist:
-            self.read_variable(varname)
+            self.read_variable(varname, **args)
 
-    def read_variables_with_newname(self, varlist, newnamelist):
+    def read_variables_with_newname(self, varlist, newnamelist, **args):
         for varname, newname in zip(varlist, newnamelist):
-            self.read_variable(varname, newname)
+            self.read_variable(varname, newname, **args)
 
     def read_variable(self, varname, newname = None):
         if newname is None:
