@@ -84,9 +84,9 @@ class Paintbox_2D:
         if type(varname) is list:
             var = []
             for name in varname:
-                var.append(self._get_var_level(self.field[name]))
+                var.append(self._get_var_level(self.field[name][...]))
         else:
-            var = self._get_var_level(self.field[varname])
+            var = self._get_var_level(self.field[varname][...])
         self._renewax(ax)
         self._renewfig(fig)
         return self.X, self.Y, var, self.fig, self.ax
