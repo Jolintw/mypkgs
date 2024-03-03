@@ -31,7 +31,7 @@ def index_of_nearesttime(datetimelist, time):
 def indexlist_in_timerange(datetimelist, starttime, endtime):
     result = []
     for i_t, t in enumerate(datetimelist):
-        if t > starttime and t < endtime:
+        if t >= starttime and t <= endtime:
             result.append(i_t)
 
     return result
