@@ -170,14 +170,15 @@ class Databox:
     def _auto_find_dim(self, data):
         dim = []
         dimlist = self.dimlist.copy()
-        for length in data.shape:
+        for i_length, length in enumerate(data.shape):
             for dim_name in dimlist:
                 if length == self.dim[dim_name].length:
                     dim.append(dim_name)
                     dimlist.remove(dim_name)
                     break
-            auto_created_dim = self._auto_create_dim(length) # no existed usefull dim
-            dim.append(auto_created_dim)
+            if i_length == len(dim): # find no dim in dimlist
+                auto_created_dim = self._auto_create_dim(length) # no existed usefull dim
+                dim.append(auto_created_dim)
         return dim
 
     def _auto_create_dim(self, length):
