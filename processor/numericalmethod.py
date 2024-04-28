@@ -188,3 +188,35 @@ class RightAngleInterpolater:
                 print("newX:", "min:", np.min(newX[i]), "max:", np.max(newX[i]))
                 print("X:", "min:", np.min(X[i]), "max:", np.max(X[i]))
                 break
+
+class NonEquidistanceSmoother_1D:
+    def __init__(self, X, smoothrange):
+        self.X = X
+        self.smoothrange = smoothrange
+        self._create_smoothmasklist()
+
+    def _create_smoothmasklist(self):
+        X = self.X
+        smoothrange = self.smoothrange
+        halfrange = smoothrange / 2
+        Xmin = np.min(X)
+        Xmax = np.max(X)
+        smoothmasklist = []
+        for x in X:
+            if x == Xmin or x == Xmax:
+                smoothmask = (x == X)
+            else:
+                if x < Xmin + halfrange:
+                    exact_range = x - Xmin
+                elif x > Xmax - halfrange:
+                    exact_range = Xmax - x
+                else:
+                    exact_range = halfrange
+                smoothmask = np.logical_and(X > x - halfrange, X < x + halfrange)
+            smoothmasklist.append(smoothmask)
+        self.smoothmasklist == smoothmasklist
+        
+    def smooth(self, var):
+        newvar = np.zeros_like(var)
+        for i, smoothmask in enumerate(self.smoothmasklist):
+            newvar[i] = np.nanmean(var[smoothmask])
