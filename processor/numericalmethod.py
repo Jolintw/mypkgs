@@ -214,8 +214,8 @@ class NonEquidistanceSmoother_1D:
                     exact_range = halfrange
                 smoothmask = np.logical_and(X > x - halfrange, X < x + halfrange)
             smoothmasklist.append(smoothmask)
-        self.smoothmasklist == smoothmasklist
-        
+        self.smoothmasklist = smoothmasklist
+
     def smooth(self, var):
         newvar = np.zeros_like(var)
         for i, smoothmask in enumerate(self.smoothmasklist):
