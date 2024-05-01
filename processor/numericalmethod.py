@@ -220,3 +220,4 @@ class NonEquidistanceSmoother_1D:
         newvar = np.zeros_like(var)
         for i, smoothmask in enumerate(self.smoothmasklist):
             newvar[i] = np.nanmean(var[smoothmask])
+        return newvar
