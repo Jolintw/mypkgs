@@ -5,9 +5,11 @@ from datetime import timezone
 from datetime import timedelta
 import re
 
-def timestamp_to_datetime(timestamparray):
+def timestamp_to_datetime(timestamp):
     tzUTC = timezone(timedelta(0))
-    return [dd.fromtimestamp(tstamp).astimezone(tzUTC) for tstamp in timestamparray]
+    if isinstance(timestamp, float) or isinstance(timestamp, int):
+        return dd.fromtimestamp(timestamp).astimezone(tzUTC)
+    return [dd.fromtimestamp(tstamp).astimezone(tzUTC) for tstamp in timestamp]
 
 def str_to_datetime_UTC(string):
     return dd.strptime(string + "+0000", "%Y%m%d%H%M%S%z")
