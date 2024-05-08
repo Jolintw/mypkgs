@@ -217,16 +217,21 @@ class TwinPlotter(Plotter):
         else:
             self.ax = self.axs
         self._set_ticksize()
-    
-    def twin(self, sub_num, xy = "x"):
-        ax = self.axs[sub_num][0]
-        if xy == "x":
-            twin = ax.twinx()
-        elif xy == "y":
-            twin = ax.twiny()
-        self.axs[sub_num].append(twin)
-        axn = (sub_num, len(self.axs[sub_num]) - 1)
-        self._set_ticksize(axn)
+
+    def twin(self, sub_num = None, xy = "x"):
+        if sub_num is None:
+            sub_num = range(len(self.axs))
+        if not isinstance(sub_num, Iterable):
+            sub_num = [sub_num]
+        for num in sub_num:
+            ax = self.axs[num][0]
+            if xy == "x":
+                twin = ax.twinx()
+            elif xy == "y":
+                twin = ax.twiny()
+            self.axs[num].append(twin)
+            axn = (num, len(self.axs[num]) - 1)
+            self._set_ticksize(axn)
         return twin
 
     def _axntoaxs(self, axn):
