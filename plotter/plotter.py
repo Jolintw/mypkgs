@@ -2,6 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+from collections.abc import Iterable
 
 import mypkgs.plotter.plot_function as pf
 from mypkgs.plotter.plot_function import pcolormeshcb_sub, contourfcb_sub
@@ -151,8 +152,9 @@ class Plotter:
             axn = [axn]
         return [self.axs[n] for n in axn]
     
-    def _set_ticksize(self):
-        for ax in self.axs:
+    def _set_ticksize(self, axn = None):
+        axs = self._axntoaxs(axn)
+        for ax in axs:
             ax.tick_params(labelsize=self.fontsize)
     
     def _autofigsize(self, figsize, subfigsize_x, subfigsize_y):
@@ -199,3 +201,44 @@ class MapPlotter(Plotter):
         for ax in axs:
             pf.setlatlonticks(ax, ticksitvl, xlim, ylim)
     
+class TwinPlotter(Plotter):
+    def newsubplots(self):
+        fig, axs      = plt.subplots(self.row, self.column, figsize=self.figsize,subplot_kw=self.subplot_kw)
+        self.fig      = fig
+        
+        if isinstance(axs, np.ndarray):
+            axs = axs.flatten()
+        else:
+            axs  = np.array([axs])
+
+        self.axs = [[ax] for ax in axs]
+        if len(self.axs) == 1:
+            self.ax = self.axs[0]
+        else:
+            self.ax = self.axs
+        self._set_ticksize()
+    
+    def twin(self, sub_num, xy = "x"):
+        ax = self.axs[sub_num][0]
+        if xy == "x":
+            twin = ax.twinx()
+        elif xy == "y":
+            twin = ax.twiny()
+        self.axs[sub_num].append(twin)
+        axn = (sub_num, len(self.axs[sub_num]) - 1)
+        self._set_ticksize(axn)
+        return twin
+
+    def _axntoaxs(self, axn):
+        axs = self.axs
+        if axn is None:
+            axn = range(self.row * self.column)
+            axn = [(ax, 0) for ax in axn]
+        if type(axn) is int:
+            return axs[axn]
+        elif isinstance(axn, Iterable):
+            if isinstance(axn[0], Iterable):
+                return [axs[ax[0]][ax[1]] for ax in axn]
+            else:
+                return [axs[axn[0]][axn[1]]]
+        
