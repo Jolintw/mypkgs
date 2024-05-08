@@ -1,16 +1,33 @@
 import numpy as np
 
-from mypkgs.plotter.plot_function import pcolormeshcb_sub, contourfcb_sub, quiver_weight
+from mypkgs.plotter.plot_function import pcolormeshcb_sub, contourfcb_sub, quiver_weight, get_ax_size
 from mypkgs.variable.mycolormap import colorkw
 
-class Paintbox_2D:
+class Paintbox:
+    def __init__(self, fig = None, ax = None):
+        self._renewfig(fig)
+        self._renewax(ax)
+
+    def _get_necessary(self, fig, ax):
+        self._renewax(ax)
+        self._renewfig(fig)
+        return self.fig, self.ax
+
+    def _renewax(self, ax = None):
+        if not ax is None:
+            self.ax = ax
+
+    def _renewfig(self, fig = None):
+        if not fig is None:
+            self.fig = fig
+
+class Paintbox_2D(Paintbox):
     def __init__(self, field, X, Y, fig = None, ax = None, level = None):
         self.field = field
         self.X = X
         self.Y = Y
-        self._renewfig(fig)
-        self._renewax(ax)
         self.setlevel(level)
+        super().__init__(fig=fig, ax=ax)
         
     def add_field(self, name, var):
         self.field[name] = var.copy()
@@ -81,14 +98,13 @@ class Paintbox_2D:
         quiver_weight(ax,fig,X,Y,U,V,scale_q,"k",xintv,yintv,broadXY=True)
     
     def _get_necessary(self, varname, fig, ax):
+        super()._get_necessary(fig=fig, ax=ax)
         if type(varname) is list:
             var = []
             for name in varname:
                 var.append(self._get_var_level(self.field[name][...]))
         else:
             var = self._get_var_level(self.field[varname][...])
-        self._renewax(ax)
-        self._renewfig(fig)
         return self.X, self.Y, var, self.fig, self.ax
     
     def _get_var_level(self, var, level = None):
@@ -103,12 +119,38 @@ class Paintbox_2D:
             return self.level
         else:
             return level
+        
+class Paintbox_1D(Paintbox):
+    def __init__(self, X, Y, fig = None, ax = None):
+        self.X = X
+        self.Y = Y
+        super().__init__(fig=fig, ax=ax)
 
-    def _renewax(self, ax = None):
-        if not ax is None:
-            self.ax = ax
+    def plot(self, Xname, Yname, fig = None, ax = None, **set_dict):
+        X, Y, fig, ax = self._get_necessary(Xname, Yname, fig, ax)
+        linewidth = self._auto_linewidth(fig, ax)
+        p = ax.plot(X, Y, linewidth=linewidth)
+        p[0].set(**set_dict)
+        return p
 
-    def _renewfig(self, fig = None):
-        if not fig is None:
-            self.fig = fig
-    
+    def _auto_linewidth(self, fig, ax):
+        width, height = get_ax_size(ax, fig)
+        linewidth = np.sqrt(width*height)*0.005
+        return linewidth
+
+    def _get_necessary(self, Xname, Yname, fig, ax):
+        super()._get_necessary(fig=fig, ax=ax)
+        if type(Xname) is list:
+            X = []
+            for name in Xname:
+                X.append(self.X[name])
+        else:
+            X = self.X[Xname]
+        if type(Yname) is list:
+            Y = []
+            for name in Yname:
+                Y.append(self.Y[name])
+        else:
+            Y = self.Y[Yname]
+        
+        return X, Y, self.fig, self.ax
