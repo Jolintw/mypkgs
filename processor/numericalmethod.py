@@ -122,9 +122,14 @@ class RightAngleInterpolater:
         else:
             newXind = []
             for _newX, _X in zip(newX, X):
+                ifincrease = _X[-1] > _X[0]
                 ind = np.zeros_like(_newX).astype(int)
-                for i_x, x in enumerate(_X):
-                    ind[_newX > x] = i_x
+                if ifincrease:
+                    for i_x, x in enumerate(_X):
+                        ind[_newX > x] = i_x
+                else:
+                    for i_x, x in enumerate(_X):
+                        ind[_newX < x] = i_x
                 newXind.append(np.copy(ind))
         self.newXind = tuple(newXind)
     
