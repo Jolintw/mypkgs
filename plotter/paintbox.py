@@ -132,6 +132,18 @@ class Paintbox_1D(Paintbox):
         p = ax.plot(X, Y, linewidth=linewidth)
         p[0].set(**set_dict)
         return p
+    
+    def quiver_y(self, Uname, Vname, Yname, position, fig = None, ax = None, scale_q=150, intv=1):
+        """
+        position: 0~1
+        """
+        var, Y, fig, ax = self._get_necessary([Uname, Vname], Yname, fig, ax)
+        U = var[0]
+        V = var[1]
+        X = ax.get_xlim()
+        X = X[0] + (X[1] - X[0]) * position
+        X = X + np.zeros_like(Y)
+        return ax.quiver(X[::intv], Y[::intv], U[::intv], V[::intv], scale=scale_q, headaxislength=2.5, headlength=3.5, headwidth=4)
 
     def _auto_linewidth(self, fig, ax):
         width, height = get_ax_size(ax, fig)
