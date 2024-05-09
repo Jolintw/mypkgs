@@ -71,6 +71,11 @@ class Plotter:
             cs = ax.contour(X, Y, var, colors = colors, levels = levels, linewidths = linewidths, zorder = 20)
             if clabel:
                 ax.clabel(cs, cs.levels[:], inline=True, fontsize=self.fontsize - 2)
+
+    def quiverkey(self, qui, X, Y, U, label = "", labelpos = "E", fontsize = None, coordinates='figure', axn = None):
+        axs = self._axntoaxs(axn)
+        for ax in axs:
+            ax.quiverkey(qui, X, Y, U, label, labelpos=labelpos, coordinates=coordinates, fontproperties={'size':self._autofontsize(fontsize)})
                 
     def axisoff(self, axn = None):
         axs  = self._axntoaxs(axn)
