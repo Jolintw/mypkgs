@@ -133,22 +133,43 @@ class Paintbox_1D(Paintbox):
         p[0].set(**set_dict)
         return p
     
-    def quiver_y(self, Uname, Vname, Yname, position, fig = None, ax = None, scale_q=150, intv=1):
+    def quiver_y(self, Uname, Vname, Yname, xposition, fig = None, ax = None, scale_q=150, intv=1):
         """
+        a line of quiver along y
         position: 0~1
         """
         var, Y, fig, ax = self._get_necessary([Uname, Vname], Yname, fig, ax)
         U = var[0]
         V = var[1]
-        X = ax.get_xlim()
-        X = X[0] + (X[1] - X[0]) * position
-        X = X + np.zeros_like(Y)
+        X = self._make_same_x_array_by_xposition(Y, xposition, ax)
         return ax.quiver(X[::intv], Y[::intv], U[::intv], V[::intv], scale=scale_q, headaxislength=2.5, headlength=3.5, headwidth=4)
+
+    def plotmark_y(self, Y, xposition, fig = None, ax = None, **pars):
+        """
+        a line of mark along y
+        position: 0~1
+        """
+        _, __, fig, ax = self._get_necessary([], [], fig, ax)
+        X = self._make_same_x_array_by_xposition(Y, xposition, ax)
+        p = ax.plot(X, Y, linestyle="", marker="o", markersize=self._auto_markersize(fig, ax))
+        p[0].set(**pars)
+        return p
+
+    def _auto_markersize(self, fig, ax):
+        width, height = get_ax_size(ax, fig)
+        markersize = np.sqrt(width*height)*0.015
+        return markersize
 
     def _auto_linewidth(self, fig, ax):
         width, height = get_ax_size(ax, fig)
         linewidth = np.sqrt(width*height)*0.005
         return linewidth
+    
+    def _make_same_x_array_by_xposition(self, Y, xposition, ax):
+        X = ax.get_xlim()
+        X = X[0] + (X[1] - X[0]) * xposition
+        X = X + np.zeros_like(Y)
+        return X
 
     def _get_necessary(self, Xname, Yname, fig, ax):
         super()._get_necessary(fig=fig, ax=ax)
