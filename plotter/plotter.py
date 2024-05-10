@@ -36,10 +36,11 @@ class Plotter:
     def suptitle(self, titlestr):
         self.fig.suptitle(titlestr, fontsize=self.fontsize * 1.4)
         
-    def title(self, titlestr, loc = "left", axn = None):
+    def title(self, titlestr, loc = "left", axn = None, **pars):
         axs = self._axntoaxs(axn)
         for ax in axs:
-            ax.set_title(titlestr, loc = loc, fontsize=self.fontsize * 1.2)
+            text = ax.set_title(titlestr, loc = loc, fontsize=self.fontsize * 1.2)
+            text.set(**pars)
         
     def pcolormesh(self, axn, X, Y, var, colorkey = None, norm = None, cmap = None, cbtitle='', orientation='vertical', extend='neither', shrink=1, vmin=None, vmax=None, continuous=False, cbticks=None):
         ax  = self.axs[axn]
