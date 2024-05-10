@@ -72,6 +72,15 @@ class Plotter:
             if clabel:
                 ax.clabel(cs, cs.levels[:], inline=True, fontsize=self.fontsize - 2)
 
+    def hline(self, y, axn = None, **pars):
+        linewidth = self._autolinewidths()
+        axs  = self._axntoaxs(axn)
+        for ax in axs:
+            xlim = ax.get_xlim()
+            line = ax.plot([xlim[0], xlim[1]], [y, y], linewidth=linewidth)
+            line[0].set(**pars)
+        return line
+
     def quiverkey(self, qui, X, Y, U, label = "", labelpos = "E", fontsize = None, coordinates='figure', axn = None):
         axs = self._axntoaxs(axn)
         for ax in axs:
