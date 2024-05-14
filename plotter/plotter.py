@@ -155,8 +155,10 @@ class Plotter:
         for ax in axs:
             ax.grid()
         
-    def savefig(self, path, picname):
+    def savefig(self, path, picname, tight_layout = True):
         path.mkdir(parents=True, exist_ok=True)
+        if tight_layout:
+            self.fig.set_tight_layout(True)
         plt.savefig(path / picname)
         self.close()
         
