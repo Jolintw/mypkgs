@@ -154,6 +154,20 @@ class Paintbox_1D(Paintbox):
         p = ax.plot(X, Y, linestyle="", marker="o", markersize=self._auto_markersize(fig, ax))
         p[0].set(**pars)
         return p
+    
+    def boxplot(self, Yname, fig = None, ax = None, **pars):
+        """
+        pars:
+        https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.boxplot.html#matplotlib.axes.Axes.boxplot
+        """
+        if isinstance(Yname, str):
+            Yname = [Yname]
+        _, Y, fig, ax = self._get_necessary([], Yname, fig, ax)
+        if "labels" not in pars:
+            pars["labels"] = Yname
+        for i_label, y in enumerate(Y):
+            pars["labels"][i_label] += "\n({:d})".format(y.shape[0])
+        return ax.boxplot(x=Y, **pars)
 
     def _auto_markersize(self, fig, ax):
         width, height = get_ax_size(ax, fig)
