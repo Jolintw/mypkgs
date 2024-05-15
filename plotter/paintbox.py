@@ -163,6 +163,8 @@ class Paintbox_1D(Paintbox):
         if isinstance(Yname, str):
             Yname = [Yname]
         _, Y, fig, ax = self._get_necessary([], Yname, fig, ax)
+        for i_Y in range(len(Y)):
+            Y[i_Y] = Y[i_Y][~np.isnan(Y[i_Y])]
         if "labels" not in pars:
             pars["labels"] = Yname
         for i_label, y in enumerate(Y):
@@ -190,14 +192,19 @@ class Paintbox_1D(Paintbox):
         if type(Xname) is list:
             X = []
             for name in Xname:
-                X.append(self.X[name])
+                X.append(self._auto_l2a(self.X[name]))
         else:
-            X = self.X[Xname]
+            X = self._auto_l2a(self.X[Xname])
         if type(Yname) is list:
             Y = []
             for name in Yname:
-                Y.append(self.Y[name])
+                Y.append(self._auto_l2a(self.Y[name]))
         else:
-            Y = self.Y[Yname]
-        
+            Y = self._auto_l2a(self.Y[Yname])
         return X, Y, self.fig, self.ax
+    
+    def _auto_l2a(self, var):
+        if isinstance(var, list):
+            return np.array(var)
+        else:
+            return var
