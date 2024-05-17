@@ -1,8 +1,14 @@
 import netCDF4 as nc
 import numpy as np
+from pathlib import Path
 
 class NCWriter:
     newNCD = None
+    def create_newNCD(self, filename, **pars):
+        if isinstance(filename, Path):
+            filename.parent.mkdir(parents=True, exist_ok=True)
+        self.newNCD = nc.Dataset(filename, "w", **pars)
+        return self.newNCD
 
     def writeVariable(self, varName: str, var, newNCD=None, dim=None, atts=None, fill_value = None):
         if newNCD is None:  # if new nc dataset not set, then use instance new nc dataset
