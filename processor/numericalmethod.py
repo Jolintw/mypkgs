@@ -69,15 +69,18 @@ def movingaverage(var, n = 3, axis = 0):
     return result
     
     
-
-# X = (x1, x2) # x1.shape = (n1,) # usually it will be X = (y, x)
-# var.shape == (..., n1, n2)
-# newX = (nx1, nx2) # nx1.shape == nx2.shape and len(X) == len(newX)
-# X can be x1 or (x1, x2, x3, ...)
-# the version of "equidistance = False" has not completed...
 class RightAngleInterpolater:
+    """
+    X: a tuple containing positions of every corrdinate. X = (x1, x2) x1.shape = (n1,) # usually it will be X = (y, x)
+    X can be x1 or (x1, x2, x3, ...)
+    newX: new coordinates newX = (nx1, nx2) # shape of nx1 can be any just make sure nx1.shape == nx2.shape and len(X) == len(newX)
+    equidistance: if value in X is equidistance
+    newX_out_of_X: if True, won't print warning about newX out of X's range. And when interpolate the outer part will be filled with nan  
+    var: var.shape == (..., n1, n2)
+    """
     newXnotarray = False
-    def __init__(self, X, newX, equidistance = True):
+    def __init__(self, X, newX, equidistance = True, newX_out_of_X = False):
+        self.newX_out_of_X = newX_out_of_X
         if isinstance(X, np.ndarray):
             X = (X, )
             newX = (newX, )
@@ -93,11 +96,16 @@ class RightAngleInterpolater:
         self.newX       = rsnewX
         self.newXlen    = rsnewX[0].shape[0]
         self.equidistance       = equidistance
+        self._Xcheck()
         self._indmatch()
         self._distanceandratio()
         
         
     def interpolate(self, var):
+        """
+        var: var.shape == (..., n1, n2)
+        return: array has same shape with newX
+        """
         self._inputcheck(var)
         varshape = var.shape
         var = np.reshape(var, (-1, *self.Xshape))
@@ -106,6 +114,8 @@ class RightAngleInterpolater:
         newvar       = self._compute_interpolation(var_on_point)
     
         newvar = np.reshape(newvar, (*varshape[:-len(self.X)], *self.original_newXshape))
+        if self.newX_out_of_X:
+            newvar[self.outer_mask] = np.nan
         if self.newXnotarray:
             newvar = newvar[0]
         return newvar
@@ -181,13 +191,25 @@ class RightAngleInterpolater:
         
     def _inputcheck(self, var):
         X = self.X
-        newX = self.newX
         for i in range(len(X)):
             ind = -i - 1
             if not var.shape[ind] == X[ind].shape[0]:
                 print("dimension is not match between var and X, last {:d} dim of var should be equal to X".format(len(self.X)))
                 break
+    
+    def _Xcheck(self):
+        X = self.X
+        newX = self.newX
         for i in range(len(X)):
+            if self.newX_out_of_X:
+                masks = []
+                masks.append(np.logical_or(newX[i] > np.max(X[i]), newX[i] < np.min(X[i])))
+                if i == len(X)-1:
+                    outer_mask = masks[0].copy()
+                    for mask in masks:
+                        outer_mask = np.logical_or(outer_mask, mask)
+                    self.outer_mask = outer_mask
+                continue
             if np.max(newX[i]) > np.max(X[i]) or np.min(newX[i]) < np.min(X[i]):
                 print("newX is out of the range of X")
                 print("newX:", "min:", np.min(newX[i]), "max:", np.max(newX[i]))
@@ -208,16 +230,17 @@ class NonEquidistanceSmoother_1D:
         Xmax = np.max(X)
         smoothmasklist = []
         for x in X:
-            if x == Xmin or x == Xmax:
-                smoothmask = (x == X)
-            else:
-                if x < Xmin + halfrange:
-                    exact_range = x - Xmin
-                elif x > Xmax - halfrange:
-                    exact_range = Xmax - x
-                else:
-                    exact_range = halfrange
-                smoothmask = np.logical_and(X > x - halfrange, X < x + halfrange)
+            smoothmask = np.logical_and(X >= x - halfrange, X <= x + halfrange)
+            # if x == Xmin or x == Xmax:
+            #     smoothmask = (x == X)
+            # else:
+            #     if x < Xmin + halfrange:
+            #         exact_range = x - Xmin
+            #     elif x > Xmax - halfrange:
+            #         exact_range = Xmax - x
+            #     else:
+            #         exact_range = halfrange
+            #     smoothmask = np.logical_and(X >= x - exact_range, X <= x + exact_range)
             smoothmasklist.append(smoothmask)
         self.smoothmasklist = smoothmasklist
 
@@ -226,3 +249,4 @@ class NonEquidistanceSmoother_1D:
         for i, smoothmask in enumerate(self.smoothmasklist):
             newvar[i] = np.nanmean(var[smoothmask])
         return newvar
+    
