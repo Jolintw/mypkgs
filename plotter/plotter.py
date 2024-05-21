@@ -9,7 +9,7 @@ from mypkgs.plotter.plot_function import pcolormeshcb_sub, contourfcb_sub
 from mypkgs.variable.mycolormap import colorkw
 from mypkgs.processor.timetools import timestamp_to_datetime, str_to_datetime_UTC
 
-    
+twinaxes_default_name = "origin"
 class Plotter:
     def __init__(self, row = 1, column = 1, figsize = None, subfigsize_x = None, subfigsize_y = None, fontsize = None, subplot_kw={}):
         self.row        = row
@@ -228,28 +228,61 @@ class TwinPlotter(Plotter):
         else:
             axs  = np.array([axs])
 
-        self.axs = [[ax] for ax in axs]
+        self.axs = [TwinAxesController(ax) for ax in axs]
         if len(self.axs) == 1:
             self.ax = self.axs[0]
         else:
             self.ax = self.axs
         self._set_ticksize()
 
-    def twin(self, sub_num = None, xy = "x"):
-        if sub_num is None:
-            sub_num = range(len(self.axs))
-        if not isinstance(sub_num, Iterable):
-            sub_num = [sub_num]
+    def twin(self, axesname = None, sub_num = None, xy = "x"):
+        sub_num = self._auto_subnum(sub_num)
         for num in sub_num:
+            if axesname is None:
+                name = f"{len(self.axs[num])}"
+            else:
+                name = axesname
             ax = self.axs[num][0]
             if xy == "x":
                 twin = ax.twinx()
             elif xy == "y":
                 twin = ax.twiny()
-            self.axs[num].append(twin)
-            axn = (num, len(self.axs[num]) - 1)
+            self.axs[num][name] = twin
+            tick_xy = "xy".replace(xy, "")
+            self.ticks_auto_pad(axesname=name, xy=tick_xy, sub_num=num)
+            axn = (num, name)
             self._set_ticksize(axn)
         return twin
+    
+    def change_twinaxes_name(self, newname, oldname=twinaxes_default_name, sub_num = None):
+        sub_num = self._auto_subnum(sub_num)
+        for num in sub_num:
+            self.axs[num].change_axes_name(newname, oldname=oldname)
+
+    def ticks_auto_pad(self, axesname, xy, sub_num, padratio=0.09):
+        axs  = self.axs[sub_num] 
+        axes = self.axs[sub_num][axesname]
+        if xy == "x":
+            pos_to_pad = axes.xaxis.get_ticks_position()
+        elif xy == "y":
+            pos_to_pad = axes.yaxis.get_ticks_position()
+
+        pad_number = 0
+        for ax in axs:
+            if ax is axes:
+                break
+            if xy == "x":
+                pos = ax.xaxis.get_ticks_position()
+            elif xy == "y":
+                pos = ax.yaxis.get_ticks_position()
+            if pos == pos_to_pad:
+                pad_number += 1
+        if pos_to_pad in ["left", "bottom"]:
+            pad = 0 -  padratio * pad_number
+        elif pos_to_pad in ["top", "right"]:
+            pad = 1 +  padratio * pad_number
+        axes.spines[pos_to_pad].set_position(("axes", pad))
+
 
     def _axntoaxs(self, axn):
         axs = self.axs
@@ -263,4 +296,51 @@ class TwinPlotter(Plotter):
                 return [axs[ax[0]][ax[1]] for ax in axn]
             else:
                 return [axs[axn[0]][axn[1]]]
+            
+    def _auto_subnum(self, sub_num):
+        if sub_num is None:
+            sub_num = range(len(self.axs))
+        if not isinstance(sub_num, Iterable):
+            sub_num = [sub_num]
+        return sub_num
+
+
+class TwinAxesController():
+    def __init__(self, ax, axname=None):
+        if not axname:
+            axname = twinaxes_default_name
+        self.axdict = {axname:ax}
+        self.axlist = [ax]
+
+    def change_axes_name(self, newname, oldname=twinaxes_default_name):
+        self.axdict[newname] = self.axdict.pop(oldname)
+
+    def keys(self):
+        return self.axdict.keys()
+    
+    def items(self):
+        return self.axdict.items()
+    
+    def values(self):
+        return self.axdict.values()
+    
+    def __getitem__(self, key):
+        if isinstance(key, str):
+            return self.axdict[key]
+        else:
+            return self.axlist[key]
         
+    def __setitem__(self, key, value):
+        self.axdict[key] = value
+        self.axlist.append(value)
+    
+    def __len__(self):
+        return len(self.axlist)
+    
+    def __repr__(self):
+        return repr(self.axdict)
+    
+    def __str__(self):
+        return repr(self)
+
+    
