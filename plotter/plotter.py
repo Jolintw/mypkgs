@@ -11,17 +11,19 @@ from mypkgs.processor.timetools import timestamp_to_datetime, str_to_datetime_UT
 
 twinaxes_default_name = "origin"
 class Plotter:
-    def __init__(self, row = 1, column = 1, figsize = None, subfigsize_x = None, subfigsize_y = None, fontsize = None, subplot_kw={}):
+    def __init__(self, row = 1, column = 1, figsize = None, subfigsize_x = None, subfigsize_y = None, fontsize = None, subplot_kw={}, sharex = False, sharey = False):
         self.row        = row
         self.column     = column
         self.figsize    = self._autofigsize(figsize, subfigsize_x, subfigsize_y)
         self.fontsize   = self._autofontsize(fontsize)
         self.subplot_kw = subplot_kw
+        self.sharex = sharex
+        self.sharey = sharey
         
         self.newsubplots()
             
     def newsubplots(self):
-        fig, axs      = plt.subplots(self.row, self.column, figsize=self.figsize,subplot_kw=self.subplot_kw)
+        fig, axs      = plt.subplots(self.row, self.column, figsize=self.figsize,subplot_kw=self.subplot_kw,sharex=self.sharex, sharey=self.sharey)
         self.fig      = fig
         
         if isinstance(axs, np.ndarray):
@@ -113,6 +115,20 @@ class Plotter:
         for ax in axs:
             ax.set_yticks(yticks)
             ax.set_yticklabels(yticklabels)
+
+    def auto_set_xticks(self, intv, strfmt, start = None, end = None, axn = None):
+        axs  = self._axntoaxs(axn)
+        for ax in axs:
+            ticks, ticklabels = self._auto_make_ticklabels(intv, strfmt, ax.get_xlim(), start, end)
+            ax.set_xticks(ticks)
+            ax.set_xticklabels(ticklabels)
+
+    def auto_set_yticks(self, intv, strfmt, start = None, end = None, axn = None):
+        axs  = self._axntoaxs(axn)
+        for ax in axs:
+            ticks, ticklabels = self._auto_make_ticklabels(intv, strfmt, ax.get_ylim(), start, end)
+            ax.set_yticks(ticks)
+            ax.set_yticklabels(ticklabels)
     
     def set_timeticks(self, start, end, intv, timefmt, startfmt = None, axis = "x", axn = None):
         if startfmt is None:
@@ -136,21 +152,29 @@ class Plotter:
         for ax in axs:
             ax.set_facecolor(color)
     
-    def set_xlabel(self, label, fontsize = None, axn = None):
+    def set_xlabel(self, label, fontsize = None, axn = None, **pars):
         if fontsize is None:
             fontsize = self.fontsize
         axs  = self._axntoaxs(axn)
+        textlist = []
         for ax in axs:
-            ax.set_xlabel(label, fontsize = fontsize)
+            text = ax.set_xlabel(label, fontsize = fontsize)
+            text.set(**pars)
+            textlist.append(text)
+        return textlist
     
-    def set_ylabel(self, label, fontsize = None, axn = None):
+    def set_ylabel(self, label, fontsize = None, axn = None, **pars):
         if fontsize is None:
             fontsize = self.fontsize
         axs  = self._axntoaxs(axn)
+        textlist = []
         for ax in axs:
-            ax.set_ylabel(label, fontsize = fontsize)
+            text = ax.set_ylabel(label, fontsize = fontsize)
+            text.set(**pars)
+            textlist.append(text)
+        return textlist
     
-    def grid(self, axn = None):
+    def grid(self, axn = None, **pars):
         axs  = self._axntoaxs(axn)
         for ax in axs:
             ax.grid()
@@ -200,6 +224,15 @@ class Plotter:
             return np.sqrt(self.subfigsize_x * self.subfigsize_y) / 2.5
         else:
             return linewidths
+        
+    def _auto_make_ticklabels(self, intv, strfmt, lim, start = None, end = None):
+        if start is None:
+            start = np.ceil(lim[0] / intv) * intv
+        if end is None:
+            end   = np.floor(lim[1] / intv) * intv + intv / 100
+        ticks = np.arange(start, end, intv)
+        ticklabels = [strfmt.format(tick) for tick in ticks]
+        return ticks, ticklabels
 
     def close(self):
         plt.close(self.fig)
