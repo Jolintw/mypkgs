@@ -15,6 +15,7 @@ NCL_prcp_1 = cmaps.prcp_1.copy()
 NCL_MPL_Spectral = cmaps.MPL_Spectral
 NCL_MPL_RdBu_r = cmaps.MPL_RdBu_r
 NCL_MPL_RdBu = cmaps.MPL_RdBu
+NCL_WhiteBlueGreenYellowRed = cmaps.WhiteBlueGreenYellowRed
 
 colorkw = {}
 name = "dbz_cwb"
@@ -206,9 +207,29 @@ bounds = np.arange(11) * 10
 kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 #kw["cmap"].set_over("#FFE4E1")
 
+name = "EPT_sounding"
+kw = _kw(colorkw, name)
+kw["cmap"] = NCL_WhiteBlueGreenYellowRed.copy()
+kw["cmap"].set_over((0.4, 0.06, 0.08, 1.0))
+bounds = np.arange(308, 351, 2)
+kw["cbticks"] = []
+for b in bounds:
+    if (b - 304) % 6 == 0:
+        kw["cbticks"].append(f"{b:.0f}")
+    else:
+        kw["cbticks"].append("")
+kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
+# kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N // len(bounds) * (len(bounds) - 1))
+
 for k in colorkw:
     kw = colorkw[k]
     #kw["cbticks"] = None
     for key in ["cmap", "cbticks", "norm", "vmax", "vmin"]:
         if key not in kw:
             kw[key] = None
+
+if __name__ == "__main__":
+    print(NCL_WhiteBlueGreenYellowRed(253))
+    print(colorkw["EPT_sounding"]["cmap"].get_over())
+    print(colorkw["EPT_sounding"]["cmap"](231))
+    print(kw["norm"](346))

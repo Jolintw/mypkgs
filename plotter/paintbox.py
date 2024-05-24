@@ -4,9 +4,10 @@ from mypkgs.plotter.plot_function import pcolormeshcb_sub, contourfcb_sub, quive
 from mypkgs.variable.mycolormap import colorkw
 
 class Paintbox:
-    def __init__(self, fig = None, ax = None):
+    def __init__(self, fig = None, ax = None, ft = 20):
         self._renewfig(fig)
         self._renewax(ax)
+        self.fontsize = ft
 
     def _get_necessary(self, fig, ax):
         self._renewax(ax)
@@ -20,14 +21,20 @@ class Paintbox:
     def _renewfig(self, fig = None):
         if not fig is None:
             self.fig = fig
+    
+    def _get_fontsize(self, ft):
+        if ft is None:
+            return self.fontsize
+        else:
+            return ft
 
 class Paintbox_2D(Paintbox):
-    def __init__(self, field, X, Y, fig = None, ax = None, level = None):
+    def __init__(self, field, X, Y, fig = None, ax = None, ft = 20, level = None):
         self.field = field
         self.X = X
         self.Y = Y
         self.setlevel(level)
-        super().__init__(fig=fig, ax=ax)
+        super().__init__(fig=fig, ax=ax, ft=ft)
         
     def add_field(self, name, var):
         self.field[name] = var.copy()
@@ -35,8 +42,9 @@ class Paintbox_2D(Paintbox):
     def setlevel(self, level):
         self.level = level
     
-    def pcolormesh(self, varname, fig = None, ax = None, colorkey = None, norm = None, cmap = None, cbtitle='', ft = 20, orientation='vertical', extend='neither', shrink=1, vmin=None, vmax=None, continuous=False, cbticks=None):
+    def pcolormesh(self, varname, fig = None, ax = None, colorkey = None, norm = None, cmap = None, cbtitle='', ft = None, orientation='vertical', extend='neither', shrink=1, vmin=None, vmax=None, continuous=False, cbticks=None):
         X, Y, var, fig, ax = self._get_necessary(varname, fig, ax)
+        ft = self._get_fontsize(ft)
         if colorkey:
             return pcolormeshcb_sub(ax, fig, X=X, Y=Y, var=var, **colorkw[colorkey], cbtitle=cbtitle, ft=ft,
                                 orientation=orientation, extend=extend, shrink=shrink)
@@ -44,8 +52,9 @@ class Paintbox_2D(Paintbox):
             return pcolormeshcb_sub(ax, fig, X=X, Y=Y, var=var, norm = norm, cmap = cmap, cbtitle=cbtitle, ft=ft,
                                 orientation=orientation, extend=extend, shrink=shrink, vmin=vmin, vmax=vmax, continuous=continuous, cbticks=cbticks)
         
-    def contourf(self, varname, fig = None, ax = None, colorkey = None, norm = None, cmap = None, cbtitle='', ft = 20, orientation='vertical', extend='neither', shrink=1, vmin=None, vmax=None, continuous=False, cbticks=None):
+    def contourf(self, varname, fig = None, ax = None, colorkey = None, norm = None, cmap = None, cbtitle='', ft = None, orientation='vertical', extend='neither', shrink=1, vmin=None, vmax=None, continuous=False, cbticks=None):
         X, Y, var, fig, ax = self._get_necessary(varname, fig, ax)
+        ft = self._get_fontsize(ft)
         if colorkey:
             return contourfcb_sub(ax=ax, fig=fig, X=X, Y=Y, var=var, **colorkw[colorkey], cbtitle=cbtitle, ft=ft,
                                 orientation=orientation, extend=extend, shrink=shrink)
@@ -54,11 +63,12 @@ class Paintbox_2D(Paintbox):
                                 orientation=orientation, extend=extend, shrink=shrink, vmin=vmin, vmax=vmax, continuous=continuous, cbticks=cbticks)
     
     
-    def contour(self, varname, fig = None, ax = None, colors = None, levels = None, linewidths = None, clabel = False):
+    def contour(self, varname, fig = None, ax = None, colors = None, levels = None, linewidths = None, clabel = False, ft = None):
         X, Y, var, fig, ax = self._get_necessary(varname, fig, ax)
+        ft = self._get_fontsize(ft)
         cs = ax.contour(X, Y, var, colors = colors, levels = levels, linewidths = linewidths, zorder = 20)
         if clabel:
-            cl = ax.clabel(cs, cs.levels[:], inline=True, fontsize=self.fontsize - 2)
+            cl = ax.clabel(cs, cs.levels[:], inline=True, fontsize=ft)
             return cs, cl
         return cs
            
@@ -90,12 +100,12 @@ class Paintbox_2D(Paintbox):
         #    scale_q = 15*max([self.X.shape[-1]/xintv, self.Y.shape[0]/yintv])
         return scale_q, xintv, yintv
     
-    def quiver(self, Uname, Vname, fig = None, ax = None, scale_q=None, xintv=None, yintv=None):
+    def quiver(self, Uname, Vname, fig = None, ax = None, scale_q=None, xintv=None, yintv=None, broadXY=True, weight=True, **pars):
         X, Y, var, fig, ax = self._get_necessary([Uname, Vname], fig, ax)
         U = var[0]
         V = var[1]
         scale_q, xintv, yintv = self._autoscale(scale_q, xintv, yintv)
-        quiver_weight(ax,fig,X,Y,U,V,scale_q,"k",xintv,yintv,broadXY=True)
+        quiver_weight(ax,fig,X,Y,U,V,scale_q,"k",xintv,yintv,broadXY=broadXY,weight=weight,**pars)
     
     def _get_necessary(self, varname, fig, ax):
         super()._get_necessary(fig=fig, ax=ax)
@@ -121,10 +131,10 @@ class Paintbox_2D(Paintbox):
             return level
         
 class Paintbox_1D(Paintbox):
-    def __init__(self, X, Y, fig = None, ax = None):
+    def __init__(self, X, Y, fig = None, ax = None, ft = 20):
         self.X = X
         self.Y = Y
-        super().__init__(fig=fig, ax=ax)
+        super().__init__(fig=fig, ax=ax, ft=ft)
 
     def plot(self, Xname, Yname, fig = None, ax = None, **set_dict):
         X, Y, fig, ax = self._get_necessary(Xname, Yname, fig, ax)

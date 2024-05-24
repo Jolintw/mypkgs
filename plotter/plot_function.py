@@ -185,14 +185,19 @@ def contourfcb_sub(ax,fig,X,Y,var,levels=None,norm=None,cmap=None,cbtitle='',ft=
     if levels is None:
         levels = norm.boundaries
     if continuous:
-        im = ax.contourf(X, Y, var, vmin=vmin, vmax=vmax, cmap = cmap)
+        im = ax.contourf(X, Y, var, vmin=vmin, vmax=vmax, cmap = cmap, extend=extend)
     else:
-        im = ax.contourf(X, Y, var, levels=levels, norm=norm, cmap = cmap)
+        vmin = levels[0]
+        vmax = levels[-1]
+        im = ax.contourf(X, Y, var, levels=levels, norm=norm, cmap = cmap, extend=extend)
     if cbticks is None:
         cb = fig.colorbar(im, orientation = orientation, extend=extend, shrink = shrink, ax=ax)
     else:
         cb = fig.colorbar(im, orientation = orientation, extend=extend, shrink = shrink, ax=ax, ticks=norm.boundaries)
-        cb.ax.set_yticklabels(cbticks)
+        if orientation == "vertical":
+            cb.ax.set_yticklabels(cbticks)
+        if orientation == "horizontal":
+            cb.ax.set_xticklabels(cbticks)
     cb.ax.set_title(cbtitle, fontdict={'size':ft})
     cb.ax.tick_params(labelsize=ft-2)
     return im, cb
@@ -225,15 +230,16 @@ def quiverandkey(ax,fig,X,Y,U,V,scale_q=0,color='k',iflegend=True,quiverlegend={
         ax.quiverkey(qui,quiverlegend['X'],quiverlegend['Y'],quiverlegend['U'],quiverlegend['label'],coordinates='figure',labelpos='E',fontproperties={'size':quiverlegend['fontsize']})
     return qui
     
-def quiver_weight(ax,fig,X,Y,U,V,scale_q=None,color='k',nx_q=1,ny_q=1,broadXY=True):
-    width, height = get_ax_size(ax,fig)
-    xlim = ax.get_xlim()
-    ylim = ax.get_ylim()
-    x_unit_len = (xlim[1]-xlim[0])/width
-    y_unit_len = (ylim[1]-ylim[0])/height
+def quiver_weight(ax,fig,X,Y,U,V,scale_q=None,color='k',nx_q=1,ny_q=1,broadXY=True,weight=True,**pars):
     u_q = U[::ny_q,::nx_q]
     v_q = V[::ny_q,::nx_q]
-    v_q = v_q/y_unit_len*x_unit_len
+    if weight:
+        width, height = get_ax_size(ax,fig)
+        xlim = ax.get_xlim()
+        ylim = ax.get_ylim()
+        x_unit_len = (xlim[1]-xlim[0])/width
+        y_unit_len = (ylim[1]-ylim[0])/height
+        v_q = v_q/y_unit_len*x_unit_len
     if not scale_q:
         scale_q = np.max(np.sqrt(u_q**2+v_q**2)) * max(u_q.shape) / 2.
     if broadXY:
@@ -241,6 +247,6 @@ def quiver_weight(ax,fig,X,Y,U,V,scale_q=None,color='k',nx_q=1,ny_q=1,broadXY=Tr
     else:
         xx_q = X[::ny_q,::nx_q]
         yy_q = Y[::ny_q,::nx_q]
-    qui = ax.quiver(xx_q, yy_q, u_q, v_q, scale=scale_q,color=color,angles="uv",pivot="mid")
+    qui = ax.quiver(xx_q, yy_q, u_q, v_q, scale=scale_q,color=color,angles="uv",pivot="mid",**pars)
 
     return qui
