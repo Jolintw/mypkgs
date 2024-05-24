@@ -131,6 +131,11 @@ class Plotter:
             ax.set_yticklabels(ticklabels)
     
     def set_timeticks(self, start, end, intv, timefmt, startfmt = None, axis = "x", axn = None):
+        """
+        start: (float) start timestamp of ticks
+        end: (float) end timestamp of ticks
+        intv: ticks interval
+        """
         if startfmt is None:
             startfmt = timefmt
         if isinstance(start, str):
@@ -141,7 +146,8 @@ class Plotter:
         stamplist = np.arange(start, end, intv)
         timelist = timestamp_to_datetime(stamplist)
         labels = [time.strftime(timefmt) for time in timelist]
-        labels[0] = timelist[0].strftime(startfmt)
+        if startfmt:
+            labels[0] = timelist[0].strftime(startfmt)
         if axis == "x":
             self.set_xticks(stamplist, labels, axn)
         elif axis == "y":
