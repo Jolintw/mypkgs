@@ -105,7 +105,7 @@ class Paintbox_2D(Paintbox):
         U = var[0]
         V = var[1]
         scale_q, xintv, yintv = self._autoscale(scale_q, xintv, yintv)
-        quiver_weight(ax,fig,X,Y,U,V,scale_q,"k",xintv,yintv,broadXY=broadXY,weight=weight,**pars)
+        return quiver_weight(ax,fig,X,Y,U,V,scale_q,"k",xintv,yintv,broadXY=broadXY,weight=weight,**pars)
     
     def _get_necessary(self, varname, fig, ax):
         super()._get_necessary(fig=fig, ax=ax)
