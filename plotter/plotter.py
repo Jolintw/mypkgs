@@ -130,7 +130,7 @@ class Plotter:
             ax.set_yticks(ticks)
             ax.set_yticklabels(ticklabels)
     
-    def set_timeticks(self, start, end, intv, timefmt, startfmt = None, axis = "x", axn = None):
+    def set_timeticks(self, start, end, intv, timefmt, startfmt = None, timezonehour = 0, axis = "x", axn = None):
         """
         start: (float) start timestamp of ticks
         end: (float) end timestamp of ticks
@@ -144,7 +144,7 @@ class Plotter:
             end   = str_to_datetime_UTC(end).timestamp()
             
         stamplist = np.arange(start, end, intv)
-        timelist = timestamp_to_datetime(stamplist)
+        timelist = timestamp_to_datetime(stamplist, timezonehour)
         labels = [time.strftime(timefmt) for time in timelist]
         if startfmt:
             labels[0] = timelist[0].strftime(startfmt)
