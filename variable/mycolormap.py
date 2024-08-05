@@ -15,6 +15,8 @@ NCL_prcp_1 = cmaps.prcp_1.copy()
 NCL_MPL_Spectral = cmaps.MPL_Spectral
 NCL_MPL_RdBu_r = cmaps.MPL_RdBu_r
 NCL_MPL_RdBu = cmaps.MPL_RdBu
+NCL_wind_17lev = cmaps.wind_17lev
+pycm_jet = cm.jet
 NCL_WhiteBlueGreenYellowRed = cmaps.WhiteBlueGreenYellowRed
 
 colorkw = {}
@@ -24,6 +26,17 @@ cmaparray = np.array([[0.0, 1.0, 1.0], [0.0, 0.9254901960784314, 1.0], [0.0, 0.8
 kw["cmap"] = mpl.colors.ListedColormap(cmaparray)
 bounds = np.arange(kw["cmap"].N+1)
 kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
+
+name = "dbz"
+kw = _kw(colorkw, name)
+sat = 0.15
+bri = 0.9
+cmaparray = np.array([[sat, 0.9, 1.0], [sat+0.1, 1.0, sat], [1.0, 1.0, sat], [1.0, 0.7, sat], [1.0, sat, sat]])
+cmaparray = cmaparray * bri
+kw["cmap"] = mpl.colors.ListedColormap(cmaparray)
+bounds = np.array([0, 15, 30, 40, 45, 50])
+kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
+kw["cmap"].set_over(np.array([0.7, sat, 1])*bri)
 
 name = "DBZ_large"
 kw = _kw(colorkw, name)
@@ -129,7 +142,7 @@ kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 name = "w"
 kw = _kw(colorkw, name)
 kw["cmap"] = NCL_MPL_RdBu_r
-bounds = [-10,-5,-2,-0.5,0.5,2,5,10]
+bounds = [-15, -10,-5,-2,-0.5,0.5,2,5,10, 15]
 kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 
 name = "ws"
@@ -139,17 +152,23 @@ bounds = np.array([10,12,14,16,18,20,20,20,20,22,24,26,28,30,34,38,42]) - 4
 kw["cbticks"] = np.array([10,12,14,16,18,20,22,24,26,28,30,34,38,42]) - 4
 kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 
+
 name = "T"
 kw = _kw(colorkw, name)
 kw["cmap"] = NCL_prcp_1
 bounds = np.arange(15) + 280
 kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 
+# name = "ws_small"
+# kw = _kw(colorkw, name)
+# kw["cmap"] = NCL_prcp_1[1:]
+# bounds = np.array([10,12,14,16,18,20,20,20,20,22,24,26,28,30,34,38,42]) - 10
+# kw["cbticks"] = np.array([10,12,14,16,18,20,22,24,26,28,30,34,38,42]) - 10
+# kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 name = "ws_small"
 kw = _kw(colorkw, name)
-kw["cmap"] = NCL_prcp_1[1:]
-bounds = np.array([10,12,14,16,18,20,20,20,20,22,24,26,28,30,34,38,42]) - 10
-kw["cbticks"] = np.array([10,12,14,16,18,20,22,24,26,28,30,34,38,42]) - 10
+kw["cmap"] = NCL_wind_17lev
+bounds = np.array([10,12,14,16,18,20,22,24,26,28,30,34,38,42]) - 10
 kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 
 name = "CFAD_DBZ"
@@ -206,6 +225,12 @@ bounds = np.arange(11) * 10
 #kw["cbticks"] = ["", "0.1", "1", "5", "10", "15", "20", "30", "40", "50", ""]
 kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 #kw["cmap"].set_over("#FFE4E1")
+
+name = "HM_w"
+kw = _kw(colorkw, name)
+kw["cmap"] = NCL_MPL_RdBu_r[64-2*8:]
+bounds = np.arange(11) * 0.25 - 0.5
+kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 
 name = "EPT_sounding"
 kw = _kw(colorkw, name)
