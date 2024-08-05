@@ -166,8 +166,13 @@ def pcolormeshcb(ax,fig,X,Y,var,norm=None,cmap=None,cbtitle='',ft=30,orientation
     cb.ax.tick_params(labelsize=ft-2)
     return im, cb
 
-def pcolormeshcb_sub(ax,fig,X,Y,var,norm=None,cmap=None,cbtitle='',ft=30,orientation='vertical',extend='neither',shrink=1, vmin=None, vmax=None, continuous=False, cbticks=None):
+def pcolormeshcb_sub(ax,fig,X,Y,var,norm=None,cmap=None,cbtitle='',ft=30,orientation='vertical',extend=None,shrink=1, vmin=None, vmax=None, continuous=False, cbticks=None):
     norm, cmap, vmin, vmax = _autosetting(var, norm, cmap, vmin, vmax)
+    if extend is None:
+        if cmap.colorbar_extend:
+            extend = cmap.colorbar_extend
+        else:
+            extend = "neither"
     if continuous:
         im = ax.pcolormesh(X, Y, var, shading='auto', vmin=vmin, vmax=vmax, cmap = cmap)
     else:

@@ -37,6 +37,8 @@ kw["cmap"] = mpl.colors.ListedColormap(cmaparray)
 bounds = np.array([0, 15, 30, 40, 45, 50])
 kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
 kw["cmap"].set_over(np.array([0.7, sat, 1])*bri)
+kw["cmap"].colorbar_extend = "max"
+
 
 name = "DBZ_large"
 kw = _kw(colorkw, name)
@@ -254,7 +256,10 @@ for k in colorkw:
             kw[key] = None
 
 if __name__ == "__main__":
-    print(NCL_WhiteBlueGreenYellowRed(253))
-    print(colorkw["EPT_sounding"]["cmap"].get_over())
-    print(colorkw["EPT_sounding"]["cmap"](231))
-    print(kw["norm"](346))
+    # print(NCL_WhiteBlueGreenYellowRed(253))
+    # print(colorkw["EPT_sounding"]["cmap"].get_over())
+    # print(colorkw["EPT_sounding"]["cmap"](231))
+    # print(kw["norm"](346))
+    print(colorkw["dbz"]["cmap"](0))
+    print(colorkw["dbz"]["cmap"].get_under())
+    print(colorkw["dbz"]["cmap"].__dict__)

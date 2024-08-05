@@ -42,7 +42,7 @@ class Paintbox_2D(Paintbox):
     def setlevel(self, level):
         self.level = level
     
-    def pcolormesh(self, varname, fig = None, ax = None, colorkey = None, norm = None, cmap = None, cbtitle='', ft = None, orientation='vertical', extend='neither', shrink=1, vmin=None, vmax=None, continuous=False, cbticks=None):
+    def pcolormesh(self, varname, fig = None, ax = None, colorkey = None, norm = None, cmap = None, cbtitle='', ft = None, orientation='vertical', extend=None, shrink=1, vmin=None, vmax=None, continuous=False, cbticks=None):
         X, Y, var, fig, ax = self._get_necessary(varname, fig, ax)
         ft = self._get_fontsize(ft)
         if colorkey:
