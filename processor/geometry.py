@@ -75,6 +75,26 @@ def rotation_2D(x, y, angle, rotation_center = [0, 0], angle_type = "radius"):
     newy = newy + rotation_center[1]
     return newx, newy
 
+class Quadrilaterals:
+    def __init__(self, pointlist):
+        lines = []
+        for ip in range(len(pointlist)):
+            lines.append(Line_2D(pointlist[ip-1], pointlist[ip]))
+        self.lines = lines
+        center_x = sum([p[0] for p in pointlist]) / len(pointlist)
+        center_y = sum([p[1] for p in pointlist]) / len(pointlist)
+        self.center_point = (center_x, center_y)
+
+    def ifinside(self, x, y):
+        boollist = [(line.inequality(x, y) * line.inequality(*self.center_point)) >= 0 for line in self.lines]
+        if isinstance(x, np.ndarray):
+            result = np.ones_like(x, dtype=bool)
+            for b in boollist:
+                result *= b
+        else:
+            result = np.all(np.array(boollist))
+        return result
+
 """
 if __name__ == '__main__':
     x, y = np.meshgrid(np.arange(10), np.arange(20))
