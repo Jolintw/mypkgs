@@ -231,6 +231,17 @@ class Plotter:
             return np.sqrt(self.subfigsize_x * self.subfigsize_y) / 2.5
         else:
             return linewidths
+    
+    def _auto_determine_ticksitvl(self, lim, ticksitvl = None, maxticksnumber = 5):
+        if ticksitvl:
+            return ticksitvl
+        choice = np.array([1.0, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0, 10.0])
+        width = lim[1] - lim[0]
+        itvl_0 = width / maxticksnumber
+        Z = np.floor(np.log10(itvl_0))
+        itvl_0_normalized = itvl_0 / np.power(10, Z)
+        itvl = np.min(choice[choice > itvl_0_normalized]) * np.power(10, Z)
+        return itvl
         
     def _auto_make_ticklabels(self, intv, strfmt, lim, start = None, end = None):
         if start is None:
