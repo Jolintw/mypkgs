@@ -100,6 +100,7 @@ class Databox:
         self.field = {}
         self.grid = {}
         self.attr = {}
+        self.data = {}
         self.dimlist = []
         self.auto_generate_dim_name_format = "auto_generate_dimension{:d}"
         self.__originkeys = list(self.__dict__.keys())
@@ -127,6 +128,7 @@ class Databox:
     def add_dimension(self, name, value, attr = {}):
         self.dim[name] = Dimension(name, value, attr)
         self.dimlist.append(name)
+        self.data[name] = self.dim[name].data
 
     def add_dimensions(self, dim_dict = None):
         for name, value in dim_dict.items():
@@ -136,11 +138,13 @@ class Databox:
         if dim is None:
             dim = self._auto_find_dim(data)
         self.field[name] = Variable(name, data, dim=dim, attr=attr)
+        self.data[name] = self.field[name].data
     
     def add_grid(self, name, data, dim = None, attr = {}):
         if dim is None:
             dim = self._auto_find_dim(data)
         self.grid[name] = Variable(name, data, dim=dim, attr=attr)
+        self.data[name] = self.grid[name].data
 
     def resort_dim_order_like(self, fieldname):
         refdim = self.field[fieldname].dim
