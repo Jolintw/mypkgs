@@ -19,6 +19,7 @@ class Plotter:
         self.subplot_kw = subplot_kw
         self.sharex = sharex
         self.sharey = sharey
+        self.linewidth = self._autolinewidths()
         
         self.newsubplots()
             
@@ -232,7 +233,7 @@ class Plotter:
         else:
             return linewidths
     
-    def _auto_determine_ticksitvl(self, lim, ticksitvl = None, maxticksnumber = 5):
+    def _auto_determine_ticksitvl(self, lim, ticksitvl = None, maxticksnumber = 6):
         if ticksitvl:
             return ticksitvl
         choice = np.array([1.0, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0, 10.0])
@@ -264,10 +265,12 @@ class MapPlotter(Plotter):
         for ax in axs:
             ax.coastlines()
     
-    def setlatlonticks(self, ticksitvl = [60,30], xlim = [0,360], ylim = [-90,90], axn = None):
+    def setlatlonticks(self, ticksitvl = [None, None], xlim = [0,360], ylim = [-90,90], axn = None):
         axs = self._axntoaxs(axn)
+        xticksitvl = self._auto_determine_ticksitvl(lim=xlim, ticksitvl=ticksitvl[0])
+        yticksitvl = self._auto_determine_ticksitvl(lim=ylim, ticksitvl=ticksitvl[1])
         for ax in axs:
-            pf.setlatlonticks(ax, ticksitvl, xlim, ylim)
+            pf.setlatlonticks(ax, [xticksitvl, yticksitvl], xlim, ylim)
     
 class TwinPlotter(Plotter):
     def newsubplots(self):
