@@ -225,6 +225,7 @@ kw = _kw(colorkw, name)
 kw["cmap"] = mpl.colors.ListedColormap(['#ffee99','#ffcc65','#ff9932','#f5691d','#fc3d3d'])
 kw["cmap"].set_over(color='#d10f1b')
 kw["cmap"].set_under(color='1',alpha=0)
+kw["cmap"].colorbar_extend = "both"
 bounds = np.arange(40,100,10)
 kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 
@@ -233,6 +234,7 @@ kw = _kw(colorkw, name)
 kw["cmap"] = mpl.colors.ListedColormap(['#36ff01','#f8ff03','#fdcb08','#ff930c'])
 kw["cmap"].set_over(color='#fa0401')
 kw["cmap"].set_under(color='1',alpha=0)
+kw["cmap"].colorbar_extend = "both"
 bounds = np.arange(339,354,3)
 kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 
@@ -241,6 +243,7 @@ kw = _kw(colorkw, name)
 kw["cmap"] = mpl.colors.ListedColormap(['#95ffff','#0797fa'])
 kw["cmap"].set_over(color='#0166ff')
 kw["cmap"].set_under(color='1',alpha=0)
+kw["cmap"].colorbar_extend = "both"
 bounds = np.arange(70,100,10)
 kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 
@@ -249,6 +252,7 @@ kw = _kw(colorkw, name)
 kw["cmap"] = mpl.colors.ListedColormap(['#ffd2ff','#ffa5ff','#ff73ff','#ff41ff','#f100f1','#bb00bb','#870087','#540454'])
 kw["cmap"].set_over(color='#300730')
 kw["cmap"].set_under(color='1',alpha=0)
+kw["cmap"].colorbar_extend = "both"
 bounds = [1,3,5,7,9,11,14,17,20]
 kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 
@@ -257,6 +261,7 @@ kw = _kw(colorkw, name)
 kw["cmap"] = mpl.colors.ListedColormap(['#bbf0bb','#86f586','#00f500','#00be00','#008800','#005101'])
 kw["cmap"].set_over(color='#061b0a')
 kw["cmap"].set_under(color='1',alpha=0)
+kw["cmap"].colorbar_extend = "both"
 bounds = np.arange(30,100,10)
 kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 
