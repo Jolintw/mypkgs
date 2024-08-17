@@ -116,6 +116,9 @@ def globalmapbase_ccrs(figsize=[25,16],ft=30,ticksitvl=[60,30],xlim=[0,360],ylim
     return ax,fig
 
 def get_ax_size(ax, fig):
+    """
+    return width, height
+    """
     bbox = ax.get_window_extent().transformed(fig.dpi_scale_trans.inverted())
     width, height = bbox.width, bbox.height
     width *= fig.dpi
