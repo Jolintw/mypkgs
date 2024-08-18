@@ -133,7 +133,14 @@ class Paintbox_2D(Paintbox):
         width, height = get_ax_size(ax=ax, fig=fig)
         length_ref = np.sqrt(max(width, height) / fig.dpi) * 3
         return length_ref
-
+    
+    def quiver(self, Uname, Vname, fig = None, ax = None, scale_q=None, xintv=None, yintv=None, broadXY=True, weight=True, **pars):
+        X, Y, var, fig, ax = self._get_necessary([Uname, Vname], fig, ax)
+        U = var[0]
+        V = var[1]
+        scale_q, xintv, yintv = self._autoscale(scale_q, xintv, yintv)
+        return quiver_weight(ax,fig,X,Y,U,V,scale_q,"k",xintv,yintv,broadXY=broadXY,weight=weight,**pars)
+    
     def _autoscale(self, scale_q=None, xintv=None, yintv=None):
         n = 20.
         if xintv is None:
@@ -143,13 +150,6 @@ class Paintbox_2D(Paintbox):
         #if scale_q is None:
         #    scale_q = 15*max([self.X.shape[-1]/xintv, self.Y.shape[0]/yintv])
         return scale_q, xintv, yintv
-    
-    def quiver(self, Uname, Vname, fig = None, ax = None, scale_q=None, xintv=None, yintv=None, broadXY=True, weight=True, **pars):
-        X, Y, var, fig, ax = self._get_necessary([Uname, Vname], fig, ax)
-        U = var[0]
-        V = var[1]
-        scale_q, xintv, yintv = self._autoscale(scale_q, xintv, yintv)
-        return quiver_weight(ax,fig,X,Y,U,V,scale_q,"k",xintv,yintv,broadXY=broadXY,weight=weight,**pars)
     
     def _grids_number_in_axes(self, ax = None):
         """
