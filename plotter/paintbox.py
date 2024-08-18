@@ -90,6 +90,50 @@ class Paintbox_2D(Paintbox):
         V = V[::yintv, ::xintv] * coef
         return ax.barbs(X,Y,U,V,length=length, zorder=19)
     
+    def auto_barbs(self, Uname, Vname, fig = None, ax = None,  length_mult = None, intv = None, barbnum = [10, 10], inunit = "m/s", outunit = "knots"):
+        """
+        length_mult: multiply of standard length (float), None will auto determined\n
+        intv: grid interval of barbs (**list of int** [xintv, yintv] or **int** intv=xintv=yintv)\n
+        barbsnum: number of barbs in x(y)axis (**list of int** [x, y] or **int** x=y), only works when intv=None
+        """
+        def _determine_barbs_intv_and_length(intv, length_mult, barbnum, meanlen, length_ref):
+            if isinstance(intv, int):
+                intv = [intv, intv]
+            if intv is None:
+                if isinstance(barbnum, int):
+                    barbnum = [barbnum, barbnum]
+                intv = [int(np.ceil(l / n)) for l, n in zip(meanlen, barbnum)]
+            elif isinstance(intv, list):
+                barbnum = [int(np.floor(l / i)) for l, i in zip(meanlen, intv)]
+            if length_mult is None:
+                length_mult = 10 / max(barbnum)
+            length = length_mult * length_ref
+            return intv, length
+        
+        X, Y, var, fig, ax = self._get_necessary([Uname, Vname], fig, ax)
+        length_ref = self._barbs_ref_length(fig=fig, ax=ax)
+        meanlen = self._grids_number_in_axes(ax=ax)
+        intv, length = _determine_barbs_intv_and_length(intv, length_mult, barbnum, meanlen, length_ref)
+        
+        U = var[0]
+        V = var[1]
+        coef = self._unitscoef(inunit) / self._unitscoef(outunit)
+        
+        X = X[::intv[1], ::intv[0]]
+        Y = Y[::intv[1], ::intv[0]]
+        U = U[::intv[1], ::intv[0]] * coef
+        V = V[::intv[1], ::intv[0]] * coef
+        return ax.barbs(X,Y,U,V,length=length, zorder=19)
+
+    def _barbs_ref_length(self, fig = None, ax = None):
+        if fig is None:
+            fig = self.fig
+        if ax is None:
+            ax = self.ax
+        width, height = get_ax_size(ax=ax, fig=fig)
+        length_ref = np.sqrt(max(width, height) / fig.dpi) * 3
+        return length_ref
+
     def _autoscale(self, scale_q=None, xintv=None, yintv=None):
         n = 20.
         if xintv is None:
@@ -107,6 +151,21 @@ class Paintbox_2D(Paintbox):
         scale_q, xintv, yintv = self._autoscale(scale_q, xintv, yintv)
         return quiver_weight(ax,fig,X,Y,U,V,scale_q,"k",xintv,yintv,broadXY=broadXY,weight=weight,**pars)
     
+    def _grids_number_in_axes(self, ax = None):
+        """
+        do this after set_xlim and set_ylim\n
+        return length_ref, [meanXlen, meanYlen]
+        """
+        xlim = ax.get_xlim()
+        ylim = ax.get_ylim()
+        X = self.X
+        Y = self.Y
+        X_inxlim = np.logical_and(X > xlim[0], X < xlim[1])
+        Y_inylim = np.logical_and(Y > ylim[0], Y < ylim[1])
+        meanXlen = np.mean(np.sum(X_inxlim, axis=1))
+        meanYlen = np.mean(np.sum(Y_inylim, axis=0))
+        return [meanXlen, meanYlen]
+
     def _get_necessary(self, varname, fig, ax):
         super()._get_necessary(fig=fig, ax=ax)
         if type(varname) is list:
