@@ -11,7 +11,7 @@ from mypkgs.processor.timetools import timestamp_to_datetime, str_to_datetime_UT
 
 twinaxes_default_name = "origin"
 class Plotter:
-    def __init__(self, row = 1, column = 1, figsize = None, subfigsize_x = None, subfigsize_y = None, fontsize = None, subplot_kw={}, sharex = False, sharey = False):
+    def __init__(self, row = 1, column = 1, figsize = None, subfigsize_x = None, subfigsize_y = None, fontsize = None, subplot_kw={}, sharex = False, sharey = False, **fig_kw):
         self.row        = row
         self.column     = column
         self.figsize    = self._autofigsize(figsize, subfigsize_x, subfigsize_y)
@@ -20,11 +20,12 @@ class Plotter:
         self.sharex = sharex
         self.sharey = sharey
         self.linewidth = self._autolinewidths()
+        self.fig_kw = fig_kw
         
         self.newsubplots()
             
     def newsubplots(self):
-        fig, axs      = plt.subplots(self.row, self.column, figsize=self.figsize,subplot_kw=self.subplot_kw,sharex=self.sharex, sharey=self.sharey)
+        fig, axs      = plt.subplots(self.row, self.column, figsize=self.figsize,subplot_kw=self.subplot_kw,sharex=self.sharex, sharey=self.sharey, **self.fig_kw)
         self.fig      = fig
         
         if isinstance(axs, np.ndarray):
@@ -257,8 +258,8 @@ class Plotter:
         plt.close(self.fig)
     
 class MapPlotter(Plotter):
-    def __init__(self, row = 1, column = 1, figsize = None, subfigsize_x = None, subfigsize_y = None, fontsize = None, subplot_kw={"projection":ccrs.PlateCarree()}):
-        super().__init__(row=row, column=column, figsize=figsize, subfigsize_x=subfigsize_x, subfigsize_y=subfigsize_y, fontsize=fontsize, subplot_kw=subplot_kw)
+    def __init__(self, row = 1, column = 1, figsize = None, subfigsize_x = None, subfigsize_y = None, fontsize = None, subplot_kw={"projection":ccrs.PlateCarree()}, **fig_kw):
+        super().__init__(row=row, column=column, figsize=figsize, subfigsize_x=subfigsize_x, subfigsize_y=subfigsize_y, fontsize=fontsize, subplot_kw=subplot_kw, **fig_kw)
         
     def coastlines(self, axn = None):
         axs = self._axntoaxs(axn)
@@ -274,7 +275,7 @@ class MapPlotter(Plotter):
     
 class TwinPlotter(Plotter):
     def newsubplots(self):
-        fig, axs      = plt.subplots(self.row, self.column, figsize=self.figsize,subplot_kw=self.subplot_kw)
+        fig, axs      = plt.subplots(self.row, self.column, figsize=self.figsize, subplot_kw=self.subplot_kw, **self.fig_kw)
         self.fig      = fig
         
         if isinstance(axs, np.ndarray):
