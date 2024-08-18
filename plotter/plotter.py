@@ -135,8 +135,8 @@ class Plotter:
     
     def set_timeticks(self, start, end, intv, timefmt, startfmt = None, timezonehour = 0, axis = "x", axn = None):
         """
-        start: (float) start timestamp of ticks
-        end: (float) end timestamp of ticks
+        start: (float) start timestamp of ticks\n
+        end: (float) end timestamp of ticks\n
         intv: ticks interval
         """
         if startfmt is None:

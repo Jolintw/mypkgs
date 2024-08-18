@@ -204,7 +204,7 @@ class Paintbox_1D(Paintbox):
     
     def quiver_y(self, Uname, Vname, Yname, xposition, fig = None, ax = None, scale_q=150, intv=1):
         """
-        a line of quiver along y
+        a line of quiver along y\n
         position: 0~1
         """
         var, Y, fig, ax = self._get_necessary([Uname, Vname], Yname, fig, ax)
@@ -215,7 +215,7 @@ class Paintbox_1D(Paintbox):
 
     def plotmark_y(self, Y, xposition, fig = None, ax = None, **pars):
         """
-        a line of mark along y
+        a line of mark along y\n
         position: 0~1
         """
         _, __, fig, ax = self._get_necessary([], [], fig, ax)
