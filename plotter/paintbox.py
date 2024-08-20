@@ -88,7 +88,7 @@ class Paintbox_2D(Paintbox):
         Y = Y[::yintv, ::xintv]
         U = U[::yintv, ::xintv] * coef
         V = V[::yintv, ::xintv] * coef
-        return ax.barbs(X,Y,U,V,length=length, zorder=19)
+        return ax.barbs(X,Y,U,V,length=length, zorder=19, **kwargs)
     
     def auto_barbs(self, Uname, Vname, fig = None, ax = None,  length_mult = None, intv = None, barbnum = [10, 10], inunit = "m/s", outunit = "knots", **kwargs):
         """
@@ -107,7 +107,7 @@ class Paintbox_2D(Paintbox):
                 barbnum = [int(np.floor(l / i)) for l, i in zip(meanlen, intv)]
             if length_mult is None:
                 length_mult = 10 / max(barbnum)
-            length = length_mult * length_ref
+            length = np.sqrt(length_mult) * length_ref
             return intv, length
         
         X, Y, var, fig, ax = self._get_necessary([Uname, Vname], fig, ax)
@@ -115,15 +115,7 @@ class Paintbox_2D(Paintbox):
         meanlen = self._grids_number_in_axes(ax=ax)
         intv, length = _determine_barbs_intv_and_length(intv, length_mult, barbnum, meanlen, length_ref)
         
-        U = var[0]
-        V = var[1]
-        coef = self._unitscoef(inunit) / self._unitscoef(outunit)
-        
-        X = X[::intv[1], ::intv[0]]
-        Y = Y[::intv[1], ::intv[0]]
-        U = U[::intv[1], ::intv[0]] * coef
-        V = V[::intv[1], ::intv[0]] * coef
-        return ax.barbs(X,Y,U,V,length=length, zorder=19, **kwargs)
+        return self.barbs(Uname, Vname, fig=fig, ax=ax, length=length, xintv=intv[0], yintv=intv[1], inunit=inunit, outunit=outunit, **kwargs)
 
     def _barbs_ref_length(self, fig = None, ax = None):
         if fig is None:
