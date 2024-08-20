@@ -63,10 +63,10 @@ class Paintbox_2D(Paintbox):
                                 orientation=orientation, extend=extend, shrink=shrink, vmin=vmin, vmax=vmax, continuous=continuous, cbticks=cbticks)
     
     
-    def contour(self, varname, fig = None, ax = None, colors = None, levels = None, linewidths = None, clabel = False, ft = None):
+    def contour(self, varname, fig = None, ax = None, colors = None, levels = None, linewidths = None, clabel = False, ft = None, **kwargs):
         X, Y, var, fig, ax = self._get_necessary(varname, fig, ax)
         ft = self._get_fontsize(ft)
-        cs = ax.contour(X, Y, var, colors = colors, levels = levels, linewidths = linewidths, zorder = 20)
+        cs = ax.contour(X, Y, var, colors = colors, levels = levels, linewidths = linewidths, zorder = 20, **kwargs)
         if clabel:
             cl = ax.clabel(cs, cs.levels[:], inline=True, fontsize=ft)
             return cs, cl
@@ -78,7 +78,7 @@ class Paintbox_2D(Paintbox):
         elif units == "knots":
             return 0.5144
             
-    def barbs(self, Uname, Vname, fig = None, ax = None,  length=7, xintv=12, yintv=12, inunit = "m/s", outunit = "knots"):
+    def barbs(self, Uname, Vname, fig = None, ax = None,  length=7, xintv=12, yintv=12, inunit = "m/s", outunit = "knots", **kwargs):
         X, Y, var, fig, ax = self._get_necessary([Uname, Vname], fig, ax)
         U = var[0]
         V = var[1]
@@ -90,7 +90,7 @@ class Paintbox_2D(Paintbox):
         V = V[::yintv, ::xintv] * coef
         return ax.barbs(X,Y,U,V,length=length, zorder=19)
     
-    def auto_barbs(self, Uname, Vname, fig = None, ax = None,  length_mult = None, intv = None, barbnum = [10, 10], inunit = "m/s", outunit = "knots"):
+    def auto_barbs(self, Uname, Vname, fig = None, ax = None,  length_mult = None, intv = None, barbnum = [10, 10], inunit = "m/s", outunit = "knots", **kwargs):
         """
         length_mult: multiply of standard length (float), None will auto determined\n
         intv: grid interval of barbs (**list of int** [xintv, yintv] or **int** intv=xintv=yintv)\n
@@ -123,7 +123,7 @@ class Paintbox_2D(Paintbox):
         Y = Y[::intv[1], ::intv[0]]
         U = U[::intv[1], ::intv[0]] * coef
         V = V[::intv[1], ::intv[0]] * coef
-        return ax.barbs(X,Y,U,V,length=length, zorder=19)
+        return ax.barbs(X,Y,U,V,length=length, zorder=19, **kwargs)
 
     def _barbs_ref_length(self, fig = None, ax = None):
         if fig is None:
