@@ -33,7 +33,7 @@ def central_diff_4thorder(Y,X,n=0,broadX=False,cyclic=False): #partial Y/partial
     Yshape = np.shape(Ys)
     Ys = np.reshape(Ys,(Yshape[0],-1))
     if broadX:
-        Xs = np.swapaxes(np.broadcast(X,(np.shape(Ys)[1],np.shape(Ys)[0])),0,1)
+        Xs = np.swapaxes(np.broadcast_to(X,(np.shape(Ys)[1],np.shape(Ys)[0])),0,1)
     else:
         Xs = np.swapaxes(X,0,n)
         Xs = np.reshape(Xs,(Yshape[0],-1))
