@@ -2,7 +2,7 @@ from mypkgs.plotter.plotter import MapPlotter
 from mypkgs.plotter.paintbox import Paintbox_2D
 import numpy as np
 
-figsize = [7.5, 6]
+figsize = [9, 7.2]
 xlim = [108, 128]
 ylim = [15, 35]
 dpi = 250
@@ -46,9 +46,13 @@ def NCDR_850ept(lat, lon, u = None, v = None, z = None, T = None, ept = None, ti
     MP.grid()
     return MP, PB2
 
-def NCDR_700rh(lat, lon, u = None, v = None, z = None, rh = None, div=None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None]):
+def NCDR_700rh(lat, lon, u = None, v = None, z = None, rh = None, div = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None]):
+    """
+    rh: relative humidity (%)
+    div: divergence (s^-1)
+    """
     MP = MapPlotter(figsize=figsize, dpi=dpi)
-    PB2 = Paintbox_2D(field=dict(u=u,v=v,z=z,rh=rh), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
+    PB2 = Paintbox_2D(field=dict(u=u,v=v,z=z,rh=rh,div=div), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     MP.coastlines()
     MP.setlatlonticks(ticksitvl=ticksitvl, xlim=xlim, ylim=ylim)
     MP.title(title, loc="left")
@@ -58,8 +62,69 @@ def NCDR_700rh(lat, lon, u = None, v = None, z = None, rh = None, div=None, titl
         PB2.contour(varname="z", colors="k", levels=np.arange(15)*30+2970, linewidths=MP.linewidth, clabel=True)
         PB2.contour(varname="z", colors="k", levels=np.arange(30)*15+2970, linewidths=MP.linewidth / 2)
     if not div is None:
-        PB2.contour(varname="z", colors="purple", levels=[1e-5], linewidths=MP.linewidth / 2, linestyles="dashed")
+        PB2.contour(varname="div", colors="purple", levels=[-1e-5], linewidths=MP.linewidth / 2, linestyles="dashed")
     if not u is None:
         PB2.auto_barbs(Uname="u", Vname="v", length_mult=length_mult, color="darkorange", barbnum=barbnum)
+    MP.grid()
+    return MP, PB2
+
+def NCDR_500vor(lat, lon, u = None, v = None, z = None, vor = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None]):
+    """
+    vor: vorticity (s^-1)
+    """
+    MP = MapPlotter(figsize=figsize, dpi=dpi)
+    PB2 = Paintbox_2D(field=dict(u=u,v=v,z=z,vor=vor*1e5), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
+    MP.coastlines()
+    MP.setlatlonticks(ticksitvl=ticksitvl, xlim=xlim, ylim=ylim)
+    MP.title(title, loc="left")
+    if not vor is None:
+        PB2.pcolormesh(varname="vor", colorkey="NCDR_vorticity", cbtitle="[$10^5\ s^{-1}$]")
+    if not z is None:
+        PB2.contour(varname="z", colors="k", levels=np.arange(15)*60+5100, linewidths=MP.linewidth, clabel=True)
+        PB2.contour(varname="z", colors="k", levels=np.arange(30)*30+5100, linewidths=MP.linewidth / 2)
+    if not u is None:
+        PB2.auto_barbs(Uname="u", Vname="v", length_mult=length_mult, color="blue", barbnum=barbnum)
+    MP.grid()
+    return MP, PB2
+
+def NCDR_300ws(lat, lon, u = None, v = None, z = None, ws = None, div = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None]):
+    """
+    ws: windspeed (m s^-1)
+    """
+    MP = MapPlotter(figsize=figsize, dpi=dpi)
+    PB2 = Paintbox_2D(field=dict(u=u,v=v,z=z,ws=ws,div=div), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
+    MP.coastlines()
+    MP.setlatlonticks(ticksitvl=ticksitvl, xlim=xlim, ylim=ylim)
+    MP.title(title, loc="left")
+    if not ws is None:
+        PB2.pcolormesh(varname="ws", colorkey="NCDR_ws", cbtitle="[$m/s$]")
+    if not z is None:
+        PB2.contour(varname="z", colors="k", levels=np.arange(15)*120+9000, linewidths=MP.linewidth, clabel=True)
+        PB2.contour(varname="z", colors="k", levels=np.arange(30)*60+8700, linewidths=MP.linewidth / 2)
+    if not div is None:
+        PB2.contour(varname="div", colors="red", levels=[1e-5], linewidths=MP.linewidth / 2, linestyles="solid")
+    if not u is None:
+        PB2.auto_barbs(Uname="u", Vname="v", length_mult=length_mult, color="blue", barbnum=barbnum)
+    MP.grid()
+    return MP, PB2
+
+def NCDR_200ws(lat, lon, u = None, v = None, z = None, ws = None, div = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None]):
+    """
+    ws: windspeed (m s^-1)
+    """
+    MP = MapPlotter(figsize=figsize, dpi=dpi)
+    PB2 = Paintbox_2D(field=dict(u=u,v=v,z=z,ws=ws,div=div), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
+    MP.coastlines()
+    MP.setlatlonticks(ticksitvl=ticksitvl, xlim=xlim, ylim=ylim)
+    MP.title(title, loc="left")
+    if not ws is None:
+        PB2.pcolormesh(varname="ws", colorkey="NCDR_ws", cbtitle="[$m/s$]")
+    if not z is None:
+        PB2.contour(varname="z", colors="k", levels=np.arange(30)*120+10500, linewidths=MP.linewidth, clabel=True)
+        PB2.contour(varname="z", colors="k", levels=np.arange(60)*60+10500, linewidths=MP.linewidth / 2)
+    if not div is None:
+        PB2.contour(varname="div", colors="red", levels=[1e-5], linewidths=MP.linewidth / 2, linestyles="solid")
+    if not u is None:
+        PB2.auto_barbs(Uname="u", Vname="v", length_mult=length_mult, color="blue", barbnum=barbnum)
     MP.grid()
     return MP, PB2
