@@ -52,7 +52,10 @@ class Paintbox_2D(Paintbox):
             return pcolormeshcb_sub(ax, fig, X=X, Y=Y, var=var, norm = norm, cmap = cmap, cbtitle=cbtitle, ft=ft,
                                 orientation=orientation, extend=extend, shrink=shrink, vmin=vmin, vmax=vmax, continuous=continuous, cbticks=cbticks)
         
-    def contourf(self, varname, fig = None, ax = None, colorkey = None, norm = None, cmap = None, cbtitle='', ft = None, orientation='vertical', extend='neither', shrink=1, vmin=None, vmax=None, continuous=False, cbticks=None):
+    def contourf(self, varname, fig = None, ax = None, colorkey = None, norm = None, cmap = None, cbtitle='', ft = None, orientation='vertical', extend=None, shrink=1, vmin=None, vmax=None, continuous=False, cbticks=None):
+        """
+        return: contourf object, colorbar object
+        """
         X, Y, var, fig, ax = self._get_necessary(varname, fig, ax)
         ft = self._get_fontsize(ft)
         if colorkey:
