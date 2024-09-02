@@ -188,8 +188,13 @@ def pcolormeshcb_sub(ax,fig,X,Y,var,norm=None,cmap=None,cbtitle='',ft=30,orienta
     cb.ax.tick_params(labelsize=ft-2)
     return im, cb
     
-def contourfcb_sub(ax,fig,X,Y,var,levels=None,norm=None,cmap=None,cbtitle='',ft=30,orientation='vertical',extend='neither',shrink=1, vmin=None, vmax=None, continuous=False,cbticks=None):
+def contourfcb_sub(ax,fig,X,Y,var,levels=None,norm=None,cmap=None,cbtitle='',ft=30,orientation='vertical',extend=None,shrink=1, vmin=None, vmax=None, continuous=False,cbticks=None):
     norm, cmap, vmin, vmax = _autosetting(var, norm, cmap, vmin, vmax)
+    if extend is None:
+        if cmap.colorbar_extend:
+            extend = cmap.colorbar_extend
+        else:
+            extend = "neither"
     if levels is None:
         levels = norm.boundaries
     if continuous:
