@@ -20,6 +20,7 @@ pycm_jet = cm.jet
 NCL_WhiteBlueGreenYellowRed = cmaps.WhiteBlueGreenYellowRed
 NCL_MPL_terrain = cmaps.MPL_terrain
 NCL_cmocean_thermal = cmaps.cmocean_thermal
+NCL_MPL_hot = cmaps.MPL_hot
 
 colorkw = {}
 name = "dbz_cwb"
@@ -313,7 +314,15 @@ name = "SST"
 kw = _kw(colorkw, name)
 kw["cmap"] = NCL_cmocean_thermal
 bounds = np.arange(12+1) * 1.5 + 15
+kw["cmap"].colorbar_extend = "both"
 kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
+
+# name = "STK"
+# kw = _kw(colorkw, name)
+# kw["cmap"] = NCL_MPL_hot
+# bounds = np.arange(12+1) * 3
+# kw["cmap"].set_over
+# kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
 
 
 for k in colorkw:
@@ -324,4 +333,4 @@ for k in colorkw:
             kw[key] = None
 
 if __name__ == "__main__":
-    print(NCL_MPL_terrain(0))
+    print(colorkw["SST"]["norm"].boundaries)
