@@ -12,7 +12,7 @@ class ConnectedGrids_2D:
         self.y = np.array([], dtype=int)
         self.xl = np.array([], dtype=int)
         self.xr = np.array([], dtype=int)
-        self._inner_number = self.count
+        self._serial_number = self.count
         ConnectedGrids_2D.count += 1
 
     def get_indexarray(self):
@@ -40,6 +40,17 @@ class ConnectedGrids_2D:
         boolarray = np.zeros(shape, dtype=bool)
         boolarray[self.get_index_array()] = True
         return boolarray
+    
+    def get_boundary(self):
+        """
+        return (x0, x1, y0, y1)
+        """
+        CGindexarray = self.get_indexarray()
+        left_boundary = np.min(CGindexarray[1])
+        right_boundary = np.max(CGindexarray[1])
+        under_boundary = np.min(CGindexarray[0])
+        upper_boundary = np.max(CGindexarray[0])
+        return (left_boundary, right_boundary, under_boundary, upper_boundary)
 
     def grids_number(self):
         """
@@ -56,13 +67,13 @@ class ConnectedGrids_2D:
         """
         merge with another connected grids
         """
-        if another_CG.serial_number == self.serial_number:
+        if another_CG.serial_number() == self.serial_number():
             pass
         else:
             self.add_connectedline(y=another_CG.y, xl=another_CG.xl, xr=another_CG.xr)
 
     def serial_number(self):
-        return self._inner_number
+        return self._serial_number
     
 class ConnectedGridsController(metaclass=abc.ABCMeta):
     @abc.abstractmethod
