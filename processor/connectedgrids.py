@@ -1,5 +1,6 @@
 import abc
 import numpy as np
+from mypkgs.processor.gridmethod import get_distance
 
 class ConnectedGrids_2D:
     """
@@ -163,6 +164,21 @@ class ConnectedGridsController_2D(ConnectedGridsController):
         give index of grids and get the CG
         """
         return self.CGlist[self.find_CGnumbers_from_ind(ind)]
+    
+    def find_CG_from_nearpoint(self, point, grid):
+        """
+        point: (x, y) x and y should be a number
+        grid: (X, Y) and Y.shape == X.shape == boolarray.shape
+        """
+        mindis = np.inf
+        for CG in self.CGlist:
+            X = np.mean(grid[0][CG.get_indexarray()])
+            Y = np.mean(grid[1][CG.get_indexarray()])
+            dis = get_distance((X, Y), point)
+            if dis < mindis:
+                nearpoint_CG = CG
+                mindis = dis
+        return nearpoint_CG
 
     def _declarate_CGlists(self):
         self._CGnowlist = []

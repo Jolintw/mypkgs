@@ -67,7 +67,16 @@ def movingaverage(var, n = 3, axis = 0):
     result = (acc_var[n:, ...] - acc_var[:-n, ...]) / n
     result = np.swapaxes(result, 0, axis)
     return result
-    
+
+def two_point_interpolation(newX, X, Y):
+    """
+    newX: some x between X[0] and X[1]
+    X: positions (length=2)
+    Y: value (length=2)
+    """
+    newY = (Y[0] * (X[1] - newX) + Y[1] * (newX - X[0])) / (X[1] - X[0])
+    return newY
+
     
 class RightAngleInterpolater:
     """
