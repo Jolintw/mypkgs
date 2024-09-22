@@ -37,3 +37,6 @@ def indexlist_in_timerange(datetimelist, starttime, endtime):
             result.append(i_t)
 
     return result
+
+def era5time_to_datetime(time):
+    return timestamp_to_datetime(time.astype(float)*3600 - (dd(1970, 1, 1) - dd(1900, 1, 1)).total_seconds())
