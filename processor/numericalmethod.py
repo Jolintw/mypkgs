@@ -138,6 +138,10 @@ class RightAngleInterpolater:
             Xdiff   = [np.mean(x[1:]-x[:-1]) for x in X]    
             X0      = [x[0] for x in X]
             newXind = [np.floor((_newX - _X0) / _Xdiff).astype(int) for _newX, _X0, _Xdiff in zip(newX, X0, Xdiff)]
+            # for i in range(len(newXind)):
+            #     mask = newXind[i]==(X[i].shape[0]-1)
+            #     if np.any(mask):
+            #         newXind[i][mask] = newXind[i][mask]-1
         else:
             newXind = []
             for _newX, _X in zip(newX, X):
