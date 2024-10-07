@@ -187,6 +187,11 @@ class Plotter:
         axs  = self._axntoaxs(axn)
         for ax in axs:
             ax.grid()
+
+    def set_aspect(self, axn = None, aspect = "equal", **kwargs):
+        axs  = self._axntoaxs(axn)
+        for ax in axs:
+            ax.set_aspect(aspect, **kwargs)
         
     def savefig(self, path, picname, tight_layout = True):
         path.mkdir(parents=True, exist_ok=True)
