@@ -19,11 +19,10 @@ def MPbase(func):
         return MP, PB2
     return wraper
 
-
 @MPbase
 def NCDR_surface(lat, lon, u = None, v = None, slp = None, cwv = None, thick_1000_500 = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None]):
     MP = MapPlotter(figsize=figsize, dpi=dpi)
-    MP.setlatlonticks(ticksitvl=ticksitvl, xlim=xlim, ylim=ylim)
+    MP.setlatlonticks(ticksitvl=ticksitvl, xlim=xlim, ylim=ylim) # this must before auto_barbs because xlim and yim
     PB2 = Paintbox_2D(field=dict(u=u,v=v,slp=slp,cwv=cwv,thick_1000_500=thick_1000_500), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not cwv is None:
         PB2.pcolormesh(varname="cwv", colorkey="NCDR_cwv", cbtitle="[mm]")
