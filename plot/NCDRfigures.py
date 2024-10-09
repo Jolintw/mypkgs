@@ -1,6 +1,7 @@
+from functools import wraps
+import numpy as np
 from mypkgs.plotter.plotter import MapPlotter
 from mypkgs.plotter.paintbox import Paintbox_2D
-import numpy as np
 
 figsize = [10, 7.2]
 xlim = [108, 128]
@@ -10,7 +11,11 @@ length_mult = 0.45
 barbnum = 30
 
 def MPbase(func):
+    @wraps(func)
     def wraper(*args, **kwargs):
+        MP = MapPlotter(figsize=figsize, dpi=dpi)
+        MP.setlatlonticks(ticksitvl=kwargs["ticksitvl"], xlim=kwargs["xlim"], ylim=kwargs["ylim"])
+        kwargs["MP"] = MP
         MP, PB2 = func(*args, **kwargs)
         MP.coastlines()
         MP.title(kwargs["title"], loc="left")
@@ -20,9 +25,10 @@ def MPbase(func):
     return wraper
 
 @MPbase
-def NCDR_surface(lat, lon, u = None, v = None, slp = None, cwv = None, thick_1000_500 = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None]):
-    MP = MapPlotter(figsize=figsize, dpi=dpi)
-    MP.setlatlonticks(ticksitvl=ticksitvl, xlim=xlim, ylim=ylim) # this must before auto_barbs because xlim and yim
+def NCDR_surface(lat, lon, u = None, v = None, slp = None, cwv = None, thick_1000_500 = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+    """
+    MP is no need to give value
+    """
     PB2 = Paintbox_2D(field=dict(u=u,v=v,slp=slp,cwv=cwv,thick_1000_500=thick_1000_500), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not cwv is None:
         PB2.pcolormesh(varname="cwv", colorkey="NCDR_cwv", cbtitle="[mm]")
@@ -35,10 +41,12 @@ def NCDR_surface(lat, lon, u = None, v = None, slp = None, cwv = None, thick_100
         PB2.auto_barbs(Uname="u", Vname="v", length_mult=length_mult, color="darkturquoise", barbnum=barbnum)
     return MP, PB2
 
+
 @MPbase
-def NCDR_850ept(lat, lon, u = None, v = None, z = None, T = None, ept = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None]):
-    MP = MapPlotter(figsize=figsize, dpi=dpi)
-    MP.setlatlonticks(ticksitvl=ticksitvl, xlim=xlim, ylim=ylim)
+def NCDR_850ept(lat, lon, u = None, v = None, z = None, T = None, ept = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+    """
+    MP is no need to give value
+    """
     PB2 = Paintbox_2D(field=dict(u=u,v=v,z=z,T=T,ept=ept), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not ept is None:
         PB2.pcolormesh(varname="ept", colorkey="NCDR_ept", cbtitle="[K]")
@@ -53,13 +61,14 @@ def NCDR_850ept(lat, lon, u = None, v = None, z = None, T = None, ept = None, ti
     return MP, PB2
 
 @MPbase
-def NCDR_700rh(lat, lon, u = None, v = None, z = None, rh = None, div = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None]):
+def NCDR_700rh(lat, lon, u = None, v = None, z = None, rh = None, div = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
     """
+    MP is no need to give value
     rh: relative humidity (%)
     div: divergence (s^-1)
     """
-    MP = MapPlotter(figsize=figsize, dpi=dpi)
-    MP.setlatlonticks(ticksitvl=ticksitvl, xlim=xlim, ylim=ylim)
+    # MP = MapPlotter(figsize=figsize, dpi=dpi)
+    # MP.setlatlonticks(ticksitvl=ticksitvl, xlim=xlim, ylim=ylim)
     PB2 = Paintbox_2D(field=dict(u=u,v=v,z=z,rh=rh,div=div), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not rh is None:
         PB2.pcolormesh(varname="rh", colorkey="NCDR_rh", cbtitle="[%]")
@@ -73,12 +82,13 @@ def NCDR_700rh(lat, lon, u = None, v = None, z = None, rh = None, div = None, ti
     return MP, PB2
 
 @MPbase
-def NCDR_500vor(lat, lon, u = None, v = None, z = None, vor = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None]):
+def NCDR_500vor(lat, lon, u = None, v = None, z = None, vor = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
     """
+    MP is no need to give value
     vor: vorticity (s^-1)
     """
-    MP = MapPlotter(figsize=figsize, dpi=dpi)
-    MP.setlatlonticks(ticksitvl=ticksitvl, xlim=xlim, ylim=ylim)
+    # MP = MapPlotter(figsize=figsize, dpi=dpi)
+    # MP.setlatlonticks(ticksitvl=ticksitvl, xlim=xlim, ylim=ylim)
     PB2 = Paintbox_2D(field=dict(u=u,v=v,z=z,vor=vor*1e5), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not vor is None:
         PB2.pcolormesh(varname="vor", colorkey="NCDR_vorticity", cbtitle="[$10^5\ s^{-1}$]")
@@ -90,12 +100,13 @@ def NCDR_500vor(lat, lon, u = None, v = None, z = None, vor = None, title = "", 
     return MP, PB2
 
 @MPbase
-def NCDR_300ws(lat, lon, u = None, v = None, z = None, ws = None, div = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None]):
+def NCDR_300ws(lat, lon, u = None, v = None, z = None, ws = None, div = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
     """
+    MP is no need to give value
     ws: windspeed (m s^-1)
     """
-    MP = MapPlotter(figsize=figsize, dpi=dpi)
-    MP.setlatlonticks(ticksitvl=ticksitvl, xlim=xlim, ylim=ylim)
+    # MP = MapPlotter(figsize=figsize, dpi=dpi)
+    # MP.setlatlonticks(ticksitvl=ticksitvl, xlim=xlim, ylim=ylim)
     PB2 = Paintbox_2D(field=dict(u=u,v=v,z=z,ws=ws,div=div), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not ws is None:
         PB2.pcolormesh(varname="ws", colorkey="NCDR_ws", cbtitle="[$m/s$]")
@@ -109,12 +120,13 @@ def NCDR_300ws(lat, lon, u = None, v = None, z = None, ws = None, div = None, ti
     return MP, PB2
 
 @MPbase
-def NCDR_200ws(lat, lon, u = None, v = None, z = None, ws = None, div = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None]):
+def NCDR_200ws(lat, lon, u = None, v = None, z = None, ws = None, div = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
     """
+    MP is no need to give value
     ws: windspeed (m s^-1)
     """
-    MP = MapPlotter(figsize=figsize, dpi=dpi)
-    MP.setlatlonticks(ticksitvl=ticksitvl, xlim=xlim, ylim=ylim)
+    # MP = MapPlotter(figsize=figsize, dpi=dpi)
+    # MP.setlatlonticks(ticksitvl=ticksitvl, xlim=xlim, ylim=ylim)
     PB2 = Paintbox_2D(field=dict(u=u,v=v,z=z,ws=ws,div=div), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not ws is None:
         PB2.pcolormesh(varname="ws", colorkey="NCDR_ws", cbtitle="[$m/s$]")
