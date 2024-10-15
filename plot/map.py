@@ -1,7 +1,7 @@
 from mypkgs.plotter.plotter import MapPlotter
 from mypkgs.plotter.paintbox import Paintbox_2D
 
-figsize = [7, 6]
+figsize = [8, 6]
 xlim = [118, 123]
 ylim = [20.5, 27]
 dpi = 200
