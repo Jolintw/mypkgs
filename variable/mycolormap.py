@@ -21,6 +21,8 @@ NCL_WhiteBlueGreenYellowRed = cmaps.WhiteBlueGreenYellowRed
 NCL_MPL_terrain = cmaps.MPL_terrain
 NCL_cmocean_thermal = cmaps.cmocean_thermal
 NCL_MPL_hot = cmaps.MPL_hot
+NCL_WhiteBlue = cmaps.WhiteBlue
+NCL_CBR_coldhot = cmaps.CBR_coldhot
 
 colorkw = {}
 name = "dbz_cwb"
@@ -156,7 +158,6 @@ kw["cmap"] = NCL_prcp_1[1:]
 bounds = np.array([10,12,14,16,18,20,20,20,20,22,24,26,28,30,34,38,42]) - 4
 kw["cbticks"] = np.array([10,12,14,16,18,20,22,24,26,28,30,34,38,42]) - 4
 kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
-
 
 name = "T"
 kw = _kw(colorkw, name)
@@ -316,6 +317,21 @@ kw["cmap"] = NCL_cmocean_thermal
 bounds = np.arange(12+1) * 1.5 + 15
 kw["cmap"].colorbar_extend = "both"
 kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
+
+name = "Tgradient"
+kw = _kw(colorkw, name)
+kw["cmap"] = NCL_WhiteBlue.copy()
+bounds = np.arange(10) * 1e-4
+kw["cmap"].colorbar_extend = "max"
+kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
+
+name = "Tperturbation"
+kw = _kw(colorkw, name)
+kw["cmap"] = NCL_CBR_coldhot.copy()
+bounds = (np.arange(12) - 5.5) * 1.0
+kw["cmap"].colorbar_extend = "both"
+kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
+
 
 # name = "STK"
 # kw = _kw(colorkw, name)
