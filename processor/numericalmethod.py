@@ -124,7 +124,9 @@ class RightAngleInterpolater:
     
         newvar = np.reshape(newvar, (*varshape[:-len(self.X)], *self.original_newXshape))
         if self.newX_out_of_X:
-            newvar[self.outer_mask] = np.nan
+            mask = np.reshape(self.outer_mask, newshape=self.original_newXshape)
+            mask = np.broadcast_to(mask, newvar.shape)
+            newvar[mask] = np.nan
         if self.newXnotarray:
             newvar = newvar[0]
         return newvar
@@ -138,10 +140,10 @@ class RightAngleInterpolater:
             Xdiff   = [np.mean(x[1:]-x[:-1]) for x in X]    
             X0      = [x[0] for x in X]
             newXind = [np.floor((_newX - _X0) / _Xdiff).astype(int) for _newX, _X0, _Xdiff in zip(newX, X0, Xdiff)]
-            # for i in range(len(newXind)):
-            #     mask = newXind[i]==(X[i].shape[0]-1)
-            #     if np.any(mask):
-            #         newXind[i][mask] = newXind[i][mask]-1
+            for i in range(len(newXind)):
+                mask = newXind[i]>=(X[i].shape[0]-1)
+                if np.any(mask):
+                    newXind[i][mask] = (X[i].shape[0]-1) - 1
         else:
             newXind = []
             for _newX, _X in zip(newX, X):
@@ -213,9 +215,9 @@ class RightAngleInterpolater:
     def _Xcheck(self):
         X = self.X
         newX = self.newX
+        masks = []
         for i in range(len(X)):
             if self.newX_out_of_X:
-                masks = []
                 masks.append(np.logical_or(newX[i] > np.max(X[i]), newX[i] < np.min(X[i])))
                 if i == len(X)-1:
                     outer_mask = masks[0].copy()
