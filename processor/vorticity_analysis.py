@@ -32,7 +32,7 @@ def vertical_vorticity_budget(x, y, z, u, v, w, lat, vor = None, div = None):
 
 # xx: (nx) or (ny, nx)
 # vor: (..., ny, nx)
-def rotational_wind(xx, yy, vor):
+def rotational_wind(xx, yy, vor, nan_ok = False):
     if len(xx.shape) == 1 and len(yy.shape) == 1:
         xx, yy = np.meshgrid(xx, yy)
     ori_shape = vor.shape
@@ -44,10 +44,10 @@ def rotational_wind(xx, yy, vor):
     vor = fillNAN(xx, yy, vor)
     result = np.zeros_like(vor)
     for i in range(vor.shape[0]):
-        if np.any(np.isnan(vor[i])):
+        if np.any(np.isnan(vor[i])) and not nan_ok:
             result[i,...] = np.nan
             continue
-        result[i] = poisson_eq_relaxation(vor[i], dx = np.abs(np.mean(xx[:,1:]-xx[:,:-1])), tol_value = 1e-6)
+        result[i] = poisson_eq_relaxation(vor[i], dx = np.abs(np.mean(xx[:,1:]-xx[:,:-1])), tol_value = 1e-6, nan_ok=nan_ok)
     result = np.reshape(result, ori_shape)
     result = {"psi":result, "u":-central_diff(result, yy[:,0], n=-2, broadX=True), "v":central_diff(result, xx[0,:], n=-1, broadX=True)}
     for k in result:

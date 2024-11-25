@@ -4,9 +4,10 @@ import matplotlib.pyplot as plt
 from mypkgs.processor.numericalmethod import central_diff
 
 # boundary: zero gradient
-def poisson_eq_relaxation(var, dx, tol_value = 1e-4):
-    #plt.pcolormesh(var)
-    #plt.show()
+def poisson_eq_relaxation(var, dx, tol_value = 1e-4, nan_ok = False):
+    var = var.copy()
+    if nan_ok:
+        var[np.isnan(var)] = 0
     extented_psi = np.zeros((var.shape[0]+2, var.shape[1]+2))
     diff = 9999
     i = 0
