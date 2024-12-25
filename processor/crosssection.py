@@ -86,7 +86,7 @@ def radial_wind(u, v, angle, angle_unit = "radius"):
 def cross_wind(u, v, angle, angle_unit = "radius"):
     if angle_unit == "degree":
         angle = angle / 180 * np.pi
-    return - u * np.sin(angle) + v * np.cos(angle)
+    return u * np.sin(angle) - v * np.cos(angle)
 
 # ref_uv = [u, v]
 def add_relativewind_to_dict(windfield, ref_uv = [], angle = None, angle_unit = "radius"):
