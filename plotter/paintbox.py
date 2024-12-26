@@ -208,6 +208,29 @@ class Paintbox_1D(Paintbox):
         X = self._make_same_x_array_by_xposition(Y, xposition, ax)
         return ax.quiver(X[::intv], Y[::intv], U[::intv], V[::intv], scale=scale_q, headaxislength=2.5, headlength=3.5, headwidth=4)
 
+    def quiver_x(self, Uname, Vname, Xname, yposition, fig = None, ax = None, scale_q=150, intv=1):
+        """
+        a line of quiver along x\n
+        position: 0~1
+        """
+        X, var, fig, ax = self._get_necessary(Xname, [Uname, Vname], fig, ax)
+        U = var[0]
+        V = var[1]
+        Y = self._make_same_y_array_by_yposition(X, yposition, ax)
+        return ax.quiver(X[::intv], Y[::intv], U[::intv], V[::intv], scale=scale_q, headaxislength=2.5, headlength=3.5, headwidth=4)
+
+    def barbs_x(self, Uname, Vname, Xname, yposition, fig = None, ax = None, intv=1):
+        """
+        a line of quiver along x\n
+        position: 0~1
+        """
+        X, var, fig, ax = self._get_necessary(Xname, [Uname, Vname], fig, ax)
+        U = var[0]
+        V = var[1]
+        Y = self._make_same_y_array_by_yposition(X, yposition, ax)
+        return ax.barbs(X[::intv], Y[::intv], U[::intv], V[::intv])
+
+
     def plotmark_y(self, Y, xposition, fig = None, ax = None, **pars):
         """
         a line of mark along y\n
@@ -218,6 +241,10 @@ class Paintbox_1D(Paintbox):
         p = ax.plot(X, Y, linestyle="", marker="o", markersize=self._auto_markersize(fig, ax))
         p[0].set(**pars)
         return p
+    
+    def bar(self, Xname, Yname, fig = None, ax = None, **pars):
+        X, Y, fig, ax = self._get_necessary(Xname, Yname, fig, ax)
+        ax.bar(X, Y, **pars)
     
     def boxplot(self, Yname, fig = None, ax = None, **pars):
         """
@@ -250,6 +277,12 @@ class Paintbox_1D(Paintbox):
         X = X[0] + (X[1] - X[0]) * xposition
         X = X + np.zeros_like(Y)
         return X
+    
+    def _make_same_y_array_by_yposition(self, X, yposition, ax):
+        Y = ax.get_ylim()
+        Y = Y[0] + (Y[1] - Y[0]) * yposition
+        Y = Y + np.zeros_like(X)
+        return Y
 
     def _get_necessary(self, Xname, Yname, fig, ax):
         super()._get_necessary(fig=fig, ax=ax)
