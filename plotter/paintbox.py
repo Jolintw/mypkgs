@@ -230,6 +230,22 @@ class Paintbox_1D(Paintbox):
         Y = self._make_same_y_array_by_yposition(X, yposition, ax)
         return ax.barbs(X[::intv], Y[::intv], U[::intv], V[::intv])
 
+    def scatter(self, Xname, Yname, Cname, colorkey, fig = None, ax = None, cbkwargs={}, **kwargs):
+        X, C, fig, ax = self._get_necessary([Xname, Yname], Cname, fig, ax)
+        X, Y = X[0], X[1]
+        ft = self._get_fontsize()
+        cbtitle = None
+        scatterargs = colorkw[colorkey].copy()
+        del scatterargs["cbticks"]
+        im = ax.scatter(X, Y, c=C, **scatterargs)
+        if "title" in cbkwargs:
+            cbtitle = cbkwargs["title"]
+            del cbkwargs["title"]
+        cb = fig.colorbar(im, **cbkwargs)
+        cb.ax.tick_params(labelsize=ft-2)
+        if cbtitle:
+            cb.ax.set_title(cbtitle, fontdict={'size':ft})
+        return im, cb
 
     def plotmark_y(self, Y, xposition, fig = None, ax = None, **pars):
         """
