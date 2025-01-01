@@ -175,6 +175,8 @@ class Paintbox_2D(Paintbox):
         level = self._autolevel(level)
         if len(var.shape) == 3:
             return var[level]
+        elif len(var.shape) == 4:
+            return var[level[0], level[1], ...]
         else:
             return var
     
