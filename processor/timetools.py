@@ -7,10 +7,10 @@ import re
 
 def timestamp_to_datetime(timestamp, timezonehour=0):
     tzUTC = timezone(timedelta(hours=timezonehour))
-    if isinstance(timestamp, float) or isinstance(timestamp, int):
+    try:
+        return [dd.fromtimestamp(tstamp).astimezone(tzUTC) for tstamp in timestamp]
+    except:
         return dd.fromtimestamp(timestamp).astimezone(tzUTC)
-    return [dd.fromtimestamp(tstamp).astimezone(tzUTC) for tstamp in timestamp]
-
 def str_to_datetime_UTC(string):
     return dd.strptime(string + "+0000", "%Y%m%d%H%M%S%z")
 
