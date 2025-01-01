@@ -171,6 +171,19 @@ class Databox:
                     continue
             setattr(self, key, value)
 
+    def merge(self, databox):
+        # check/copy dimensions
+        for key in databox.dim:
+            if key in self.dim:
+                if databox.dim[key].data.shape != self.dim[key].data.shape:
+                    warnings.warn("the dims shape between 2 databox are not the same")
+            else:
+                self.add_dimension(name=key, value=databox.dim[key].data, attr=databox.dim[key].attr)
+        # copy field
+        for key in databox.field:
+            if not key in self.field:
+                self.add_field(name=key, data=databox.field[key].data, dim=databox.field[key].dim, attr=databox.field[key].attr)
+
     def _auto_find_dim(self, data):
         dim = []
         dimlist = self.dimlist.copy()

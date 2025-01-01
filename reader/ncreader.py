@@ -32,8 +32,12 @@ class NCreader:
                 self.databox.add_dimension(name, value=dimension.size)
     
     def read_variables(self, varlist, **args):
-        for varname in varlist:
-            self.read_variable(varname, **args)
+        if isinstance(varlist, dict):
+            for varname, newname in varlist.item():
+                self.read_variable(varname, newname=newname)
+        else:
+            for varname in varlist:
+                self.read_variable(varname, **args)
 
     def read_variables_with_newname(self, varlist, newnamelist, **args):
         for varname, newname in zip(varlist, newnamelist):
