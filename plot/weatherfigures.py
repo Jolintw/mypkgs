@@ -13,7 +13,6 @@ barbnum = 30
 def MPbase(func):
     @wraps(func)
     def wraper(*args, **kwargs):
-        print(kwargs)
         MP = MapPlotter(figsize=figsize, dpi=dpi)
         MP.setlatlonticks(ticksitvl=kwargs["ticksitvl"], xlim=kwargs["xlim"], ylim=kwargs["ylim"])
         kwargs["MP"] = MP
