@@ -116,6 +116,12 @@ kw["cmap"] = NCL_testmap
 bounds = [-18, -15, -12, -9, -6, -4, -2, 2, 4, 6, 9, 12, 15, 18]#(np.arange(10)-4.5)*4
 kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 
+name = "radial_wind"
+kw = _kw(colorkw, name)
+kw["cmap"] = NCL_testmap
+bounds = [-18, -15, -12, -9, -6, -4, -2, 2, 4, 6, 9, 12, 15, 18]#(np.arange(10)-4.5)*4
+kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
+
 name = "DIV"
 kw = _kw(colorkw, name)
 kw["cmap"] = NCL_MPL_RdBu
