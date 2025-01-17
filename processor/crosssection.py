@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 from mypkgs.processor.numericalmethod import RightAngleInterpolater
-
+from mypkgs.writer.sectionwriter import writer_section
 
 class CrossSection:
     
@@ -102,3 +102,15 @@ def add_relativewind_to_dict(windfield, ref_uv = [], angle = None, angle_unit = 
             windfield["rel_radial_wind"] = radial_wind(windfield["rel_u"], windfield["rel_v"], angle, angle_unit) 
             windfield["rel_cross_wind"] = cross_wind(windfield["rel_u"], windfield["rel_v"], angle, angle_unit)
     return windfield
+
+def interpolate_and_write_with_CS(CS, infor, field, varlist, savepath = None, filename = None):
+    CS.create_interpolater(infor["x_1D"], infor["y_1D"])
+    for varname in varlist:
+        field[varname][field[varname].mask] = np.nan
+        CS.add_variable(varname, CS.interpolate(field[varname]))
+    
+    if not (savepath is None or filename is None):
+        writer_section(CS, infor, savepath, filename)
+        CS.reset_variable()
+        
+    return CS
