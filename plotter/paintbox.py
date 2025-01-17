@@ -129,7 +129,7 @@ class Paintbox_2D(Paintbox):
         length_ref = np.sqrt(max(width, height) / fig.dpi) * 3
         return length_ref
     
-    def quiver(self, Uname, Vname, fig = None, ax = None, scale_q=None, xintv=None, yintv=None, broadXY=True, weight=True, **pars):
+    def quiver(self, Uname, Vname, fig = None, ax = None, scale_q=None, xintv=None, yintv=None, broadXY=True, weight=False, **pars):
         X, Y, var, fig, ax = self._get_necessary([Uname, Vname], fig, ax)
         U = var[0]
         V = var[1]
