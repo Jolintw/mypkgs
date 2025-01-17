@@ -76,7 +76,10 @@ class Plotter:
             cs = ax.contour(X, Y, var, colors = colors, levels = levels, linewidths = linewidths, zorder = 20)
             if clabel:
                 cstext = ax.clabel(cs, cs.levels[:], inline=True, fontsize=self.fontsize - 2)
-        return cs, cstext
+        if clabel:
+            return cs, cstext
+        else:
+            return cs
     
     def hline(self, y, axn = None, **pars):
         linewidth = self._autolinewidths()
