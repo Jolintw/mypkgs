@@ -35,3 +35,13 @@ def wind(lat, lon, u = None, v = None, title = "", figsize = figsize, xlim = xli
         PB2.auto_barbs(Uname="u", Vname="v", length_mult=length_mult, color="k", barbnum=barbnum)
         PB2.contourf(varname="ws", colorkey="ws_small", cbtitle="m/s")
     return MP, PB2
+
+@MPbase
+def dbz(lat, lon, dbz = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+    """
+    MP is no need to give value
+    """
+    PB2 = Paintbox_2D(field=dict(dbz=dbz), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
+    if not dbz is None:
+        PB2.pcolormesh(varname="dbz", colorkey="dbz", cbtitle="dB$Z$")
+    return MP, PB2
