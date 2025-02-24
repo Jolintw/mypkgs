@@ -7,6 +7,17 @@ def get_distance(point1, point2):
     distance = np.sqrt(distance)
     return distance
 
+def find_nearestgrid_2D(point, grids):
+    """
+    point: (x, y)\n
+    grids: (X, Y)\n
+    return: (ind_y, ind_x)
+    """
+    dis = get_distance(point, grids)
+    nearind = np.argmin(dis)
+    nearind_2D = (nearind//dis.shape[1], nearind%dis.shape[1])
+    return nearind_2D
+
 def mask_in_distance(xx, yy, x, y, distance):
     distance_array = get_distance((xx, yy), (x, y))
     return distance_array <= distance
