@@ -189,7 +189,14 @@ class Plotter:
     def grid(self, axn = None, **pars):
         axs  = self._axntoaxs(axn)
         for ax in axs:
-            ax.grid()
+            ax.grid(**pars)
+
+    def legend(self, axn = None, **pars):
+        axs  = self._axntoaxs(axn)
+        if not "fontsize" in pars:
+            pars["fontsize"] = self.fontsize
+        for ax in axs:
+            ax.legend(**pars)
 
     def set_aspect(self, axn = None, aspect = "equal", **kwargs):
         axs  = self._axntoaxs(axn)
