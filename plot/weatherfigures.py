@@ -18,7 +18,8 @@ def MPbase(func):
         kwargs["MP"] = MP
         MP, PB2 = func(*args, **kwargs)
         MP.coastlines()
-        MP.title(kwargs["title"], loc="left")
+        if "title" in kwargs:
+            MP.title(kwargs["title"], loc="left")
         MP.grid()
         MP.set_aspect()
         return MP, PB2
@@ -44,4 +45,14 @@ def dbz(lat, lon, dbz = None, title = "", figsize = figsize, xlim = xlim, ylim =
     PB2 = Paintbox_2D(field=dict(dbz=dbz), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not dbz is None:
         PB2.pcolormesh(varname="dbz", colorkey="dbz", cbtitle="dB$Z$")
+    return MP, PB2
+
+@MPbase
+def accumulated_rainfall(lat, lon, rain = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+    """
+    MP is no need to give value
+    """
+    PB2 = Paintbox_2D(field=dict(rain=rain), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
+    if not rain is None:
+        PB2.pcolormesh(varname="rain", colorkey="precipetation_cwb", cbtitle="mm")
     return MP, PB2
