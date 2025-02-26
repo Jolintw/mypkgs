@@ -53,8 +53,12 @@ kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
 
 name = "precipetation_cwb"
 kw = _kw(colorkw, name)
-kw["cmap"] = mpl.colors.ListedColormap(['#a0fffa','#00cdff','#0096ff','#0069ff','#329600','#32ff00','#ffff00','#ffc800', '#ff9600','#ff0000','#c80000','#a00000', '#96009b','#c800d2','#ff00f5','#ff64ff'])
+kw["cmap"] = mpl.colors.ListedColormap(['#a0fffa','#00cdff','#0096ff','#0069ff','#329600','#32ff00','#ffff00','#ffc800', '#ff9600','#ff0000','#c80000','#a00000', '#96009b','#c800d2','#ff00f5'])
 bounds = [1.,2.,6.,10.,15.,20.,30.,40.,50.,70.,90.,110.,130.,150.,200.,300.]
+kw["cbticks"] = bounds
+kw["cmap"].set_over(color='#ffccff')
+kw["cmap"].set_under(color=(1, 1, 1))
+kw["cmap"].colorbar_extend = "both"
 kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
 
 name = "VEL"
