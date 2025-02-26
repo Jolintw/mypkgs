@@ -180,10 +180,13 @@ def pcolormeshcb_sub(ax,fig,X,Y,var,norm=None,cmap=None,cbtitle='',ft=30,orienta
         im = ax.pcolormesh(X, Y, var, shading='auto', vmin=vmin, vmax=vmax, cmap = cmap)
     else:
         im = ax.pcolormesh(X, Y, var, shading='auto', norm=norm, cmap = cmap)
-    if cbticks is None:
-        cb = fig.colorbar(im, orientation = orientation, extend=extend, shrink = shrink, ax=ax)
-    else:
-        cb = fig.colorbar(im, orientation = orientation, extend=extend, shrink = shrink, ax=ax,boundaries=cbticks, values=cbticks[:-1], ticks=cbticks)
+    cb = fig.colorbar(im, orientation = orientation, extend=extend, shrink = shrink, ax=ax)
+    if not cbticks is None: cb.set_ticks(cbticks)
+    
+    # if cbticks is None:
+    #     cb = fig.colorbar(im, orientation = orientation, extend=extend, shrink = shrink, ax=ax)
+    # else:
+    #     cb = fig.colorbar(im, orientation = orientation, extend=extend, shrink = shrink, ax=ax,boundaries=cbticks, values=cbticks[:-1], ticks=cbticks)
     cb.ax.set_title(cbtitle, fontdict={'size':ft})
     cb.ax.tick_params(labelsize=ft-2)
     return im, cb
