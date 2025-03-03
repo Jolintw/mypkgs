@@ -43,6 +43,8 @@ def dbz(lat, lon, dbz = None, title = "", figsize = figsize, xlim = xlim, ylim =
     MP is no need to give value
     """
     PB2 = Paintbox_2D(field=dict(dbz=dbz), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
+    gray = 0.9
+    MP.ax.set_facecolor(color = [gray, gray, gray])
     if not dbz is None:
         PB2.pcolormesh(varname="dbz", colorkey="dbz", cbtitle="dB$Z$")
     return MP, PB2
