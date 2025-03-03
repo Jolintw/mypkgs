@@ -43,7 +43,7 @@ bounds = np.array([0, 15, 30, 40, 45, 50])
 kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
 kw["cmap"].set_over(np.array([0.7, sat, 1])*bri)
 kw["cmap"].set_under(np.array([1, 1, 1]))
-kw["cmap"].colorbar_extend = "max"
+kw["cmap"].colorbar_extend = "both"
 
 
 name = "DBZ_large"
