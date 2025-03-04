@@ -58,3 +58,12 @@ def accumulated_rainfall(lat, lon, rain = None, title = "", figsize = figsize, x
     if not rain is None:
         PB2.pcolormesh(varname="rain", colorkey="precipetation_cwb", cbtitle="mm")
     return MP, PB2
+
+@MPbase
+def VEL(lat, lon, VEL = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+    PB2 = Paintbox_2D(field=dict(VEL=VEL), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
+    # gray = 0.9
+    # MP.ax.set_facecolor(color = [gray, gray, gray])
+    if not VEL is None:
+        PB2.pcolormesh(varname="VEL", colorkey="VEL", cbtitle="m/s")
+    return MP, PB2
