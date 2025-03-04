@@ -65,6 +65,7 @@ kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
 name = "VEL"
 kw = _kw(colorkw, name)
 kw["cmap"] = NCL_testmap
+kw["continuous"] = True
 kw["vmax"] = 30
 kw["vmin"] = -30
 
