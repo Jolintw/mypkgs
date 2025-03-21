@@ -39,7 +39,7 @@ class ConnectedGrids_2D:
         return boolean array with **shape**
         """
         boolarray = np.zeros(shape, dtype=bool)
-        boolarray[self.get_index_array()] = True
+        boolarray[self.get_indexarray()] = True
         return boolarray
     
     def get_boundary(self):
