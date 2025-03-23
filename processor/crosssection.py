@@ -103,14 +103,20 @@ def add_relativewind_to_dict(windfield, ref_uv = [], angle = None, angle_unit = 
             windfield["rel_cross_wind"] = cross_wind(windfield["rel_u"], windfield["rel_v"], angle, angle_unit)
     return windfield
 
-def interpolate_and_write_with_CS(CS, infor, field, varlist, savepath = None, filename = None):
-    CS.create_interpolater(infor["x_1D"], infor["y_1D"])
+def interpolate_and_write_with_CS(CS, x, y, z, field, varlist, savepath = None, filename = None):
+    """
+    CS: CrossSection object\n
+    x: x grid (nx,)\n
+    y: y grid (ny,)\n
+    z: z grid (nz,)
+    """
+    CS.create_interpolater(x, y)
     for varname in varlist:
         field[varname][field[varname].mask] = np.nan
         CS.add_variable(varname, CS.interpolate(field[varname]))
     
     if not (savepath is None or filename is None):
-        writer_section(CS, infor, savepath, filename)
+        writer_section(CS, z, savepath, filename)
         CS.reset_variable()
         
     return CS
