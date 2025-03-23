@@ -4,7 +4,11 @@ import numpy as np
 # ax + by + c = 0
 # a, b, c: coef 0, 1, 2
 class Line_2D:
-    
+    """
+    ax + by + c = 0\n
+    a = self.coef[0] and same for b and c\n
+    self.angle
+    """
     def __init__(self, point1, point2 = None, angle = None):
         if not point2 is None:
             self.get_eq_by2points(point1, point2)
@@ -32,7 +36,6 @@ class Line_2D:
         coef.append(b)
         coef.append(c)
         self.coef = coef
-        
     
     def inequality(self, x, y):
         coef = self.coef
@@ -55,14 +58,14 @@ class Line_2D:
         return (x, y)
         
     def _get_angle(self):
-        if self.coef[0] == 0:
-            angle = 0
-        elif self.coef[1] == 0:
-            angle = 90 / 180 * np.pi
-        else:
-            angle = np.arctan(self.coef[0] / (-self.coef[1]))
+        angle = np.arctan2(self.coef[0], (-self.coef[1]))
+        # if self.coef[0] == 0:
+        #     angle = 0
+        # elif self.coef[1] == 0:
+        #     angle = 90 / 180 * np.pi
+        # else:
+        #     angle = np.arctan(self.coef[0] / (-self.coef[1]))
         self.angle = angle
-        
         
 def rotation_2D(x, y, angle, rotation_center = [0, 0], angle_type = "radius"):
     if angle_type == "degree":
@@ -74,6 +77,25 @@ def rotation_2D(x, y, angle, rotation_center = [0, 0], angle_type = "radius"):
     newx = newx + rotation_center[0]
     newy = newy + rotation_center[1]
     return newx, newy
+
+def newpoint_by_angle_length(point, angle, length, angle_unit = "radius", angle_type = "math"):
+    """
+    angle_unit: "radius"("rad") or "degree"("deg")\n
+    angle_type: "math" or "met" (metangle = pi/2 - mathangle)
+    """
+    vectorx, vectory = vector_by_angle_length(angle, length, angle_unit, angle_type)
+    return point[0] + vectorx, point[1] + vectory
+
+def vector_by_angle_length(angle, length, angle_unit = "radius", angle_type = "math"):
+    """
+    angle_unit: "radius"("rad") or "degree"("deg")\n
+    angle_type: "math" or "met" (metangle = pi/2 - mathangle)
+    """
+    if angle_unit in ["deg", "degree"]:
+        angle = angle / 180 * np.pi
+    if angle_type == "met":
+        angle = np.pi/2 - angle
+    return length * np.cos(angle), length * np.sin(angle)
 
 class Quadrilaterals:
     def __init__(self, pointlist):
