@@ -4,7 +4,9 @@ from mypkgs.processor.numericalmethod import RightAngleInterpolater
 from mypkgs.writer.sectionwriter import writer_section
 
 class CrossSection:
-    
+    """
+    attrs: x(n,), y(n,), s(n,), variables(dict)
+    """
     # x.shape == y.shape
     def __init__(self, x, y, s = None):
         self.x = x
