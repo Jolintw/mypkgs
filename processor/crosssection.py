@@ -114,7 +114,8 @@ def interpolate_and_write_with_CS(CS, x, y, z, field, varlist, savepath = None, 
     """
     CS.create_interpolater(x, y)
     for varname in varlist:
-        field[varname][field[varname].mask] = np.nan
+        if isinstance(field[varname], np.ma.core.MaskedArray):
+            field[varname][field[varname].mask] = np.nan
         CS.add_variable(varname, CS.interpolate(field[varname]))
     
     if not (savepath is None or filename is None):
