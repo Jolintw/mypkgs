@@ -67,3 +67,21 @@ def VEL(lat, lon, VEL = None, title = "", figsize = figsize, xlim = xlim, ylim =
     if not VEL is None:
         PB2.pcolormesh(varname="VEL", colorkey="VEL", cbtitle="m/s")
     return MP, PB2
+
+@MPbase
+def w_DBZ(lat, lon, w = None, DBZ = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+    PB2 = Paintbox_2D(field=dict(w=w, DBZ=DBZ), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
+    # gray = 0.9
+    # MP.ax.set_facecolor(color = [gray, gray, gray])
+    if not w is None:
+        PB2.pcolormesh(varname="w", colorkey="w", cbtitle="m/s")
+    if not DBZ is None:
+        PB2.contour(varname="DBZ", levels=[40])
+    return MP, PB2
+
+@MPbase
+def VEL_discrete(lat, lon, wind, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+    PB2 = Paintbox_2D(field=dict(wind=wind), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
+    if not wind is None:
+        PB2.pcolormesh(varname="wind", colorkey="radial_wind", cbtitle="m/s")
+    return MP, PB2
