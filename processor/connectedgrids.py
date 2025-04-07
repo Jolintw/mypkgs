@@ -130,6 +130,11 @@ class ConnectedGridsController_1D(ConnectedGridsController):
         return self.get_numberarray()[ind]
 
 class ConnectedGridsController_2D(ConnectedGridsController):
+    """
+    ConnectedGridsController_2D(boolarray)\n
+    get_numberarray()
+    
+    """
     def __init__(self, boolarray):
         self.boolarray = boolarray
         self.find_connectedgrids()
@@ -172,9 +177,10 @@ class ConnectedGridsController_2D(ConnectedGridsController):
         """
         mindis = np.inf
         for CG in self.CGlist:
-            X = np.mean(grid[0][CG.get_indexarray()])
-            Y = np.mean(grid[1][CG.get_indexarray()])
+            X = grid[0][CG.get_indexarray()]
+            Y = grid[1][CG.get_indexarray()]
             dis = get_distance((X, Y), point)
+            dis = np.nanmin(dis)
             if dis < mindis:
                 nearpoint_CG = CG
                 mindis = dis
