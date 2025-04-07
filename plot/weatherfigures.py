@@ -85,3 +85,10 @@ def VEL_discrete(lat, lon, wind, title = "", figsize = figsize, xlim = xlim, yli
     if not wind is None:
         PB2.pcolormesh(varname="wind", colorkey="radial_wind", cbtitle="m/s")
     return MP, PB2
+
+@MPbase
+def P_perturbation(lat, lon, p, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+    PB2 = Paintbox_2D(field=dict(p=p), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
+    if not p is None:
+        PB2.contourf(varname="p", colorkey="Pperturbation", cbtitle="hPa")
+    return MP, PB2
