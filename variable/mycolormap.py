@@ -23,6 +23,7 @@ NCL_cmocean_thermal = cmaps.cmocean_thermal
 NCL_MPL_hot = cmaps.MPL_hot
 NCL_WhiteBlue = cmaps.WhiteBlue
 NCL_CBR_coldhot = cmaps.CBR_coldhot
+NCL_NEO_div_vegetation_a = cmaps.NEO_div_vegetation_a
 
 colorkw = {}
 name = "dbz_cwb"
@@ -344,13 +345,19 @@ bounds = (np.arange(12) - 5.5) * 1.0
 kw["cmap"].colorbar_extend = "both"
 kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
 
-
 # name = "STK"
 # kw = _kw(colorkw, name)
 # kw["cmap"] = NCL_MPL_hot
 # bounds = np.arange(12+1) * 3
 # kw["cmap"].set_over
 # kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
+
+name = "Pperturbation"
+kw = _kw(colorkw, name)
+kw["cmap"] = NCL_NEO_div_vegetation_a.copy()
+bounds = (np.arange(20) - 9.5) * 0.5
+kw["cmap"].colorbar_extend = "both"
+kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
 
 
 for k in colorkw:
