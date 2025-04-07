@@ -3,6 +3,7 @@ import matplotlib as mpl
 import numpy as np
 from matplotlib import cm
 import cmaps
+import copy
 
 def _kw(colorkw, name):
     colorkw[name] = {}
@@ -359,7 +360,6 @@ bounds = (np.arange(20) - 9.5) * 0.5
 kw["cmap"].colorbar_extend = "both"
 kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
 
-
 for k in colorkw:
     kw = colorkw[k]
     #kw["cbticks"] = None
@@ -367,5 +367,21 @@ for k in colorkw:
         if key not in kw:
             kw[key] = None
 
+def get_cmapdict(name):
+    return copy.deepcopy(colorkw[name])
+
+def add_norm(cmapdict, add_number):
+    bounds = cmapdict["norm"].boundaries
+    cmapdict["norm"] = mpl.colors.BoundaryNorm(bounds + add_number, kw["cmap"].N)
+
+def multiply_norm(cmapdict, mul_number):
+    bounds = cmapdict["norm"].boundaries
+    cmapdict["norm"] = mpl.colors.BoundaryNorm(bounds * mul_number, kw["cmap"].N)
+
+
 if __name__ == "__main__":
     print(colorkw["SST"]["norm"].boundaries)
+    cmapdict = get_cmapdict("SST")
+    add_norm(cmapdict, 10)
+    print(colorkw["SST"]["norm"].boundaries)
+    print(cmapdict["norm"].boundaries)

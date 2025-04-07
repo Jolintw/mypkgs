@@ -42,24 +42,28 @@ class Paintbox_2D(Paintbox):
     def setlevel(self, level):
         self.level = level
     
-    def pcolormesh(self, varname, fig = None, ax = None, colorkey = None, norm = None, cmap = None, cbtitle='', ft = None, orientation='vertical', extend=None, shrink=1, vmin=None, vmax=None, continuous=False, cbticks=None):
+    def pcolormesh(self, varname, fig = None, ax = None, colorkey = None, cmapdict = None, norm = None, cmap = None, cbtitle='', ft = None, orientation='vertical', extend=None, shrink=1, vmin=None, vmax=None, continuous=False, cbticks=None):
         X, Y, var, fig, ax = self._get_necessary(varname, fig, ax)
         ft = self._get_fontsize(ft)
         if colorkey:
-            return pcolormeshcb_sub(ax, fig, X=X, Y=Y, var=var, **colorkw[colorkey], cbtitle=cbtitle, ft=ft,
+            cmapdict = colorkw[colorkey]
+        if cmapdict:
+            return pcolormeshcb_sub(ax, fig, X=X, Y=Y, var=var, **cmapdict, cbtitle=cbtitle, ft=ft,
                                 orientation=orientation, extend=extend, shrink=shrink)
         else:
             return pcolormeshcb_sub(ax, fig, X=X, Y=Y, var=var, norm = norm, cmap = cmap, cbtitle=cbtitle, ft=ft,
                                 orientation=orientation, extend=extend, shrink=shrink, vmin=vmin, vmax=vmax, continuous=continuous, cbticks=cbticks)
         
-    def contourf(self, varname, fig = None, ax = None, colorkey = None, norm = None, cmap = None, cbtitle='', ft = None, orientation='vertical', extend=None, shrink=1, vmin=None, vmax=None, continuous=False, cbticks=None):
+    def contourf(self, varname, fig = None, ax = None, colorkey = None, cmapdict = None, norm = None, cmap = None, cbtitle='', ft = None, orientation='vertical', extend=None, shrink=1, vmin=None, vmax=None, continuous=False, cbticks=None):
         """
         return: contourf object, colorbar object
         """
         X, Y, var, fig, ax = self._get_necessary(varname, fig, ax)
         ft = self._get_fontsize(ft)
         if colorkey:
-            return contourfcb_sub(ax=ax, fig=fig, X=X, Y=Y, var=var, **colorkw[colorkey], cbtitle=cbtitle, ft=ft,
+            cmapdict = colorkw[colorkey]
+        if cmapdict:
+            return contourfcb_sub(ax=ax, fig=fig, X=X, Y=Y, var=var, **cmapdict, cbtitle=cbtitle, ft=ft,
                                 orientation=orientation, extend=extend, shrink=shrink)
         else:
             return contourfcb_sub(ax=ax, fig=fig, X=X, Y=Y, var=var, norm = norm, cmap = cmap, cbtitle=cbtitle, ft=ft,
