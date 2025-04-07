@@ -2,6 +2,7 @@ from functools import wraps
 import numpy as np
 from mypkgs.plotter.plotter import MapPlotter
 from mypkgs.plotter.paintbox import Paintbox_2D
+from mypkgs.variable.mycolormap import get_cmapdict, add_norm, multiply_norm
 
 figsize = [10, 7.2]
 xlim = [117, 123]
@@ -91,4 +92,20 @@ def P_perturbation(lat, lon, p, title = "", figsize = figsize, xlim = xlim, ylim
     PB2 = Paintbox_2D(field=dict(p=p), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not p is None:
         PB2.contourf(varname="p", colorkey="Pperturbation", cbtitle="hPa")
+    return MP, PB2
+
+@MPbase
+def Pressure(lat, lon, p, p_base, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+    PB2 = Paintbox_2D(field=dict(p=p), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
+    cmapdict = get_cmapdict("Pperturbation")
+    add_norm(cmapdict, p_base)
+    if not p is None:
+        PB2.contourf(varname="p", cmapdict = cmapdict, cbtitle="hPa")
+    return MP, PB2
+
+@MPbase
+def temperature(lat, lon, T, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+    PB2 = Paintbox_2D(field=dict(T=T), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
+    if not T is None:
+        PB2.contourf(varname="T", colorkey="SST", cbtitle="K")
     return MP, PB2
