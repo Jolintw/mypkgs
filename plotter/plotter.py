@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
@@ -204,6 +205,8 @@ class Plotter:
             ax.set_aspect(aspect, **kwargs)
         
     def savefig(self, path, picname, tight_layout = True):
+        if isinstance(path, str):
+            path = Path(path)
         path.mkdir(parents=True, exist_ok=True)
         if tight_layout:
             self.fig.set_tight_layout(True)
