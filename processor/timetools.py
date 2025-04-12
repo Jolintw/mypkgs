@@ -14,6 +14,9 @@ def timestamp_to_datetime(timestamp, timezonehour=0):
 def str_to_datetime_UTC(string):
     return dd.strptime(string + "+0000", "%Y%m%d%H%M%S%z")
 
+def datetime_to_str(datetime):
+    return datetime.strftime("%Y%m%d%H%M%S%z")
+
 def midtime(timelist, returntype = "timestamp"):
     timestamp = (timelist[0].timestamp() + timelist[1].timestamp()) / 2
     if returntype == "timestamp":
