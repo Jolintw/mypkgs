@@ -25,7 +25,7 @@ def MPbase(func):
     return wraper
 
 @MPbase
-def NCDR_surface(lat, lon, u = None, v = None, slp = None, cwv = None, thick_1000_500 = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+def NCDR_surface(lat, lon, u = None, v = None, slp = None, cwv = None, thick_1000_500 = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
     """
     MP is no need to give value
     """
@@ -43,7 +43,7 @@ def NCDR_surface(lat, lon, u = None, v = None, slp = None, cwv = None, thick_100
 
 
 @MPbase
-def NCDR_850ept(lat, lon, u = None, v = None, z = None, T = None, ept = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+def NCDR_850ept(lat, lon, u = None, v = None, z = None, T = None, ept = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
     """
     MP is no need to give value
     """
@@ -61,7 +61,7 @@ def NCDR_850ept(lat, lon, u = None, v = None, z = None, T = None, ept = None, ti
     return MP, PB2
 
 @MPbase
-def NCDR_700rh(lat, lon, u = None, v = None, z = None, rh = None, div = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+def NCDR_700rh(lat, lon, u = None, v = None, z = None, rh = None, div = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
     """
     MP is no need to give value
     rh: relative humidity (%)
@@ -82,7 +82,7 @@ def NCDR_700rh(lat, lon, u = None, v = None, z = None, rh = None, div = None, ti
     return MP, PB2
 
 @MPbase
-def NCDR_500vor(lat, lon, u = None, v = None, z = None, vor = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+def NCDR_500vor(lat, lon, u = None, v = None, z = None, vor = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
     """
     MP is no need to give value
     vor: vorticity (s^-1)
@@ -100,7 +100,7 @@ def NCDR_500vor(lat, lon, u = None, v = None, z = None, vor = None, title = "", 
     return MP, PB2
 
 @MPbase
-def NCDR_300ws(lat, lon, u = None, v = None, z = None, ws = None, div = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+def NCDR_300ws(lat, lon, u = None, v = None, z = None, ws = None, div = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
     """
     MP is no need to give value
     ws: windspeed (m s^-1)
@@ -120,7 +120,7 @@ def NCDR_300ws(lat, lon, u = None, v = None, z = None, ws = None, div = None, ti
     return MP, PB2
 
 @MPbase
-def NCDR_200ws(lat, lon, u = None, v = None, z = None, ws = None, div = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+def NCDR_200ws(lat, lon, u = None, v = None, z = None, ws = None, div = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
     """
     MP is no need to give value
     ws: windspeed (m s^-1)

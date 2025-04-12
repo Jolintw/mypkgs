@@ -27,7 +27,7 @@ def MPbase(func):
     return wraper
 
 @MPbase
-def wind(lat, lon, u = None, v = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+def wind(lat, lon, u = None, v = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
     """
     MP is no need to give value
     """
@@ -39,7 +39,7 @@ def wind(lat, lon, u = None, v = None, title = "", figsize = figsize, xlim = xli
     return MP, PB2
 
 @MPbase
-def dbz(lat, lon, dbz = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+def dbz(lat, lon, dbz = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
     """
     MP is no need to give value
     """
@@ -51,7 +51,7 @@ def dbz(lat, lon, dbz = None, title = "", figsize = figsize, xlim = xlim, ylim =
     return MP, PB2
 
 @MPbase
-def accumulated_rainfall(lat, lon, rain = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+def accumulated_rainfall(lat, lon, rain = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
     """
     MP is no need to give value
     """
@@ -61,7 +61,7 @@ def accumulated_rainfall(lat, lon, rain = None, title = "", figsize = figsize, x
     return MP, PB2
 
 @MPbase
-def VEL(lat, lon, VEL = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+def VEL(lat, lon, VEL = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
     PB2 = Paintbox_2D(field=dict(VEL=VEL), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     # gray = 0.9
     # MP.ax.set_facecolor(color = [gray, gray, gray])
@@ -70,7 +70,7 @@ def VEL(lat, lon, VEL = None, title = "", figsize = figsize, xlim = xlim, ylim =
     return MP, PB2
 
 @MPbase
-def w_DBZ(lat, lon, w = None, DBZ = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+def w_DBZ(lat, lon, w = None, DBZ = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
     PB2 = Paintbox_2D(field=dict(w=w, DBZ=DBZ), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     # gray = 0.9
     # MP.ax.set_facecolor(color = [gray, gray, gray])
@@ -81,21 +81,21 @@ def w_DBZ(lat, lon, w = None, DBZ = None, title = "", figsize = figsize, xlim = 
     return MP, PB2
 
 @MPbase
-def VEL_discrete(lat, lon, wind, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+def VEL_discrete(lat, lon, wind, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
     PB2 = Paintbox_2D(field=dict(wind=wind), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not wind is None:
         PB2.pcolormesh(varname="wind", colorkey="radial_wind", cbtitle="m/s")
     return MP, PB2
 
 @MPbase
-def P_perturbation(lat, lon, p, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+def P_perturbation(lat, lon, p, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
     PB2 = Paintbox_2D(field=dict(p=p), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not p is None:
         PB2.contourf(varname="p", colorkey="Pperturbation", cbtitle="hPa")
     return MP, PB2
 
 @MPbase
-def Pressure(lat, lon, p, p_base, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+def Pressure(lat, lon, p, p_base, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
     PB2 = Paintbox_2D(field=dict(p=p), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     cmapdict = get_cmapdict("Pperturbation")
     add_norm(cmapdict, p_base)
@@ -104,7 +104,7 @@ def Pressure(lat, lon, p, p_base, title = "", figsize = figsize, xlim = xlim, yl
     return MP, PB2
 
 @MPbase
-def temperature(lat, lon, T, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP = None):
+def temperature(lat, lon, T, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
     PB2 = Paintbox_2D(field=dict(T=T), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not T is None:
         PB2.contourf(varname="T", colorkey="SST", cbtitle="K")
