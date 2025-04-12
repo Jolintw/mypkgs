@@ -33,7 +33,10 @@ class CrossSection:
         newvar = newvar + np.nan
         newvar = np.broadcast_to(newvar, (*var.shape[:-2], self.n))
         newvar = np.array(newvar)
-        newvar[:, self.ind_ingrid] = self.RAI.interpolate(var)
+        if len(newvar.shape) >= 2:
+            newvar[:, self.ind_ingrid] = self.RAI.interpolate(var)
+        elif len(newvar.shape) == 1:
+            newvar[self.ind_ingrid] = self.RAI.interpolate(var)
         return newvar
     
     def add_variable(self, varname, var):
@@ -105,7 +108,7 @@ def add_relativewind_to_dict(windfield, ref_uv = [], angle = None, angle_unit = 
             windfield["rel_cross_wind"] = cross_wind(windfield["rel_u"], windfield["rel_v"], angle, angle_unit)
     return windfield
 
-def interpolate_and_write_with_CS(CS, x, y, z, field, varlist, savepath = None, filename = None):
+def interpolate_and_write_with_CS(CS:CrossSection, x, y, z, field, varlist, savepath = None, filename = None):
     """
     CS: CrossSection object\n
     x: x grid (nx,)\n
