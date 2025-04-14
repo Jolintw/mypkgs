@@ -22,7 +22,7 @@ class Paintbox:
         if not fig is None:
             self.fig = fig
     
-    def _get_fontsize(self, ft):
+    def _get_fontsize(self, ft=None):
         if ft is None:
             return self.fontsize
         else:
@@ -236,14 +236,18 @@ class Paintbox_1D(Paintbox):
         Y = self._make_same_y_array_by_yposition(X, yposition, ax)
         return ax.barbs(X[::intv], Y[::intv], U[::intv], V[::intv])
 
-    def scatter(self, Xname, Yname, Cname, colorkey, fig = None, ax = None, cbkwargs={}, **kwargs):
+    def scatter(self, Xname, Yname, Cname, colorkey=None, cmapdict=None, fig = None, ax = None, cbkwargs={}, **kwargs):
         X, C, fig, ax = self._get_necessary([Xname, Yname], Cname, fig, ax)
         X, Y = X[0], X[1]
         ft = self._get_fontsize()
+        scatterargs = {}
         cbtitle = None
-        scatterargs = colorkw[colorkey].copy()
+        if colorkey:
+            cmapdict = colorkw[colorkey]
+        scatterargs = cmapdict.copy()
+        
         del scatterargs["cbticks"]
-        im = ax.scatter(X, Y, c=C, **scatterargs)
+        im = ax.scatter(X, Y, c=C, **scatterargs, **kwargs)
         if "title" in cbkwargs:
             cbtitle = cbkwargs["title"]
             del cbkwargs["title"]
