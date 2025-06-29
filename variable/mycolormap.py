@@ -112,6 +112,13 @@ kw["vmax"] = 2.5
 kw["vmin"] = -0.5
 kw["continuous"] = True
 
+name = "PID"
+kw = _kw(colorkw, name)
+kw["cmap"] = mpl.colors.ListedColormap(['#ffffff','#CDCFB6','#F8D99A','#F69A23','#C67A21','#F84036','#F2FE42','#16DE2C', '#1FA52C','#0D8D20','#63DAFC','#718BEC', '#694BC1','#FEC7FD','#F49AB5', "#FEFEFE", "#9EA07F", "#C21BA2", "#3A00C8"])
+bounds = np.arange(19) - 0.5
+kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
+# kw["cbtickslabel"] = ["None", "CldDrops", "Drizzle", "LtRain", "ModRain", "HvyRain", "Hail", "RainHail", "GrSmHail", "GrRain", "DrySnow", "WetSnow", "Ice", "IrregIce", "Slw", "Insects", "2ndTrip", "Clutter", "Satur"]
+
 name = "KDP_discrete"
 kw = _kw(colorkw, name)
 kw["cmap"] = NCL_MPL_Spectral
