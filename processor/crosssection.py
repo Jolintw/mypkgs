@@ -56,7 +56,7 @@ class CrossSection:
             return np.sqrt((x - x[0])**2 + (y - y[0])**2)
         else:
             return s
-        
+
 # point_place = "head" or "mid" or "end",
 # means (x0, y0) will be the first, middle, or last point of crosssec
 # distance between every two point will be: length / (number - 1)
@@ -80,6 +80,17 @@ def create_CS_by_pointandangle(x, y, angle, length, number = 101, point_place = 
         y_arr = y_arr[::-1]
     CS = CrossSection(x_arr, y_arr)
     return CS
+
+def create_CSs_by_pointandangle(x, y, angle, length, number = 101, point_place = "head", CS_number = 1, CS_shift_length = 0, CS_shift_angle = None, angle_unit = "radius"):
+    if angle_unit == "degree":
+        angle = angle / 180 * np.pi
+    if CS_shift_angle is None:
+        CS_shift_angle = angle + np.pi / 2
+    CS_base = create_CS_by_pointandangle(x, y, CS_shift_angle, CS_shift_length, number = CS_number, point_place = "mid")
+    CSlist = []
+    for x_base, y_base in zip(CS_base.x, CS_base.y):
+        CSlist.append(create_CS_by_pointandangle(x_base, y_base, angle, length, number = number, point_place = point_place))
+    return CSlist
 
 # angle is the positive direction
 # angle: math angle
@@ -108,6 +119,53 @@ def add_relativewind_to_dict(windfield, ref_uv = [], angle = None, angle_unit = 
             windfield["rel_cross_wind"] = cross_wind(windfield["rel_u"], windfield["rel_v"], angle, angle_unit)
     return windfield
 
+def interpolate_CS(CS:CrossSection, x, y, field, varlist):
+    """
+    CS: CrossSection object\n
+    x: x grid (nx,)\n
+    y: y grid (ny,)
+    """
+    CS.create_interpolater(x, y)
+    for varname in varlist:
+        if isinstance(field[varname], np.ma.core.MaskedArray):
+            field[varname][field[varname].mask] = np.nan
+        CS.add_variable(varname, CS.interpolate(field[varname]))
+
+def mean_CS(CSlist, mask_var_name = None):
+    CSdata_combined = {"x":[], "y":[]}
+    for var_name in CSlist[0].variables.keys():
+        CSdata_combined[var_name] = []
+    if mask_var_name:
+        CSdata_combined["mask"] = []
+
+    for CS in CSlist:
+        CSdata_combined["x"].append(CS.x)
+        CSdata_combined["y"].append(CS.y)
+        for var_name in CS.variables.keys():
+            CSdata_combined[var_name].append(CS.variables[var_name])
+        if mask_var_name:
+            variable = CS.variables[mask_var_name]
+            if isinstance(variable, np.ma.core.MaskedArray):
+                mask = variable.mask | np.isnan(variable.data)
+            else:
+                mask = np.isnan(variable)
+            mask = ~mask
+            mask = mask.astype(float)
+            CSdata_combined["data_coverage"].append(mask)
+    for var_name in CSdata_combined:
+        CSdata_combined[var_name] = np.array(CSdata_combined[var_name])
+        CSdata_combined[var_name] = np.nanmean(CSdata_combined[var_name], axis=0)
+    newCS = CrossSection(CSdata_combined["x"], CSdata_combined["y"])
+    CSdata_combined.pop("x")
+    CSdata_combined.pop("y")
+    newCS.variables = CSdata_combined
+    return newCS
+
+
+def write_and_reset_CS(CS:CrossSection, z, savepath, filename):
+    writer_section(CS, z, savepath, filename)
+    CS.reset_variable()
+
 def interpolate_and_write_with_CS(CS:CrossSection, x, y, z, field, varlist, savepath = None, filename = None):
     """
     CS: CrossSection object\n
@@ -115,14 +173,9 @@ def interpolate_and_write_with_CS(CS:CrossSection, x, y, z, field, varlist, save
     y: y grid (ny,)\n
     z: z grid (nz,)
     """
-    CS.create_interpolater(x, y)
-    for varname in varlist:
-        if isinstance(field[varname], np.ma.core.MaskedArray):
-            field[varname][field[varname].mask] = np.nan
-        CS.add_variable(varname, CS.interpolate(field[varname]))
+    interpolate_CS(CS, x, y, field, varlist)
     
     if not (savepath is None or filename is None):
-        writer_section(CS, z, savepath, filename)
-        CS.reset_variable()
+        write_and_reset_CS(CS, z, savepath, filename)
         
     return CS

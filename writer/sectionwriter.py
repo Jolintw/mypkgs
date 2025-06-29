@@ -16,7 +16,11 @@ def writer_section(CS, z, savepath, filename):
     NCW.writeDims(dimensionDict = {"s":CS.s, "z":z})
     for varname in CS.variables.keys():
         NCW.writeVariable(varname, CS.variables[varname])
-    NCW.writeVariable("data_coverage", CS.mask_ingrid.astype(int))
+    if not "data_coverage" in CS.variables.keys():
+        try: 
+            NCW.writeVariable("data_coverage", CS.mask_ingrid.astype(int))
+        except:
+            pass
     NCW.writeVariable("x", CS.x)
     NCW.writeVariable("y", CS.y)
     NCW.done()
