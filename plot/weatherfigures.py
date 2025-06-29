@@ -95,12 +95,15 @@ def P_perturbation(lon, lat, p, title = "", figsize = figsize, xlim = xlim, ylim
     return MP, PB2
 
 @MPbase
-def Pressure(lon, lat, p, p_base, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
-    PB2 = Paintbox_2D(field=dict(p=p), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
+def Pressure(lon, lat, p, p_base, u = None, v = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
+    PB2 = Paintbox_2D(field=dict(p=p,u=u,v=v), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     cmapdict = get_cmapdict("Pperturbation")
     add_norm(cmapdict, p_base)
     if not p is None:
         PB2.contourf(varname="p", cmapdict = cmapdict, cbtitle="hPa")
+    if not u is None:
+        PB2.auto_barbs(Uname="u", Vname="v", length_mult=length_mult, color="k", barbnum=barbnum)
+        # PB2.contourf(varname="ws", colorkey="ws_small", cbtitle="m/s")
     return MP, PB2
 
 @MPbase
