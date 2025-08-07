@@ -326,6 +326,14 @@ kw["cmap"].colorbar_extend = "min"
 bounds = [0.1, 250, 500, 750, 1000, 1500, 2000, 3000, 4000]
 kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
 
+name = "terrain_detailed"
+kw = _kw(colorkw, name)
+kw["cmap"] = NCL_MPL_terrain[32:]
+kw["cmap"].set_under(NCL_MPL_terrain(15))
+kw["cmap"].colorbar_extend = "min"
+bounds = [0.1, 100, 200, 300, 400, 500, 750, 1000, 1500, 2000, 3000, 4000]
+kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
+
 name = "lsm"
 kw = _kw(colorkw, name)
 kw["cmap"] = NCL_MPL_terrain[15:33:17]
