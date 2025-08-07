@@ -28,7 +28,7 @@ plotterargs = dict(subfigsize_x=10, subfigsize_y=6)
 #     else:
 #         return varname
 
-def secplotbase(field_wind, infor_wind, field_other=None, infor_other=None, plotterargs = plotterargs, xlim = xlim, ylim = ylim, xshift = False, row=1, column=1):
+def secplotbase(field_wind, infor_wind, field_other=None, infor_other=None, plotterargs = plotterargs, xlim = xlim, ylim = ylim, xshift = False, row=1, column=1, facecolor=[0.9, 0.9, 0.9]):
     sub_number = row*column
     xlabelaxn = [i + row - 1 for i in range(int(np.round(sub_number/row)))]
     ylabelaxn = [i * 2 for i in range(row)]
@@ -41,8 +41,7 @@ def secplotbase(field_wind, infor_wind, field_other=None, infor_other=None, plot
         PB_other = None
     CSP        = CrossSectionPlotter(PT, PB_wind, PB_other)
 
-    gray = 0.9
-    PT.set_facecolor(color = [gray, gray, gray])
+    PT.set_facecolor(color = facecolor)
     auto_set_lim(CSP, xlim, xshift, ylim)
     PT.set_xlabel("distance (km)", axn = xlabelaxn)
     PT.set_ylabel("height (km)", axn = ylabelaxn)

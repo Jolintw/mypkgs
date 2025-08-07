@@ -8,6 +8,7 @@ class CrossSectionPlotter:
         self.PT       = plotter
         self.PB_wind  = paintbox_wind
         self.PB_other = patinbox_other
+        self.auto_return = []
         
     def auto_pc(self, varname, axn = None, **args):
         """
@@ -16,7 +17,8 @@ class CrossSectionPlotter:
         axs = self.PT._axntoaxs(axn)
         for ax in axs:
             PB = self._findPB(varname)
-            PB.pcolormesh(varname, ax = ax, **args)
+            return_obj = PB.pcolormesh(varname, ax = ax, **args)
+            self.auto_return.append(return_obj)
 
     def auto_cf(self, varname, axn = None, **args):
         """
@@ -25,7 +27,8 @@ class CrossSectionPlotter:
         axs = self.PT._axntoaxs(axn)
         for ax in axs:
             PB = self._findPB(varname)
-            PB.contourf(varname, ax = ax, **args)
+            return_obj = PB.contourf(varname, ax = ax, **args)
+            self.auto_return.append(return_obj)
             
     def auto_ct(self, varname, levels, colors = "k", linewidths = None, axn = None, **args):
         """
@@ -35,7 +38,8 @@ class CrossSectionPlotter:
         linewidths = self.PT._autolinewidths(linewidths) * 2
         for ax in axs:
             PB = self._findPB(varname)
-            PB.contour(varname, ax = ax, colors = colors, levels = levels, linewidths = linewidths, **args)
+            return_obj = PB.contour(varname, ax = ax, colors = colors, levels = levels, linewidths = linewidths, **args)
+            self.auto_return.append(return_obj)
 
     def auto_quiver(self, scale_q=None, xintv=None, yintv=None, uwindname = "radial_wind", vwindname="w", axn = None, **args):
         axs = self.PT._axntoaxs(axn)

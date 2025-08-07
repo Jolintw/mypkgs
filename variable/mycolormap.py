@@ -195,7 +195,15 @@ kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 name = "ws_small"
 kw = _kw(colorkw, name)
 kw["cmap"] = NCL_wind_17lev
-bounds = np.array([10,12,14,16,18,20,22,24,26,28,30,34,38,42]) - 10
+bounds = np.arange(11) * 3
+kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
+
+name = "ws_small_with_neg"
+kw = _kw(colorkw, name)
+kw["cmap"] = NCL_wind_17lev
+bounds = np.append([-90], np.arange(11) * 3)
+kw["cbticks"] = np.arange(6) * 6
+kw["cbticklabels"] = [f"{t:.0f}" for t in kw["cbticks"]]
 kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 
 name = "CFAD_DBZ"

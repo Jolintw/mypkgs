@@ -191,7 +191,7 @@ def pcolormeshcb_sub(ax,fig,X,Y,var,norm=None,cmap=None,cbtitle='',ft=30,orienta
     cb.ax.tick_params(labelsize=ft-2)
     return im, cb
     
-def contourfcb_sub(ax,fig,X,Y,var,levels=None,norm=None,cmap=None,cbtitle='',ft=30,orientation='vertical',extend=None,shrink=1, vmin=None, vmax=None, continuous=False,cbticks=None):
+def contourfcb_sub(ax,fig,X,Y,var,levels=None,norm=None,cmap=None,cbtitle='',ft=30,orientation='vertical',extend=None,shrink=1, vmin=None, vmax=None, continuous=False,cbticks=None,cbticklabels=None):
     norm, cmap, vmin, vmax = _autosetting(var, norm, cmap, vmin, vmax)
     if extend is None:
         if cmap.colorbar_extend:
@@ -209,11 +209,9 @@ def contourfcb_sub(ax,fig,X,Y,var,levels=None,norm=None,cmap=None,cbtitle='',ft=
     if cbticks is None:
         cb = fig.colorbar(im, orientation = orientation, extend=extend, shrink = shrink, ax=ax)
     else:
-        cb = fig.colorbar(im, orientation = orientation, extend=extend, shrink = shrink, ax=ax, ticks=norm.boundaries)
-        if orientation == "vertical":
-            cb.ax.set_yticklabels(cbticks)
-        if orientation == "horizontal":
-            cb.ax.set_xticklabels(cbticks)
+        cb = fig.colorbar(im, orientation = orientation, extend=extend, shrink = shrink, ax=ax)
+        cb.set_ticks(cbticks)
+        cb.set_ticklabels(cbticklabels)
     cb.ax.set_title(cbtitle, fontdict={'size':ft})
     cb.ax.tick_params(labelsize=ft-2)
     return im, cb
