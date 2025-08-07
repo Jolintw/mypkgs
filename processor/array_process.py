@@ -36,6 +36,22 @@ def broadcast_to_high(array, shape):
     newarray  = np.transpose(newarray, (*ind[-array_len:], *ind[:-array_len]))
     return newarray
 
+def in_range_mask(X, range):
+    """
+    X: np array\n
+    range: (Xmin, Xmax)
+    """
+    return (X > range[0]) & (X < range[1])
+
+def get_columns_by_2Dmask(array, mask):
+    """
+    array: np array with shape (..., ny, nx)\n
+    mask: np bool array with shape (ny, nx)
+    """
+    xind, yind = np.meshgrid(np.arange(mask.shape[1], dtype=int), np.arange(mask.shape[0], dtype=int))
+    xind_inmask, yind_inmask = xind[mask], yind[mask]
+    return array[..., yind_inmask, xind_inmask]
+
 if __name__ == "__main__":
     a = np.arange(4)
     print(np.arange(4))
