@@ -117,6 +117,13 @@ class Quadrilaterals:
             result = np.all(np.array(boollist))
         return result
 
+def cubic_eqn(x, a, b, c, d):
+    y = a*x**3 + b*x**2 + c*x + d
+    return y
+
+def quartic_eqn(x, a, b, c, d, e):
+    y = a*x**4 + b*x**3 + c*x**2 + d*x + e
+    return y
 """
 if __name__ == '__main__':
     x, y = np.meshgrid(np.arange(10), np.arange(20))
