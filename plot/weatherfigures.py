@@ -27,14 +27,16 @@ def MPbase(func):
     return wraper
 
 @MPbase
-def wind(lon, lat, u = None, v = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
+def wind(lon, lat, u = None, v = None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], intv=None, MP:MapPlotter = None):
     """
     MP is no need to give value
     """
     ws = np.sqrt(u**2 + v**2)
+    gray = 0.9
+    MP.ax.set_facecolor(color = [gray, gray, gray])
     PB2 = Paintbox_2D(field=dict(u=u,v=v,ws=ws), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not u is None:
-        PB2.auto_barbs(Uname="u", Vname="v", length_mult=length_mult, color="k", barbnum=barbnum)
+        PB2.auto_barbs(Uname="u", Vname="v", length_mult=length_mult, color="k", barbnum=barbnum, intv=intv)
         PB2.contourf(varname="ws", colorkey="ws_small", cbtitle="m/s")
     return MP, PB2
 
