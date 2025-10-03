@@ -159,10 +159,18 @@ class Paintbox_2D(Paintbox):
         ylim = ax.get_ylim()
         X = self.X
         Y = self.Y
+        minx = max(np.min(X), xlim[0])
+        maxx = min(np.max(X), xlim[1])
+        miny = max(np.min(Y), ylim[0])
+        maxy = min(np.max(Y), ylim[1])
+
         X_inxlim = np.logical_and(X > xlim[0], X < xlim[1])
         Y_inylim = np.logical_and(Y > ylim[0], Y < ylim[1])
         meanXlen = np.mean(np.sum(X_inxlim, axis=1))
         meanYlen = np.mean(np.sum(Y_inylim, axis=0))
+        meanXlen = meanXlen * (xlim[1]-xlim[0]) / (maxx-minx)
+        meanYlen = meanYlen * (ylim[1]-ylim[0]) / (maxy-miny)
+
         return [meanXlen, meanYlen]
 
     def _get_necessary(self, varname, fig, ax):
