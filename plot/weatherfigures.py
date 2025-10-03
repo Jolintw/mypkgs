@@ -9,7 +9,7 @@ xlim = [117, 123]
 ylim = [20, 25]
 dpi = 250
 length_mult = 0.6
-barbnum = 30
+barbnum = 15
 
 def MPbase(func):
     @wraps(func)
