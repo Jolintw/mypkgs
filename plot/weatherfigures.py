@@ -2,7 +2,7 @@ from functools import wraps
 import numpy as np
 from mypkgs.plotter.plotter import MapPlotter
 from mypkgs.plotter.paintbox import Paintbox_2D
-from mypkgs.variable.mycolormap import get_cmapdict, add_norm, multiply_norm
+from mypkgs.variable.colormap_control import get_cmapdict, add_norm, multiply_norm
 
 figsize = [10, 7.2]
 xlim = [117, 123]
@@ -113,4 +113,17 @@ def temperature(lon, lat, T, title = "", figsize = figsize, xlim = xlim, ylim = 
     PB2 = Paintbox_2D(field=dict(T=T), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not T is None:
         PB2.contourf(varname="T", colorkey="SST", cbtitle="K")
+    return MP, PB2
+
+@MPbase
+def temperature_2sides(lon, lat, T, T_base=0, u=None, v=None, title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], MP:MapPlotter = None):
+    PB2 = Paintbox_2D(field=dict(T=T,u=u,v=v), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
+    gray = 0.9
+    MP.ax.set_facecolor(color = [gray, gray, gray])
+    cmapdict = get_cmapdict("Tperturbation")
+    add_norm(cmapdict, T_base)
+    if not T is None:
+        PB2.contourf(varname="T", cmapdict = cmapdict, cbtitle="\u00B0C")
+    if not u is None:
+        PB2.auto_barbs(Uname="u", Vname="v", length_mult=length_mult, color="k", barbnum=barbnum)
     return MP, PB2
