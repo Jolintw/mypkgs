@@ -136,6 +136,8 @@ kw = _kw(colorkw, name)
 kw["cmap"] = NCL_testmap
 bounds = [-18, -15, -12, -9, -6, -4, -2, 2, 4, 6, 9, 12, 15, 18]#(np.arange(10)-4.5)*4
 kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
+kw["cbticks"] = bounds
+kw["cbticklabels"] = bounds
 
 name = "DIV"
 kw = _kw(colorkw, name)
@@ -171,6 +173,12 @@ name = "w"
 kw = _kw(colorkw, name)
 kw["cmap"] = NCL_MPL_RdBu_r
 bounds = [-15, -10,-5,-2,-0.5,0.5,2,5,10, 15]
+kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
+
+name = "w_small"
+kw = _kw(colorkw, name)
+kw["cmap"] = NCL_MPL_RdBu_r
+bounds = [-10,-5,-2,-1,-0.5,0.5,1,2,5,10]
 kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 
 name = "ws"
@@ -390,21 +398,6 @@ for k in colorkw:
         if key not in kw:
             kw[key] = None
 
-def get_cmapdict(name):
-    return copy.deepcopy(colorkw[name])
-
-def add_norm(cmapdict, add_number):
-    bounds = cmapdict["norm"].boundaries
-    cmapdict["norm"] = mpl.colors.BoundaryNorm(bounds + add_number, kw["cmap"].N)
-
-def multiply_norm(cmapdict, mul_number):
-    bounds = cmapdict["norm"].boundaries
-    cmapdict["norm"] = mpl.colors.BoundaryNorm(bounds * mul_number, kw["cmap"].N)
-
-
 if __name__ == "__main__":
     print(colorkw["SST"]["norm"].boundaries)
-    cmapdict = get_cmapdict("SST")
-    add_norm(cmapdict, 10)
     print(colorkw["SST"]["norm"].boundaries)
-    print(cmapdict["norm"].boundaries)
