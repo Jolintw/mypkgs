@@ -202,8 +202,8 @@ kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 # kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 name = "ws_small"
 kw = _kw(colorkw, name)
-kw["cmap"] = NCL_wind_17lev
-bounds = np.arange(11) * 3
+kw["cmap"] = NCL_wind_17lev[1:]
+bounds = np.arange(13) * 3
 kw["norm"] = mpl.colors.BoundaryNorm(bounds,kw["cmap"].N)
 
 name = "ws_small_with_neg"
