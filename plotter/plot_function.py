@@ -58,13 +58,13 @@ def get_lonticks(xtimin = 0, xtimax = 360, ticksitvl = 60, xlim = [0, 360]):
         if lon_i==0:
             xticklabels.append('0')
         if lon_i==180:
-            xticklabels.append('180')
+            xticklabels.append('180\u00B0')
         elif lon_i>180:
-            xticklabels.append('{:.1f}W'.format(360-lon_i))
+            xticklabels.append('{:.1f}\u00B0W'.format(360-lon_i))
         elif lon_i<0:
-            xticklabels.append('{:.1f}W'.format(-lon_i))
+            xticklabels.append('{:.1f}\u00B0W'.format(-lon_i))
         elif lon_i>0:
-            xticklabels.append('{:.1f}E'.format(lon_i))
+            xticklabels.append('{:.1f}\u00B0E'.format(lon_i))
     return xticks, xticklabels
 
 def get_latticks(ytimin = -90, ytimax = 90, ticksitvl = 30, ylim = [-90, 90]):
@@ -73,11 +73,11 @@ def get_latticks(ytimin = -90, ytimax = 90, ticksitvl = 30, ylim = [-90, 90]):
     yticklabels = []
     for lat_i in yticks:
         if lat_i==0:
-            yticklabels.append('0')
+            yticklabels.append('0\u00B0')
         if lat_i<0:
-            yticklabels.append('{:.1f}S'.format(-lat_i))
+            yticklabels.append('{:.1f}\u00B0S'.format(-lat_i))
         if lat_i>0:
-            yticklabels.append('{:.1f}N'.format(lat_i))
+            yticklabels.append('{:.1f}\u00B0N'.format(lat_i))
     return yticks, yticklabels
 
 def setlatlonticks(ax,ticksitvl=[60,30],xlim=[0,360],ylim=[-90,90], xtick_lim = [0, 360], ytick_lim = [-90, 90]):
