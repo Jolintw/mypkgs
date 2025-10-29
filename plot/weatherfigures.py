@@ -7,14 +7,14 @@ from mypkgs.variable.colormap_control import get_cmapdict, add_norm, multiply_no
 figsize = [10, 7.2]
 xlim = [117, 123]
 ylim = [20, 25]
-dpi = 250
+dpi = 300
 length_mult = 0.6
 barbnum = 15
 
 def MPbase(func):
     @wraps(func)
     def wraper(*args, **kwargs):
-        MP = MapPlotter(figsize=figsize, dpi=dpi)
+        MP = MapPlotter(figsize=kwargs["figsize"], dpi=dpi)
         MP.setlatlonticks(ticksitvl=kwargs["ticksitvl"], xlim=kwargs["xlim"], ylim=kwargs["ylim"])
         kwargs["MP"] = MP
         MP, PB2 = func(*args, **kwargs)

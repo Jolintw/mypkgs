@@ -3,7 +3,7 @@ import numpy as np
 from mypkgs.plotter.plotter import MapPlotter
 from mypkgs.plotter.paintbox import Paintbox_2D
 
-figsize = [8, 6]
+figsize = [7.5, 5]
 xlim = [108, 128]
 ylim = [15, 35]
 dpi = 300
@@ -13,7 +13,7 @@ barbnum = 20
 def MPbase(func):
     @wraps(func)
     def wraper(*args, **kwargs):
-        MP = MapPlotter(figsize=figsize, dpi=dpi)
+        MP = MapPlotter(figsize=kwargs["figsize"], dpi=dpi)
         MP.setlatlonticks(ticksitvl=kwargs["ticksitvl"], xlim=kwargs["xlim"], ylim=kwargs["ylim"])
         kwargs["MP"] = MP
         MP, PB2 = func(*args, **kwargs)
