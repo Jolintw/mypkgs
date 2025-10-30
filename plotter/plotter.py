@@ -279,10 +279,10 @@ class MapPlotter(Plotter):
     def __init__(self, row = 1, column = 1, figsize = None, subfigsize_x = None, subfigsize_y = None, fontsize = None, subplot_kw={"projection":ccrs.PlateCarree()}, **fig_kw):
         super().__init__(row=row, column=column, figsize=figsize, subfigsize_x=subfigsize_x, subfigsize_y=subfigsize_y, fontsize=fontsize, subplot_kw=subplot_kw, **fig_kw)
         
-    def coastlines(self, axn = None):
+    def coastlines(self, axn = None, **args):
         axs = self._axntoaxs(axn)
         for ax in axs:
-            ax.coastlines()
+            ax.coastlines(**args)
     
     def setlatlonticks(self, ticksitvl = [None, None], xlim = [0,360], ylim = [-90,90], axn = None):
         axs = self._axntoaxs(axn)
