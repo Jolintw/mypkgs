@@ -42,6 +42,21 @@ def read_sections(sectionfiles):
             field = npappend(field, adddim(temp_field), axis = 0)
     return infor, field
 
+def read_sections_withfilter(sectionfiles, filter):
+    """
+    return: infor, field
+    """
+    for i_file, file in enumerate(sectionfiles):
+        temp_infor, temp_field = read_section(file, auto_mask=False)
+        if filter(temp_infor, temp_field):
+            if i_file == 0:
+                infor = adddim(temp_infor)
+                field = adddim(temp_field)
+            else:
+                infor = npappend(infor, adddim(temp_infor), axis = 0)
+                field = npappend(field, adddim(temp_field), axis = 0)
+    return infor, field
+
 def mean_sections(section_dict, coverage_tolerance = 0.7, to_masked_array = True):
     """
     section_dict: can be infor or field returned by read_section\n
