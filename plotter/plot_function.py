@@ -51,7 +51,7 @@ def setlatlonticks(ax,ticksitvl=[60,30],xlim=[0,360],ylim=[-90,90]):
     return ax
 """
 def get_lonticks(xtimin = 0, xtimax = 360, ticksitvl = 60, xlim = [0, 360]):
-    xticks = np.arange(xtimin, xtimax+0.01, ticksitvl)
+    xticks = np.arange(xtimin, xtimax+0.01*ticksitvl, ticksitvl)
     xticks = xticks[np.logical_and(xticks >= xlim[0], xticks <= xlim[1])]
     xticklabels = []
     for lon_i in xticks:
@@ -68,7 +68,7 @@ def get_lonticks(xtimin = 0, xtimax = 360, ticksitvl = 60, xlim = [0, 360]):
     return xticks, xticklabels
 
 def get_latticks(ytimin = -90, ytimax = 90, ticksitvl = 30, ylim = [-90, 90]):
-    yticks = np.arange(ytimin, ytimax+0.01, ticksitvl)
+    yticks = np.arange(ytimin, ytimax+0.01*ticksitvl, ticksitvl)
     yticks = yticks[np.logical_and(yticks >= ylim[0], yticks <= ylim[1])]
     yticklabels = []
     for lat_i in yticks:
@@ -169,7 +169,7 @@ def pcolormeshcb(ax,fig,X,Y,var,norm=None,cmap=None,cbtitle='',ft=30,orientation
     cb.ax.tick_params(labelsize=ft-2)
     return im, cb
 
-def pcolormeshcb_sub(ax,fig,X,Y,var,norm=None,cmap=None,cbtitle='',ft=30,orientation='vertical',extend=None,shrink=1, vmin=None, vmax=None, continuous=False, cbticks=None):
+def pcolormeshcb_sub(ax,fig,X,Y,var,norm=None,cmap=None,cbtitle='',ft=30,orientation='vertical',extend=None,shrink=1, vmin=None, vmax=None, continuous=False, cbticks=None, cbticklabels=None):
     norm, cmap, vmin, vmax = _autosetting(var, norm, cmap, vmin, vmax)
     if extend is None:
         if cmap.colorbar_extend:
@@ -180,13 +180,13 @@ def pcolormeshcb_sub(ax,fig,X,Y,var,norm=None,cmap=None,cbtitle='',ft=30,orienta
         im = ax.pcolormesh(X, Y, var, shading='auto', vmin=vmin, vmax=vmax, cmap = cmap)
     else:
         im = ax.pcolormesh(X, Y, var, shading='auto', norm=norm, cmap = cmap)
-    cb = fig.colorbar(im, orientation = orientation, extend=extend, shrink = shrink, ax=ax)
-    if not cbticks is None: cb.set_ticks(cbticks)
-    
-    # if cbticks is None:
-    #     cb = fig.colorbar(im, orientation = orientation, extend=extend, shrink = shrink, ax=ax)
-    # else:
-    #     cb = fig.colorbar(im, orientation = orientation, extend=extend, shrink = shrink, ax=ax,boundaries=cbticks, values=cbticks[:-1], ticks=cbticks)
+
+    if cbticks is None:
+        cb = fig.colorbar(im, orientation = orientation, extend=extend, shrink = shrink, ax=ax)
+    else:
+        cb = fig.colorbar(im, orientation = orientation, extend=extend, shrink = shrink, ax=ax)
+        cb.set_ticks(cbticks)
+        cb.set_ticklabels(cbticklabels)
     cb.ax.set_title(cbtitle, fontdict={'size':ft})
     cb.ax.tick_params(labelsize=ft-2)
     return im, cb
