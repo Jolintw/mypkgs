@@ -25,6 +25,7 @@ NCL_MPL_hot = cmaps.MPL_hot
 NCL_WhiteBlue = cmaps.WhiteBlue
 NCL_CBR_coldhot = cmaps.CBR_coldhot
 NCL_NEO_div_vegetation_a = cmaps.NEO_div_vegetation_a
+NCL_t2m_29lev = cmaps.t2m_29lev
 
 colorkw = {}
 name = "dbz_cwb"
@@ -392,6 +393,13 @@ kw["cmap"] = NCL_NEO_div_vegetation_a.copy()
 bounds = (np.arange(20) - 9.5) * 0.5
 kw["cmap"].colorbar_extend = "both"
 kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
+
+name = "landuse"
+kw = _kw(colorkw, name)
+kw["cmap"] = NCL_t2m_29lev[:24]
+bounds = np.arange(24) - 0.5
+kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
+
 
 for k in colorkw:
     kw = colorkw[k]
