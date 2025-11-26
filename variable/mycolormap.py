@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import matplotlib as mpl
+import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import cm
 import cmaps
@@ -26,6 +27,8 @@ NCL_WhiteBlue = cmaps.WhiteBlue
 NCL_CBR_coldhot = cmaps.CBR_coldhot
 NCL_NEO_div_vegetation_a = cmaps.NEO_div_vegetation_a
 NCL_t2m_29lev = cmaps.t2m_29lev
+NCL_GMT_seis_r = cmaps.GMT_seis_r
+NCL_GMT_drywet = cmaps.GMT_drywet
 
 colorkw = {}
 name = "dbz_cwb"
@@ -400,6 +403,32 @@ kw["cmap"] = NCL_t2m_29lev[:24]
 bounds = np.arange(24) - 0.5
 kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
 
+name = "llept"
+kw = _kw(colorkw, name)
+kw["cmap"] = NCL_GMT_seis_r
+bounds = np.arange(21)*1.5 + 330
+kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
+kw["cmap"].set_over(color=NCL_GMT_seis_r(NCL_GMT_seis_r.N-1))
+kw["cmap"].set_under(color=NCL_GMT_seis_r(0))
+kw["cmap"].colorbar_extend = "both"
+
+name = "llqv"
+kw = _kw(colorkw, name)
+kw["cmap"] = NCL_GMT_drywet
+bounds = np.arange(12)*2/1000 + 0.003
+kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
+kw["cmap"].set_over(color=NCL_GMT_drywet(NCL_GMT_drywet.N-1))
+kw["cmap"].set_under(color=NCL_GMT_drywet(0))
+kw["cmap"].colorbar_extend = "both"
+
+name = "llpt"
+kw = _kw(colorkw, name)
+kw["cmap"] = NCL_GMT_seis_r
+bounds = np.arange(16)*1.0 + 300
+kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
+kw["cmap"].set_over(color=NCL_GMT_seis_r(NCL_GMT_seis_r.N-1))
+kw["cmap"].set_under(color=NCL_GMT_seis_r(0))
+kw["cmap"].colorbar_extend = "both"
 
 for k in colorkw:
     kw = colorkw[k]
@@ -409,5 +438,11 @@ for k in colorkw:
             kw[key] = None
 
 if __name__ == "__main__":
+    print(NCL_GMT_seis_r(NCL_GMT_seis_r.N))
+    print(NCL_GMT_seis_r(0))
+    plt.plot(0, 0, ms=20, marker="o", color=NCL_GMT_seis_r(NCL_GMT_seis_r.N-1))
+    plt.plot(1, 0, ms=20, marker="o", color = NCL_GMT_seis_r(0))
+    plt.show()
     print(colorkw["SST"]["norm"].boundaries)
     print(colorkw["SST"]["norm"].boundaries)
+    
