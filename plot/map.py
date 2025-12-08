@@ -12,7 +12,7 @@ def taiwan(lon, lat, terrain = None, lsm = None, xlim = xlim, ylim = ylim, ticks
         im, cb = PB2.contourf("lsm", colorkey="lsm")
         cb.remove()
     if not terrain is None:
-        PB2.contourf("terrain", colorkey="terrain")
+        PB2.contourf("terrain", colorkey="terrain", cbtitle="[m]")
     # MP.coastlines()
     MP.setlatlonticks(ticksitvl=ticksitvl, xlim=xlim, ylim=ylim)
     return MP, PB2
