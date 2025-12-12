@@ -9,7 +9,7 @@ from mypkgs.plotter.crosssectionplotter import CrossSectionPlotter
 
 ylim = [0, 12]
 xlim = [15, 80]
-plotterargs = dict(subfigsize_x=10, subfigsize_y=6)
+plotterargs = dict(subfigsize_x=10, subfigsize_y=5, fontsize=28)
 
 # def get_titlestr(varname):
 #     titlestr_dict = {"DBZ": "SPOL reflectivity",
