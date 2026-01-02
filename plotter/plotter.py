@@ -308,7 +308,7 @@ class TwinPlotter(Plotter):
             self.ax = self.axs
         self._set_ticksize()
 
-    def twin(self, axesname = None, sub_num = None, xy = "x"):
+    def twin(self, axesname = None, sub_num = None, xy = "x", padratio=0.09):
         sub_num = self._auto_subnum(sub_num)
         for num in sub_num:
             if axesname is None:
@@ -322,7 +322,7 @@ class TwinPlotter(Plotter):
                 twin = ax.twiny()
             self.axs[num][name] = twin
             tick_xy = "xy".replace(xy, "")
-            self.ticks_auto_pad(axesname=name, xy=tick_xy, sub_num=num)
+            self.ticks_auto_pad(axesname=name, xy=tick_xy, sub_num=num, padratio=padratio)
             axn = (num, name)
             self._set_ticksize(axn)
         return twin
@@ -332,7 +332,7 @@ class TwinPlotter(Plotter):
         for num in sub_num:
             self.axs[num].change_axes_name(newname, oldname=oldname)
 
-    def ticks_auto_pad(self, axesname, xy, sub_num, padratio=0.09):
+    def ticks_auto_pad(self, axesname, xy, sub_num, padratio):
         axs  = self.axs[sub_num] 
         axes = self.axs[sub_num][axesname]
         if xy == "x":
