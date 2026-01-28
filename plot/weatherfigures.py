@@ -7,19 +7,31 @@ from mypkgs.variable.colormap_control import get_cmapdict, add_norm, multiply_no
 figsize = [10, 7.2]
 xlim = [117, 123]
 ylim = [20, 25]
+ticksitvl = [1, 1]
 dpi = 300
 length_mult = 0.6
 barbnum = 15
 
+def customized_MP(ticksitvl, xlim=xlim, ylim=ylim, **kwargs):
+    if not "figsize" in kwargs:
+        kwargs["figsize"] = figsize
+    if not "dpi" in kwargs:
+        kwargs["dpi"] = dpi
+    MP = MapPlotter(**kwargs)
+    MP.setlatlonticks(ticksitvl=ticksitvl, xlim=xlim, ylim=ylim)
+    return MP
+
+
 def MPbase(func):
     @wraps(func)
     def wraper(*args, **kwargs):
-        if "figsize" in kwargs:
-            MP = MapPlotter(figsize=kwargs["figsize"], dpi=dpi)
-        else:
-            MP = MapPlotter(figsize=figsize, dpi=dpi)
-        MP.setlatlonticks(ticksitvl=kwargs["ticksitvl"], xlim=kwargs["xlim"], ylim=kwargs["ylim"])
-        kwargs["MP"] = MP
+        if not "MP" in kwargs:
+            if "figsize" in kwargs:
+                MP = MapPlotter(figsize=kwargs["figsize"], dpi=dpi)
+            else:
+                MP = MapPlotter(figsize=figsize, dpi=dpi)
+            MP.setlatlonticks(ticksitvl=kwargs["ticksitvl"], xlim=kwargs["xlim"], ylim=kwargs["ylim"])
+            kwargs["MP"] = MP
         MP, PB2 = func(*args, **kwargs)
         # MP.coastlines()
         if "title" in kwargs:
