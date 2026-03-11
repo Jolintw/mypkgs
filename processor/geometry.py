@@ -117,6 +117,20 @@ class Quadrilaterals:
             result = np.all(np.array(boollist))
         return result
 
+class QuadraticEquation:
+    def __init__(self, a, b, c):
+        self.a = a
+        self.b = b
+        self.c = c
+
+    def Discriminant(self):
+        return self.b**2 - 4*self.a*self.c
+    
+    def roots(self):
+        positive = (- self.b + np.sqrt(self.Discriminant())) / 2 / self.a
+        negative = (- self.b - np.sqrt(self.Discriminant())) / 2 / self.a
+        return positive, negative
+
 def cubic_eqn(x, a, b, c, d):
     y = a*x**3 + b*x**2 + c*x + d
     return y
