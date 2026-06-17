@@ -7,6 +7,16 @@ def get_distance(point1, point2):
     distance = np.sqrt(distance)
     return distance
 
+def find_minimum_ind_2D(var):
+    ind = np.argmin(var)
+    ind_2D = (ind//var.shape[1], ind%var.shape[1])
+    return ind_2D
+
+def find_maximum_ind_2D(var):
+    ind = np.argmax(var)
+    ind_2D = (ind//var.shape[1], ind%var.shape[1])
+    return ind_2D
+
 def find_nearestgrid_2D(point, grids):
     """
     point: (x, y)\n
