@@ -8,12 +8,28 @@ def get_distance(point1, point2):
     return distance
 
 def find_minimum_ind_2D(var):
-    ind = np.argmin(var)
+    """ find index of min value
+
+    Args:
+        var (ndarray):
+
+    Returns:
+        tuple(int, int): (ind_y, ind_x)
+    """
+    ind = np.nanargmin(var)
     ind_2D = (ind//var.shape[1], ind%var.shape[1])
     return ind_2D
 
 def find_maximum_ind_2D(var):
-    ind = np.argmax(var)
+    """ find index of max value
+
+    Args:
+        var (ndarray):
+
+    Returns:
+        tuple(int, int): (ind_y, ind_x)
+    """
+    ind = np.nanargmax(var)
     ind_2D = (ind//var.shape[1], ind%var.shape[1])
     return ind_2D
 
@@ -24,7 +40,7 @@ def find_nearestgrid_2D(point, grids):
     return: (ind_y, ind_x)
     """
     dis = get_distance(point, grids)
-    nearind = np.argmin(dis)
+    nearind = np.nanargmin(dis)
     nearind_2D = (nearind//dis.shape[1], nearind%dis.shape[1])
     return nearind_2D
 
