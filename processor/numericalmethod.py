@@ -81,11 +81,11 @@ def two_point_interpolation(newX, X, Y):
 class RightAngleInterpolater:
     """
     X: a tuple containing positions of every corrdinate. X = (x1, x2) x1.shape = (n1,) # usually it will be X = (y, x)
-    X can be x1 or (x1, x2, x3, ...)
-    newX: new coordinates newX = (nx1, nx2) # shape of nx1 can be any just make sure nx1.shape == nx2.shape and len(X) == len(newX)
-    equidistance: if value in X is equidistance
-    newX_out_of_X: if True, won't print warning about newX out of X's range. And when interpolate the outer part will be filled with nan  
-    var: var.shape == (..., n1, n2)
+    \nX can be x1 or (x1, x2, x3, ...)
+    \nnewX: new coordinates newX = (nx1, nx2) # shape of nx1 can be any just make sure nx1.shape == nx2.shape and len(X) == len(newX)
+    \nequidistance: if value in X is equidistance
+    \nnewX_out_of_X: if True, won't print warning about newX out of X's range. And when interpolate the outer part will be filled with nan  
+    \nvar: var.shape == (..., n1, n2)
     """
     newXnotarray = False
     def __init__(self, X, newX, equidistance = True, newX_out_of_X = False):
