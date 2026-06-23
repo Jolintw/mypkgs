@@ -90,6 +90,7 @@ def vector_by_angle_length(angle, length, angle_unit = "radius", angle_type = "m
     """
     angle_unit: "radius"("rad") or "degree"("deg")\n
     angle_type: "math" or "met" (metangle = pi/2 - mathangle)
+    return: (x, y)
     """
     if angle_unit in ["deg", "degree"]:
         angle = angle / 180 * np.pi
@@ -138,6 +139,8 @@ def cubic_eqn(x, a, b, c, d):
 def quartic_eqn(x, a, b, c, d, e):
     y = a*x**4 + b*x**3 + c*x**2 + d*x + e
     return y
+
+
 """
 if __name__ == '__main__':
     x, y = np.meshgrid(np.arange(10), np.arange(20))
