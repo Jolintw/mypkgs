@@ -211,6 +211,41 @@ class Paintbox_1D(Paintbox):
         p[0].set(**set_dict)
         return p
     
+    def text(self, Xname, Yname, s, fig = None, ax = None, pad_direction = None, pad_distance_in_axes = 0, **set_dict):
+        X, Y, fig, ax = self._get_necessary(Xname, Yname, fig, ax)
+        if (not "size" in set_dict) and (not "fontsize" in set_dict):
+            set_dict["fontsize"] = self.fontsize
+        if pad_direction is None:
+            return ax.text(X, Y, s, **set_dict)
+        vertical = pad_direction.split(" ")[0]
+        horizontal = pad_direction.split(" ")[1]
+        if (not "ha" in set_dict) and (not "horizontalalignment" in set_dict):
+            if horizontal == "right":
+                set_dict["ha"] = "left"
+            elif horizontal == "center":
+                set_dict["ha"] = "center"
+            elif horizontal == "left":
+                set_dict["ha"] = "right"
+        if (not "va" in set_dict) and (not "verticalalignment" in set_dict):
+            if vertical == "upper":
+                set_dict["va"] = "bottom"
+            elif vertical == "center":
+                set_dict["va"] = "center"
+            elif vertical == "bottom":
+                set_dict["va"] = "upper"
+        vindex = ["bottom", "center", "upper"].index(vertical)
+        hindex = ["left", "center", "right"].index(vertical)
+        direction_array = np.array([[225, 270, 315],
+                                    [180, np.nan, 0],
+                                    [135, 90, 45]])
+        direction = direction_array[vindex, hindex] / 180 * np.pi
+        xlim, ylim = ax.get_xlim(), ax.get_ylim()
+        xlength, ylength = xlim[1] - xlim[0], ylim[1] - ylim[0]
+        xpad, ypad = xlength * np.cos(direction), ylength * np.sin(direction)
+        return ax.text(X+xpad, Y+ypad, s, **set_dict)
+
+
+            
     def quiver_y(self, Uname, Vname, Yname, xposition, fig = None, ax = None, scale_q=150, intv=1):
         """
         a line of quiver along y\n
