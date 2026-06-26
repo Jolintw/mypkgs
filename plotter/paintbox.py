@@ -216,7 +216,9 @@ class Paintbox_1D(Paintbox):
         if (not "size" in set_dict) and (not "fontsize" in set_dict):
             set_dict["fontsize"] = self.fontsize
         if pad_direction is None:
-            return ax.text(X, Y, s, **set_dict)
+            for _x, _y, _s in zip(X, Y, s):
+                ax.text(_x, _y, _s, **set_dict)
+            return 1
         vertical = pad_direction.split(" ")[0]
         horizontal = pad_direction.split(" ")[1]
         if (not "ha" in set_dict) and (not "horizontalalignment" in set_dict):
@@ -234,15 +236,17 @@ class Paintbox_1D(Paintbox):
             elif vertical == "bottom":
                 set_dict["va"] = "upper"
         vindex = ["bottom", "center", "upper"].index(vertical)
-        hindex = ["left", "center", "right"].index(vertical)
+        hindex = ["left", "center", "right"].index(horizontal)
         direction_array = np.array([[225, 270, 315],
                                     [180, np.nan, 0],
                                     [135, 90, 45]])
         direction = direction_array[vindex, hindex] / 180 * np.pi
         xlim, ylim = ax.get_xlim(), ax.get_ylim()
         xlength, ylength = xlim[1] - xlim[0], ylim[1] - ylim[0]
-        xpad, ypad = xlength * np.cos(direction), ylength * np.sin(direction)
-        return ax.text(X+xpad, Y+ypad, s, **set_dict)
+        xpad, ypad = xlength * np.cos(direction) * pad_distance_in_axes, ylength * np.sin(direction) * pad_distance_in_axes
+        for _x, _y, _s in zip(X, Y, s):
+            ax.text(_x+xpad, _y+ypad, _s, **set_dict)
+        return 1
 
 
             
