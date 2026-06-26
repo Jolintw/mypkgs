@@ -41,5 +41,18 @@ def indexlist_in_timerange(datetimelist, starttime, endtime):
 
     return result
 
+def indexlist_of_specific_times(datetimelist, specific_times, timefmt):
+    """pick specific time (for example: 06:00, 12:00, 18:00, 00:00)
+    Args:
+        datetimelist (list): list of datetime
+        specific_times (list): list of str (["0600", "1200", "1800", "0000"])
+        timefmt (str): format of time to compare with specific_times ("%H%M")
+    """
+    result = []
+    for i_t, t in enumerate(datetimelist):
+        if t.strftime(timefmt) in specific_times:
+            result.append(i_t)
+    return result
+
 def era5time_to_datetime(time):
     return timestamp_to_datetime(time.astype(float)*3600 - (dd(1970, 1, 1) - dd(1900, 1, 1)).total_seconds())
