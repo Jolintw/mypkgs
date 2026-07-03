@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
+from collections.abc import Iterable
 from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-from collections.abc import Iterable
 
 import mypkgs.plotter.plot_function as pf
 from mypkgs.plotter.plot_function import pcolormeshcb_sub, contourfcb_sub

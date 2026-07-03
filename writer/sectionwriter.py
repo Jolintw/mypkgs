@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-import netCDF4 as nc
-from mypkgs.writer.filewriter import NCWriter
 from pathlib import Path
+import netCDF4 as nc
+
+from mypkgs.writer.filewriter import NCWriter
 
 def writer_section(CS, z, savepath, filename):
     """

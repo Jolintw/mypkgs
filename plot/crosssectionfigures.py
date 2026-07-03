@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import numpy as np
-import matplotlib.pyplot as plt
+
 from mypkgs.processor.crosssection   import add_relativewind_to_dict
 from mypkgs.processor.numericalmethod import RightAngleInterpolater
 from mypkgs.plotter.plotter          import Plotter

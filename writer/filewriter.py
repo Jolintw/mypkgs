@@ -1,6 +1,6 @@
+from pathlib import Path
 import netCDF4 as nc
 import numpy as np
-from pathlib import Path
 
 class NCWriter:
     newNCD = None

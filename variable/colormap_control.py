@@ -1,6 +1,7 @@
 
 import copy
 import matplotlib as mpl
+
 from mypkgs.variable.mycolormap import colorkw
 
 def get_cmapdict(name, colorkw=colorkw):

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
+import copy
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import numpy as np
 from matplotlib import cm
+import numpy as np
 import cmaps
-import copy
 
 def _kw(colorkw, name):
     colorkw[name] = {}

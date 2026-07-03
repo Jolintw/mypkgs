@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import matplotlib.pyplot as plt
-from mypkgs.processor.numericalmethod import central_diff
 
 # boundary: zero gradient
 def poisson_eq_relaxation(var, dx, tol_value = 1e-4, nan_ok = False):

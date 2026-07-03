@@ -1,6 +1,4 @@
-import matplotlib.pyplot as plt
-
-from mypkgs.plotter.paintbox import Paintbox_1D, Paintbox_2D
+from mypkgs.plotter.paintbox import Paintbox_1D
 from mypkgs.plotter.plotter import TwinPlotter, MapPlotter
 
 def timeseries_T_rh_rain(data, Tname, rhname, rainname, Uname, Vname, starttime, endtime, timename="timestamp"):

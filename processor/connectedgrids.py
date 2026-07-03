@@ -1,5 +1,6 @@
 import abc
 import numpy as np
+
 from mypkgs.processor.gridmethod import get_distance
 
 class ConnectedGrids_2D:
