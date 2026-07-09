@@ -3,6 +3,8 @@ import numpy as np
 
 from mypkgs.processor.numericalmethod import RightAngleInterpolater
 from mypkgs.writer.sectionwriter import writer_section
+from mypkgs.processor.geometry import Line_2D
+from mypkgs.processor.gridmethod import get_distance
 
 class CrossSection:
     """
@@ -92,6 +94,15 @@ def create_CSs_by_pointandangle(x, y, angle, length, number = 101, point_place =
     for x_base, y_base in zip(CS_base.x, CS_base.y):
         CSlist.append(create_CS_by_pointandangle(x_base, y_base, angle, length, number = number, point_place = point_place))
     return CSlist
+
+def create_CS_by_pointandpoint(x1, x2, y1, y2, interval):
+    p1, p2 = (x1, y1), (x2, y2)
+    line = Line_2D(p1, p2)
+    angle = line.angle
+    distance = get_distance(p1, p2)
+    number = int(np.floor(distance / interval)) + 1 + 1
+    length = interval * (number - 1)
+    return create_CS_by_pointandangle(x1, y1, angle, length, number)
 
 # angle is the positive direction
 # angle: math angle
