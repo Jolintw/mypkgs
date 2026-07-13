@@ -9,6 +9,7 @@ def create_cylindricle(phi_n, r_intv, r_max, center_x, center_y):
     cyl["phi"], cyl["r"] = np.meshgrid(phi, r)
     cyl["x"], cyl["y"] = vector_by_angle_length(angle=cyl["phi"], length=cyl["r"])
     cyl["x"], cyl["y"] = cyl["x"] + center_x, cyl["y"] + center_y
+    return cyl
     
 
 def create_cylindricle_interpolate_data(x, y, data, var_to_interpolate, phi_n, r_intv, r_max, center_x, center_y):
@@ -16,3 +17,4 @@ def create_cylindricle_interpolate_data(x, y, data, var_to_interpolate, phi_n, r
     RAI = RightAngleInterpolater(X=(y, x), newX=(cyl["y"], cyl["x"]), equidistance=True)
     for var in var_to_interpolate:
         cyl[var] = RAI.interpolate(data[var])
+    return cyl
