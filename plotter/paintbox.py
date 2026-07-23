@@ -109,9 +109,9 @@ class Paintbox_2D(Paintbox):
             if intv is None:
                 if isinstance(barbnum, int):
                     barbnum = [barbnum, barbnum]
-                intv = [max(int(np.floor(l / n)), 1) for l, n in zip(meanlen, barbnum)]
+                intv = [max(int(np.round(l / n)), 1) for l, n in zip(meanlen, barbnum)]
             elif isinstance(intv, list):
-                barbnum = [int(np.floor(l / i)) for l, i in zip(meanlen, intv)]
+                barbnum = [int(np.round(l / i)) for l, i in zip(meanlen, intv)]
             if length_mult is None:
                 length_mult = 10 / max(barbnum)
             length = np.sqrt(length_mult) * length_ref
