@@ -3,31 +3,13 @@ import numpy as np
 
 from mypkgs.plotter.plotter import MapPlotter
 from mypkgs.plotter.paintbox import Paintbox_2D
+from mypkgs.plot.plotbase import MPbase
 
-figsize = [7.5, 5]
-xlim = [108, 128]
-ylim = [15, 35]
-dpi = 300
 length_mult = 0.45
 barbnum = 20
 
-def MPbase(func):
-    @wraps(func)
-    def wraper(*args, **kwargs):
-        MP = MapPlotter(figsize=kwargs["figsize"], dpi=dpi)
-        MP.setlatlonticks(ticksitvl=kwargs["ticksitvl"], xlim=kwargs["xlim"], ylim=kwargs["ylim"], fmt=kwargs["tick_fmt"])
-        kwargs["MP"] = MP
-        MP, PB2 = func(*args, **kwargs)
-        MP.coastlines()
-        MP.title(kwargs["title"], loc="left")
-        MP.grid()
-        MP.set_aspect()
-        return MP, PB2
-    return wraper
-
 @MPbase
-def NCDR_surface(lon, lat, u = None, v = None, slp = None, cwv = None, thick_1000_500 = None, 
-                 title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], tick_fmt = ".1f", fontsize = None, MP:MapPlotter = None):
+def NCDR_surface(lon, lat, u = None, v = None, slp = None, cwv = None, thick_1000_500 = None, MP:MapPlotter = None):
     """
     MP is no need to give value
     """
@@ -47,8 +29,7 @@ def NCDR_surface(lon, lat, u = None, v = None, slp = None, cwv = None, thick_100
 
 
 @MPbase
-def NCDR_850ept(lon, lat, u = None, v = None, z = None, T = None, ept = None, 
-                title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], tick_fmt = ".1f", fontsize = None, MP:MapPlotter = None):
+def NCDR_850ept(lon, lat, u = None, v = None, z = None, T = None, ept = None, MP:MapPlotter = None):
     """
     MP is no need to give value
     """
@@ -66,8 +47,7 @@ def NCDR_850ept(lon, lat, u = None, v = None, z = None, T = None, ept = None,
     return MP, PB2
 
 @MPbase
-def NCDR_700rh(lon, lat, u = None, v = None, z = None, rh = None, div = None, 
-               title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], tick_fmt = ".1f", fontsize = None, MP:MapPlotter = None):
+def NCDR_700rh(lon, lat, u = None, v = None, z = None, rh = None, div = None, MP:MapPlotter = None):
     """
     MP is no need to give value
     rh: relative humidity (%)
@@ -86,8 +66,7 @@ def NCDR_700rh(lon, lat, u = None, v = None, z = None, rh = None, div = None,
     return MP, PB2
 
 @MPbase
-def NCDR_500vor(lon, lat, u = None, v = None, z = None, vor = None, 
-                title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], tick_fmt = ".1f", fontsize = None, MP:MapPlotter = None):
+def NCDR_500vor(lon, lat, u = None, v = None, z = None, vor = None, MP:MapPlotter = None):
     """
     MP is no need to give value
     vor: vorticity (s^-1)
@@ -103,8 +82,7 @@ def NCDR_500vor(lon, lat, u = None, v = None, z = None, vor = None,
     return MP, PB2
 
 @MPbase
-def NCDR_300ws(lon, lat, u = None, v = None, z = None, ws = None, div = None, 
-               title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], tick_fmt=".1f", fontsize = None, MP:MapPlotter = None):
+def NCDR_300ws(lon, lat, u = None, v = None, z = None, ws = None, div = None, MP:MapPlotter = None):
     """
     MP is no need to give value
     ws: windspeed (m s^-1)
@@ -122,8 +100,7 @@ def NCDR_300ws(lon, lat, u = None, v = None, z = None, ws = None, div = None,
     return MP, PB2
 
 @MPbase
-def NCDR_200ws(lon, lat, u = None, v = None, z = None, ws = None, div = None, 
-               title = "", figsize = figsize, xlim = xlim, ylim = ylim, ticksitvl = [None, None], tick_fmt=".1f", fontsize = None, MP:MapPlotter = None):
+def NCDR_200ws(lon, lat, u = None, v = None, z = None, ws = None, div = None, MP:MapPlotter = None):
     """
     MP is no need to give value
     ws: windspeed (m s^-1)
