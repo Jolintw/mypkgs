@@ -50,7 +50,7 @@ def setlatlonticks(ax,ticksitvl=[60,30],xlim=[0,360],ylim=[-90,90]):
     ax.set_ylim(ylim)
     return ax
 """
-def get_lonticks(xtimin = 0, xtimax = 360, ticksitvl = 60, xlim = [0, 360]):
+def get_lonticks(xtimin = 0, xtimax = 360, ticksitvl = 60, xlim = [0, 360], fmt = ".1f"):
     xticks = np.arange(xtimin, xtimax+0.01*ticksitvl, ticksitvl)
     xticks = xticks[np.logical_and(xticks >= xlim[0], xticks <= xlim[1])]
     xticklabels = []
@@ -60,14 +60,14 @@ def get_lonticks(xtimin = 0, xtimax = 360, ticksitvl = 60, xlim = [0, 360]):
         if lon_i==180:
             xticklabels.append('180\u00B0')
         elif lon_i>180:
-            xticklabels.append('{:.1f}\u00B0W'.format(360-lon_i))
+            xticklabels.append(("{:"+fmt+"}\u00B0W").format(360-lon_i))
         elif lon_i<0:
-            xticklabels.append('{:.1f}\u00B0W'.format(-lon_i))
+            xticklabels.append(("{:"+fmt+"}\u00B0W").format(-lon_i))
         elif lon_i>0:
-            xticklabels.append('{:.1f}\u00B0E'.format(lon_i))
+            xticklabels.append(("{:"+fmt+"}\u00B0E").format(lon_i))
     return xticks, xticklabels
 
-def get_latticks(ytimin = -90, ytimax = 90, ticksitvl = 30, ylim = [-90, 90]):
+def get_latticks(ytimin = -90, ytimax = 90, ticksitvl = 30, ylim = [-90, 90], fmt = ".1f"):
     yticks = np.arange(ytimin, ytimax+0.01*ticksitvl, ticksitvl)
     yticks = yticks[np.logical_and(yticks >= ylim[0], yticks <= ylim[1])]
     yticklabels = []
@@ -75,19 +75,19 @@ def get_latticks(ytimin = -90, ytimax = 90, ticksitvl = 30, ylim = [-90, 90]):
         if lat_i==0:
             yticklabels.append('0\u00B0')
         if lat_i<0:
-            yticklabels.append('{:.1f}\u00B0S'.format(-lat_i))
+            yticklabels.append(("{:"+fmt+"}\u00B0S").format(-lat_i))
         if lat_i>0:
-            yticklabels.append('{:.1f}\u00B0N'.format(lat_i))
+            yticklabels.append(("{:"+fmt+"}\u00B0N").format(lat_i))
     return yticks, yticklabels
 
-def setlatlonticks(ax,ticksitvl=[60,30],xlim=[0,360],ylim=[-90,90], xtick_lim = [0, 360], ytick_lim = [-90, 90]):
+def setlatlonticks(ax,ticksitvl=[60,30],xlim=[0,360],ylim=[-90,90], xtick_lim = [0, 360], ytick_lim = [-90, 90], fmt = ".1f"):
     xtimax = xtick_lim[1]
     xtimin = xtick_lim[0]
     ytimax = ytick_lim[1]
     ytimin = xtick_lim[0]
     
-    xticks, xticklabels = get_lonticks(xtimin, xtimax, ticksitvl[0], xlim)
-    yticks, yticklabels = get_latticks(ytimin, ytimax, ticksitvl[1], ylim)    
+    xticks, xticklabels = get_lonticks(xtimin, xtimax, ticksitvl[0], xlim, fmt=fmt)
+    yticks, yticklabels = get_latticks(ytimin, ytimax, ticksitvl[1], ylim, fmt=fmt)    
     
     ax.set_xticks(xticks)
     ax.set_xticklabels(xticklabels)
