@@ -34,7 +34,7 @@ def MPbase(func):
         
         MP, PB2 = func(*args, **kwargs)
         if coastline:
-            MP.coastline()
+            MP.coastlines()
         MP.title(title, loc="left")
         MP.grid()
         MP.set_aspect()
