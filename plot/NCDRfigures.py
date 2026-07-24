@@ -5,9 +5,23 @@ from mypkgs.plotter.plotter import MapPlotter
 from mypkgs.plotter.paintbox import Paintbox_2D
 from mypkgs.plot.plotbase import MPbase
 
-length_mult = 0.45
-barbnum = 20
+length_mult = 0.6
+barbnum = 16
 
+def geopotential_height_contour(PB:Paintbox_2D, gpth_name:str, pressure_hpa, linewidths, **contour_kwargs):
+    gpth_base = {950:290, 900:790, 850:1290, 800:1790, 700:2970, 500:5100, 300:8760, 200:10500}
+    gpth_itvl = {950:30, 900:30, 850:30, 800:30, 700:30, 500:60, 300:120, 200:120}
+    number    = {950:15, 900:15, 850:15, 800:30, 700:15, 500:15, 300:20, 200:30}
+    thick_levels_dict = {key:np.arange(number[key]) * gpth_itvl[key] + gpth_base[key] for key in gpth_base}
+    thin_levels_dict  = {key:np.arange(number[key]) * gpth_itvl[key] + gpth_base[key] + gpth_itvl[key]/2 for key in gpth_base}
+    # thick_levels_dict = {850:np.arange(15)*30+1290, 700:np.arange(15)*30+2970, 500:np.arange(15)*60+5100, 300:np.arange(20)*120+8760, 200:np.arange(30)*120+10500}
+    pressure_list = np.array(list(gpth_itvl.keys()))
+    i_close = np.argmin(np.abs(pressure_list - pressure_hpa))
+    pressure_close = pressure_list[i_close]
+    PB.contour(varname=gpth_name, levels=thick_levels_dict[pressure_close], linewidths=linewidths, clabel=True, **contour_kwargs)
+    PB.contour(varname=gpth_name, levels=thin_levels_dict[pressure_close], linewidths=linewidths / 2, **contour_kwargs)
+
+# parameters of MPbase: (title = "", xlim = xlim, ylim = ylim, ticksitvl = [None, None], tick_fmt = ".1f", coastline = False, MPargs = MPargs)
 @MPbase
 def NCDR_surface(lon, lat, u = None, v = None, slp = None, cwv = None, thick_1000_500 = None, MP:MapPlotter = None):
     """
@@ -37,8 +51,9 @@ def NCDR_850ept(lon, lat, u = None, v = None, z = None, T = None, ept = None, MP
     if not ept is None:
         PB2.pcolormesh(varname="ept", colorkey="NCDR_ept", cbtitle="[K]")
     if not z is None:
-        PB2.contour(varname="z", colors="k", levels=np.arange(15)*30+1290, linewidths=MP.linewidth, clabel=True)
-        PB2.contour(varname="z", colors="k", levels=np.arange(15)*30+1290+15, linewidths=MP.linewidth / 2)
+        geopotential_height_contour(PB=PB2, gpth_name="z", pressure_hpa=850, linewidths=MP.linewidth, colors="k")
+        # PB2.contour(varname="z", colors="k", levels=np.arange(15)*30+1290, linewidths=MP.linewidth, clabel=True)
+        # PB2.contour(varname="z", colors="k", levels=np.arange(15)*30+1290+15, linewidths=MP.linewidth / 2)
     if not T is None:
         PB2.contour(varname="T", colors="tomato", levels=np.arange(10)*6-12, linewidths=MP.linewidth / 2, clabel=True, linestyles='dashed')
         PB2.contour(varname="T", colors="tomato", levels=np.arange(20)*2-12, linewidths=MP.linewidth / 4, linestyles='dashed')
