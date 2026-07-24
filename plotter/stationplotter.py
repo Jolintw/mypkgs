@@ -93,7 +93,7 @@ def stationmap(data, xname="LON", yname="LAT", xlim=[120.1, 122.1], ylim=[24, 25
     MP.ax.plot(data[xname], data[yname], lw=0, **kwargs)
     return MP
 
-def stationvarmap(data, varname, xname="LON", yname="LAT", colorkey=None, cmapdict=None, xlim=[120.1, 122.1], ylim=[24, 25.5], cbkwargs={}, **kwargs):
+def stationvarmap(data, varname, xname="LON", yname="LAT", colorkey=None, cmapdict=None, xlim=[120.1, 122.1], ylim=[24, 25.5], cbkwargs={}, MPargs={}, **kwargs):
     """
     scatter var of stations on the map
     
@@ -106,8 +106,8 @@ def stationvarmap(data, varname, xname="LON", yname="LAT", colorkey=None, cmapdi
     :param cbkwargs: other args to color bar of scatter
     :param kwargs: other args to scatter
     """
-    MP = MapPlotter()
-    MP.setlatlonticks(ticksitvl=[1, 0.5], xlim=xlim, ylim=ylim)
+    MP = MapPlotter(**MPargs)
+    MP.setlatlonticks(ticksitvl=[1, 1], xlim=xlim, ylim=ylim, fmt=".0f")
     MP.coastlines()
     Pb = Paintbox_1D(X=data, Y=data, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     Pb.scatter(xname, yname, varname, colorkey, cmapdict, cbkwargs=cbkwargs, **kwargs)
