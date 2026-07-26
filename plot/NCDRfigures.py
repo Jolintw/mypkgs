@@ -25,7 +25,7 @@ def geopotential_height_contour(PB:Paintbox_2D, gpth_name:str, pressure_hpa, lin
 @MPbase
 def NCDR_surface(lon, lat, u = None, v = None, slp = None, cwv = None, thick_1000_500 = None, MP:MapPlotter = None):
     """
-    MP is no need to give value
+    MP is no need to give value, but you can give a existed MP to plot on it
     """
     PB2 = Paintbox_2D(field=dict(u=u,v=v,slp=slp,cwv=cwv,thick_1000_500=thick_1000_500), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not cwv is None:
@@ -45,7 +45,7 @@ def NCDR_surface(lon, lat, u = None, v = None, slp = None, cwv = None, thick_100
 @MPbase
 def NCDR_850ept(lon, lat, u = None, v = None, z = None, T = None, ept = None, MP:MapPlotter = None):
     """
-    MP is no need to give value
+    MP is no need to give value, but you can give a existed MP to plot on it
     """
     PB2 = Paintbox_2D(field=dict(u=u,v=v,z=z,T=T,ept=ept), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not ept is None:
@@ -64,7 +64,7 @@ def NCDR_850ept(lon, lat, u = None, v = None, z = None, T = None, ept = None, MP
 @MPbase
 def NCDR_700rh(lon, lat, u = None, v = None, z = None, rh = None, div = None, MP:MapPlotter = None):
     """
-    MP is no need to give value
+    MP is no need to give value, but you can give a existed MP to plot on it
     rh: relative humidity (%)
     div: divergence (s^-1)
     """
@@ -83,7 +83,7 @@ def NCDR_700rh(lon, lat, u = None, v = None, z = None, rh = None, div = None, MP
 @MPbase
 def NCDR_500vor(lon, lat, u = None, v = None, z = None, vor = None, MP:MapPlotter = None):
     """
-    MP is no need to give value
+    MP is no need to give value, but you can give a existed MP to plot on it
     vor: vorticity (s^-1)
     """
     PB2 = Paintbox_2D(field=dict(u=u,v=v,z=z,vor=vor*1e5), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
@@ -99,7 +99,7 @@ def NCDR_500vor(lon, lat, u = None, v = None, z = None, vor = None, MP:MapPlotte
 @MPbase
 def NCDR_300ws(lon, lat, u = None, v = None, z = None, ws = None, div = None, MP:MapPlotter = None):
     """
-    MP is no need to give value
+    MP is no need to give value, but you can give a existed MP to plot on it
     ws: windspeed (m s^-1)
     """
     PB2 = Paintbox_2D(field=dict(u=u,v=v,z=z,ws=ws,div=div), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
@@ -117,7 +117,7 @@ def NCDR_300ws(lon, lat, u = None, v = None, z = None, ws = None, div = None, MP
 @MPbase
 def NCDR_200ws(lon, lat, u = None, v = None, z = None, ws = None, div = None, MP:MapPlotter = None):
     """
-    MP is no need to give value
+    MP is no need to give value, but you can give a existed MP to plot on it
     ws: windspeed (m s^-1)
     """
     PB2 = Paintbox_2D(field=dict(u=u,v=v,z=z,ws=ws,div=div), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)

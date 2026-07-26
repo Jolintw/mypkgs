@@ -11,7 +11,7 @@ barbnum = 15
 @MPbase
 def wind(lon, lat, u = None, v = None, lsm = None, intv=None, MP:MapPlotter = None):
     """
-    MP is no need to give value
+    MP is no need to give value, but you can give a existed MP to plot on it
     """
     ws = np.sqrt(u**2 + v**2)
     gray = 0.9
@@ -27,7 +27,7 @@ def wind(lon, lat, u = None, v = None, lsm = None, intv=None, MP:MapPlotter = No
 @MPbase
 def dbz(lon, lat, dbz = None, lsm = None, MP:MapPlotter = None):
     """
-    MP is no need to give value
+    MP is no need to give value, but you can give a existed MP to plot on it
     """
     PB2 = Paintbox_2D(field=dict(dbz=dbz,lsm=lsm), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     gray = 0.9
@@ -41,7 +41,7 @@ def dbz(lon, lat, dbz = None, lsm = None, MP:MapPlotter = None):
 @MPbase
 def accumulated_rainfall(lon, lat, rain = None, lsm = None, MP:MapPlotter = None):
     """
-    MP is no need to give value
+    MP is no need to give value, but you can give a existed MP to plot on it
     """
     PB2 = Paintbox_2D(field=dict(rain=rain,lsm=lsm), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not rain is None:
@@ -52,6 +52,9 @@ def accumulated_rainfall(lon, lat, rain = None, lsm = None, MP:MapPlotter = None
 
 @MPbase
 def VEL(lon, lat, VEL = None, lsm = None, MP:MapPlotter = None):
+    """
+    MP is no need to give value, but you can give a existed MP to plot on it
+    """
     PB2 = Paintbox_2D(field=dict(VEL=VEL,lsm=lsm), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     # gray = 0.9
     # MP.ax.set_facecolor(color = [gray, gray, gray])
@@ -63,6 +66,9 @@ def VEL(lon, lat, VEL = None, lsm = None, MP:MapPlotter = None):
 
 @MPbase
 def w_DBZ(lon, lat, w = None, DBZ = None, lsm = None, MP:MapPlotter = None):
+    """
+    MP is no need to give value, but you can give a existed MP to plot on it
+    """
     PB2 = Paintbox_2D(field=dict(w=w, DBZ=DBZ,lsm=lsm), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     # gray = 0.9
     # MP.ax.set_facecolor(color = [gray, gray, gray])
@@ -76,6 +82,9 @@ def w_DBZ(lon, lat, w = None, DBZ = None, lsm = None, MP:MapPlotter = None):
 
 @MPbase
 def VEL_discrete(lon, lat, wind, lsm = None, MP:MapPlotter = None):
+    """
+    MP is no need to give value, but you can give a existed MP to plot on it
+    """
     PB2 = Paintbox_2D(field=dict(wind=wind,lsm=lsm), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not wind is None:
         PB2.pcolormesh(varname="wind", colorkey="radial_wind", cbtitle="m/s")
@@ -85,6 +94,9 @@ def VEL_discrete(lon, lat, wind, lsm = None, MP:MapPlotter = None):
 
 @MPbase
 def P_perturbation(lon, lat, p, lsm = None, MP:MapPlotter = None):
+    """
+    MP is no need to give value, but you can give a existed MP to plot on it
+    """
     PB2 = Paintbox_2D(field=dict(p=p,lsm=lsm), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not p is None:
         PB2.contourf(varname="p", colorkey="Pperturbation", cbtitle="hPa")
@@ -94,6 +106,9 @@ def P_perturbation(lon, lat, p, lsm = None, MP:MapPlotter = None):
 
 @MPbase
 def Pressure(lon, lat, p, p_base, u = None, v = None, lsm = None, MP:MapPlotter = None):
+    """
+    MP is no need to give value, but you can give a existed MP to plot on it
+    """
     PB2 = Paintbox_2D(field=dict(p=p,u=u,v=v,lsm=lsm), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     cmapdict = get_cmapdict("Pperturbation")
     add_norm(cmapdict, p_base)
@@ -108,6 +123,9 @@ def Pressure(lon, lat, p, p_base, u = None, v = None, lsm = None, MP:MapPlotter 
 
 @MPbase
 def temperature(lon, lat, T, lsm = None, MP:MapPlotter = None):
+    """
+    MP is no need to give value, but you can give a existed MP to plot on it
+    """
     PB2 = Paintbox_2D(field=dict(T=T,lsm=lsm), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     if not T is None:
         PB2.contourf(varname="T", colorkey="SST", cbtitle="K")
@@ -117,6 +135,9 @@ def temperature(lon, lat, T, lsm = None, MP:MapPlotter = None):
 
 @MPbase
 def temperature_2sides(lon, lat, T, T_base=0, u=None, v=None, lsm = None, MP:MapPlotter = None):
+    """
+    MP is no need to give value, but you can give a existed MP to plot on it
+    """
     PB2 = Paintbox_2D(field=dict(T=T,u=u,v=v,lsm=lsm), X=lon, Y=lat, fig=MP.fig, ax=MP.ax, ft=MP.fontsize)
     gray = 0.9
     MP.ax.set_facecolor(color = [gray, gray, gray])

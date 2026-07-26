@@ -1,8 +1,6 @@
 from functools import wraps
 import numpy as np
 from mypkgs.plotter.plotter import MapPlotter
-from mypkgs.plotter.paintbox import Paintbox_2D
-
 
 figsize = [10, 7.2]
 dpi = 300
