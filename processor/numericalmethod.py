@@ -124,7 +124,7 @@ class RightAngleInterpolater:
     
         newvar = np.reshape(newvar, (*varshape[:-len(self.X)], *self.original_newXshape))
         if self.newX_out_of_X:
-            mask = np.reshape(self.outer_mask, newshape=self.original_newXshape)
+            mask = np.reshape(self.outer_mask, self.original_newXshape)
             mask = np.broadcast_to(mask, newvar.shape)
             newvar[mask] = np.nan
         if self.newXnotarray:
