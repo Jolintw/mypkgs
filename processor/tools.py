@@ -18,3 +18,24 @@ def indexing_dict(dict_of_data, index, varname_list = None):
         else:
             new_dict[varname] = var
     return new_dict
+
+def in_angle_range(angle, angle_range, angle_unit = "radius", angle_range_unit = "radius"):
+    if angle_unit == "degree" or angle_unit == "deg":
+        angle = angle / 180 * np.pi
+    elif angle_unit == "radius" or angle_unit == "rad":
+        pass
+    else:
+        print("wrong angle_unit:", angle_unit)
+
+    if angle_range_unit == "degree" or angle_range_unit == "deg":
+        angle_range = [ar / 180 * np.pi for ar in angle_range]
+    elif angle_range_unit == "radius" or angle_range_unit == "rad":
+        pass
+    else:
+        print("wrong angle_range_unit:", angle_range_unit)
+
+    if angle_range[1] < angle_range[0]:
+        result = (in_angle_range(angle, angle_range=[0, angle_range[1]]) or in_angle_range(angle, angle_range=[angle_range[0], 2*np.pi]))
+    else:
+        result = (angle <= angle_range[1]) and (angle >= angle_range[0])
+    return result
