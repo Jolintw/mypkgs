@@ -284,12 +284,12 @@ class MapPlotter(Plotter):
         for ax in axs:
             ax.coastlines(**args)
     
-    def setlatlonticks(self, ticksitvl = [None, None], xlim = [0,360], ylim = [-90,90], fmt = ".1f", axn = None):
+    def setlatlonticks(self, ticksitvl = [None, None], xlim = [0,360], ylim = [-90,90], fmt = ".1f", xtick_lim = [0, 360], ytick_lim = [-90, 90], axn = None):
         axs = self._axntoaxs(axn)
         xticksitvl = self._auto_determine_ticksitvl(lim=xlim, ticksitvl=ticksitvl[0])
         yticksitvl = self._auto_determine_ticksitvl(lim=ylim, ticksitvl=ticksitvl[1])
         for ax in axs:
-            pf.setlatlonticks(ax, [xticksitvl, yticksitvl], xlim, ylim, fmt=fmt)
+            pf.setlatlonticks(ax, [xticksitvl, yticksitvl], xlim, ylim, xtick_lim=xtick_lim, ytick_lim=ytick_lim, fmt=fmt)
     
 class TwinPlotter(Plotter):
     def newsubplots(self):
