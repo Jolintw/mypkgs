@@ -1,4 +1,5 @@
 import numpy as np
+from mypkgs.processor.gridmethod import get_distance
 #import matplotlib.pyplot as plt
 
 # ax + by + c = 0
@@ -66,7 +67,10 @@ class Line_2D:
         # else:
         #     angle = np.arctan(self.coef[0] / (-self.coef[1]))
         self.angle = angle
-        
+
+def angle_from_p1_to_p2(point1, point2):
+    return np.arctan2(point2[0] - point1[0], point2[1] - point1[1])
+
 def rotation_2D(x, y, angle, rotation_center = [0, 0], angle_type = "radius"):
     if angle_type == "degree":
         angle = angle / 180 * np.pi
@@ -139,6 +143,51 @@ def cubic_eqn(x, a, b, c, d):
 def quartic_eqn(x, a, b, c, d, e):
     y = a*x**4 + b*x**3 + c*x**2 + d*x + e
     return y
+
+class Circle_2D:
+    def __init__(self, r, x0, y0):
+        self.r = r
+        self.x0 = x0
+        self.y0 = y0
+        self.center = (x0, y0)
+
+    @classmethod
+    def circumcircle_triangle_with_2p1a(cls, x1, y1, x2, y2, angle, loc="upper"):
+        """
+        loc = "upper" or "lower"
+        2 points and an angle (angle of that unknown point, that point can be anywhere on the circle)
+        like dualdoppler lobe
+        """
+        if angle > np.pi / 2:
+            angle = np.pi - angle
+
+        line = Line_2D((x1, y1), (x2, y2))
+        angles_to_center = [shift_angle_to_0_360(line.angle + np.pi/2), shift_angle_to_0_360(line.angle - np.pi/2)]
+            
+        if loc == "upper":
+            angle_to_center = min(angles_to_center)
+        elif loc == "lower":
+            angle_to_center = max(angles_to_center)
+
+        midpoint = (x1/2 + x2/2, y1/2 + y2/2)
+        length_to_center = get_distance((x1,y1), (x2,y2)) * np.cot(angle)
+        center = newpoint_by_angle_length(midpoint, angle_to_center, length_to_center)
+        radius = length_to_center / np.cos(angle)
+        return Circle_2D(radius, center[0], center[1])
+
+    def points_on_circumference(self, interval_angle, angle_range):
+        a0 = shift_angle_to_0_360(angle_range[0])
+        a1 = shift_angle_to_0_360(angle_range[1])
+        if a1 > a0:
+            angles = np.arange(a0, a1+interval_angle, interval_angle)
+        elif a1 < a0:
+            angles1 = np.arange(a0, np.pi, interval_angle)
+            angles2 = np.arange(0, a1+interval_angle, interval_angle)
+            angles = np.append(angles1, angles2)
+        return newpoint_by_angle_length((self.x0, self.y0), angles, self.r)
+
+def shift_angle_to_0_360(angle):
+    return angle - np.floor(angle / 2 / np.pi) * 2 * np.pi
 
 
 """
