@@ -29,6 +29,7 @@ NCL_NEO_div_vegetation_a = cmaps.NEO_div_vegetation_a
 NCL_t2m_29lev = cmaps.t2m_29lev
 NCL_GMT_seis_r = cmaps.GMT_seis_r
 NCL_GMT_drywet = cmaps.GMT_drywet
+MPL_BrBG = cmaps.MPL_BrBG
 
 colorkw = {}
 name = "dbz_cwb"
@@ -428,6 +429,15 @@ bounds = np.arange(16)*1.0 + 300
 kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
 kw["cmap"].set_over(color=NCL_GMT_seis_r(NCL_GMT_seis_r.N-1))
 kw["cmap"].set_under(color=NCL_GMT_seis_r(0))
+kw["cmap"].colorbar_extend = "both"
+
+name = "vorticity"
+kw = _kw(colorkw, name)
+kw["cmap"] = MPL_BrBG
+bounds = np.arange(10)*2.0 - 9
+kw["norm"] = mpl.colors.BoundaryNorm(bounds, kw["cmap"].N)
+kw["cmap"].set_over(color=MPL_BrBG(MPL_BrBG.N-1))
+kw["cmap"].set_under(color=MPL_BrBG(0))
 kw["cmap"].colorbar_extend = "both"
 
 for k in colorkw:
