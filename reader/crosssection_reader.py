@@ -4,7 +4,7 @@ import numpy as np
 
 def getsectioninfor(ds):
     var = {}
-    for key in ["lon", "lat", "s", "z", "data_coverage"]:
+    for key in ["lon", "lat", "x", "y", "s", "z", "data_coverage"]:
         if key in ds.variables:
             var[key] = ds[key][:]
     return var
@@ -16,9 +16,11 @@ def getsectionfield(ds):
             var[key] = ds[key][:]
     return var
 
-def read_section(section_file, auto_mask = True):
+def read_section(section_file, auto_mask = True, invert_s = False):
     ds    = nc.Dataset(section_file)
     infor = getsectioninfor(ds)
+    if invert_s:
+        infor["s"] = np.max(infor["s"]) - infor["s"]
     field = _to_mask_array(getsectionfield(ds))
     ds.close()
     if auto_mask:
